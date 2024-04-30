@@ -1,15 +1,15 @@
 {
     "Version": "1.2",
     "Data": {
-        "Source": "c:\\users\\admin\\desktop\\project\\cookingsimulator\\source\\cookingsimulator\\private\\ingredient.cpp",
+        "Source": "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\source\\cookingsimulator\\private\\ingredient.cpp",
         "ProvidedModule": "",
-        "PCH": "c:\\users\\admin\\desktop\\project\\cookingsimulator\\intermediate\\build\\win64\\x64\\cookingsimulatoreditor\\development\\engine\\sharedpch.engine.cpp20.inclorderunreal5_0.h.pch",
+        "PCH": "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\intermediate\\build\\win64\\x64\\cookingsimulatoreditor\\development\\engine\\sharedpch.engine.cpp20.inclorderunreal5_0.h.pch",
         "Includes": [
-            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\cookingsimulator\\definitions.cookingsimulator.h",
-            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\source\\cookingsimulator\\public\\ingredient.h",
-            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\source\\cookingsimulator\\public\\item.h",
-            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\intermediate\\build\\win64\\unrealeditor\\inc\\cookingsimulator\\uht\\item.generated.h",
-            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\intermediate\\build\\win64\\unrealeditor\\inc\\cookingsimulator\\uht\\ingredient.generated.h"
+            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\cookingsimulator\\definitions.cookingsimulator.h",
+            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\source\\cookingsimulator\\public\\ingredient.h",
+            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\source\\cookingsimulator\\public\\item.h",
+            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\intermediate\\build\\win64\\unrealeditor\\inc\\cookingsimulator\\uht\\item.generated.h",
+            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\intermediate\\build\\win64\\unrealeditor\\inc\\cookingsimulator\\uht\\ingredient.generated.h"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []

@@ -1,4 +1,4 @@
-"C:\Users\admin\Desktop\Project\CookingSimulator\Intermediate\Build\Win64\x64\CookingSimulatorEditor\Development\Core\SharedPCH.Core.Cpp17.cpp"
+"C:\Users\admin\Desktop\Project\CookingSimulator\CookingSimulator\Intermediate\Build\Win64\x64\CookingSimulatorEditor\Development\Core\SharedPCH.Core.Cpp17.cpp"
 /I "."
 /I "Runtime\Core\Public"
 /I "Runtime\Core\Internal"
@@ -10,10 +10,10 @@
 /external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
 /external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
 /external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
-/Yc"C:\Users\admin\Desktop\Project\CookingSimulator\Intermediate\Build\Win64\x64\CookingSimulatorEditor\Development\Core\SharedPCH.Core.Cpp17.h"
-/Fp"C:\Users\admin\Desktop\Project\CookingSimulator\Intermediate\Build\Win64\x64\CookingSimulatorEditor\Development\Core\SharedPCH.Core.Cpp17.h.pch"
-/Fo"C:\Users\admin\Desktop\Project\CookingSimulator\Intermediate\Build\Win64\x64\CookingSimulatorEditor\Development\Core\SharedPCH.Core.Cpp17.h.obj"
-/sourceDependencies "C:\Users\admin\Desktop\Project\CookingSimulator\Intermediate\Build\Win64\x64\CookingSimulatorEditor\Development\Core\SharedPCH.Core.Cpp17.h.dep.json"
+/Yc"C:\Users\admin\Desktop\Project\CookingSimulator\CookingSimulator\Intermediate\Build\Win64\x64\CookingSimulatorEditor\Development\Core\SharedPCH.Core.Cpp17.h"
+/Fp"C:\Users\admin\Desktop\Project\CookingSimulator\CookingSimulator\Intermediate\Build\Win64\x64\CookingSimulatorEditor\Development\Core\SharedPCH.Core.Cpp17.h.pch"
+/Fo"C:\Users\admin\Desktop\Project\CookingSimulator\CookingSimulator\Intermediate\Build\Win64\x64\CookingSimulatorEditor\Development\Core\SharedPCH.Core.Cpp17.h.obj"
+/sourceDependencies "C:\Users\admin\Desktop\Project\CookingSimulator\CookingSimulator\Intermediate\Build\Win64\x64\CookingSimulatorEditor\Development\Core\SharedPCH.Core.Cpp17.h.dep.json"
 /Zc:inline
 /nologo
 /Oi

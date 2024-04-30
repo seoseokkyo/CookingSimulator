@@ -1,0 +1,19 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\source\\cookingsimulator\\private\\cookingsimulatorgamemodebase.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\intermediate\\build\\win64\\x64\\cookingsimulatoreditor\\development\\engine\\sharedpch.engine.cpp20.inclorderunreal5_0.h.pch",
+        "Includes": [
+            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\cookingsimulator\\definitions.cookingsimulator.h",
+            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\source\\cookingsimulator\\public\\cookingsimulatorgamemodebase.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\gameframework\\gamemodebase.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\engine\\serverstatreplicator.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\serverstatreplicator.generated.h",
+            "c:\\program files\\epic games\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\gamemodebase.generated.h",
+            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\intermediate\\build\\win64\\unrealeditor\\inc\\cookingsimulator\\uht\\cookingsimulatorgamemodebase.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

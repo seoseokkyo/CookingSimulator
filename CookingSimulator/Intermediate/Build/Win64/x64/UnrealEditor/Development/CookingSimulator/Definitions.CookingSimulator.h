@@ -1,4 +1,4 @@
-#include "C:/Users/admin/Desktop/Project/CookingSimulator/Intermediate/Build/Win64/x64/CookingSimulatorEditor/Development/Engine/SharedDefinitions.Engine.Cpp20.InclOrderUnreal5_0.h"
+#include "C:/Users/admin/Desktop/Project/CookingSimulator/CookingSimulator/Intermediate/Build/Win64/x64/CookingSimulatorEditor/Development/Engine/SharedDefinitions.Engine.Cpp20.InclOrderUnreal5_0.h"
 #undef UE_IS_ENGINE_MODULE
 #undef DEPRECATED_FORGAME
 #define DEPRECATED_FORGAME DEPRECATED
@@ -22,3 +22,4 @@
 #define DEPRECATED_FORGAME DEPRECATED
 #define UE_DEPRECATED_FORGAME UE_DEPRECATED
 #define COOKINGSIMULATOR_API DLLEXPORT
+#define ENHANCEDINPUT_API DLLIMPORT

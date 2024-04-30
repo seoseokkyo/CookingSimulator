@@ -1,12 +1,12 @@
 {
     "Version": "1.2",
     "Data": {
-        "Source": "c:\\users\\admin\\desktop\\project\\cookingsimulator\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\cookingsimulator\\singlefile\\item.h",
+        "Source": "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\cookingsimulator\\singlefile\\item.h",
         "ProvidedModule": "",
         "Includes": [
-            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\cookingsimulator\\definitions.cookingsimulator.h",
-            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\intermediate\\build\\win64\\x64\\cookingsimulatoreditor\\development\\engine\\shareddefinitions.engine.cpp20.inclorderunreal5_0.h",
-            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\source\\cookingsimulator\\public\\item.h",
+            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\cookingsimulator\\definitions.cookingsimulator.h",
+            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\intermediate\\build\\win64\\x64\\cookingsimulatoreditor\\development\\engine\\shareddefinitions.engine.cpp20.inclorderunreal5_0.h",
+            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\source\\cookingsimulator\\public\\item.h",
             "c:\\program files\\epic games\\ue_5.3\\engine\\source\\runtime\\core\\public\\coreminimal.h",
             "c:\\program files\\epic games\\ue_5.3\\engine\\source\\runtime\\core\\public\\coretypes.h",
             "c:\\program files\\epic games\\ue_5.3\\engine\\source\\runtime\\core\\public\\hal\\platform.h",
@@ -681,7 +681,7 @@
             "c:\\program files\\epic games\\ue_5.3\\engine\\source\\runtime\\core\\public\\misc\\paths.h",
             "c:\\program files\\epic games\\ue_5.3\\engine\\source\\runtime\\engine\\public\\worldpartition\\worldpartitionactordesctype.h",
             "c:\\program files\\epic games\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\actor.generated.h",
-            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\intermediate\\build\\win64\\unrealeditor\\inc\\cookingsimulator\\uht\\item.generated.h"
+            "c:\\users\\admin\\desktop\\project\\cookingsimulator\\cookingsimulator\\intermediate\\build\\win64\\unrealeditor\\inc\\cookingsimulator\\uht\\item.generated.h"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []
