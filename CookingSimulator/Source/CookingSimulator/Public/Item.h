@@ -4,8 +4,26 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Engine/DataTable.h"
 #include "Item.generated.h"
 
+class UTexture;
+
+USTRUCT(BlueprintType)
+struct FCookingSimulatorItemInfo : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, Category="ItemInfo")
+	UTexture* itemImage;
+
+	UPROPERTY(EditAnywhere, Category="ItemInfo")
+	FName itemName;
+
+	UPROPERTY(EditAnywhere, Category="ItemInfo")
+	FText itemDescription;
+};
 
 
 UCLASS()
@@ -24,5 +42,11 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+private:
+
+public:
+	UPROPERTY(EditAnywhere, Category = "ItemInfo")
+	FCookingSimulatorItemInfo itemInfoStruct;
 
 };
