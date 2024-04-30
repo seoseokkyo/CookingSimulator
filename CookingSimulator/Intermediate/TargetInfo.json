@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "CookingSimulator",
+			"Path": "..\\Source\\CookingSimulator.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "CookingSimulatorEditor",
+			"Path": "..\\Source\\CookingSimulatorEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
