@@ -1,0 +1,20 @@
+[
+	{
+		"Name": "Potato",
+		"itemType": "Ingredient",
+		"itemImagePath": "Content/CookingSimulator/Textures/Potato.png",
+		"itemDescription": "This Is Potato"
+	},
+	{
+		"Name": "FrenchKnife",
+		"itemType": "CookingTool",
+		"itemImagePath": "Content/CookingSimulator/Textures/FrenchKnife.png",
+		"itemDescription": "This is French Knife"
+	},
+	{
+		"Name": "Tomato",
+		"itemType": "Ingredient",
+		"itemImagePath": "Content/CookingSimulator/Textures/Tomato.png",
+		"itemDescription": "This is Tomato"
+	}
+]

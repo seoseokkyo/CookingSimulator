@@ -6,7 +6,6 @@
 
 FCookingSimulatorItemInfo UCookingSimulatorGameInstance::GetItemDataTable(const FString& rowName)
 {
-	// 데이터 Parsing(분석) 하기
 	FString errorText;
 	FCookingSimulatorItemInfo* cookingSimulatorItemInfo = dt_itemDataTable->FindRow<FCookingSimulatorItemInfo>(FName(rowName), errorText);
 

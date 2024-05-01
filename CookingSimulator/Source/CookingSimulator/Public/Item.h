@@ -7,7 +7,13 @@
 #include "Engine/DataTable.h"
 #include "Item.generated.h"
 
-class UTexture;
+
+UENUM(BlueprintType)
+enum class ECookingSimulatorItemType : uint8
+{
+	Ingredient,
+	CookingTool
+};
 
 USTRUCT(BlueprintType)
 struct FCookingSimulatorItemInfo : public FTableRowBase
@@ -15,14 +21,14 @@ struct FCookingSimulatorItemInfo : public FTableRowBase
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, Category="ItemInfo")
-	UTexture* itemImage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ItemInfo")
+	ECookingSimulatorItemType itemType;
 
-	UPROPERTY(EditAnywhere, Category="ItemInfo")
-	FName itemName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ItemInfo")
+	FString itemImagePath;
 
-	UPROPERTY(EditAnywhere, Category="ItemInfo")
-	FText itemDescription;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ItemInfo")
+	FString itemDescription;
 };
 
 
@@ -46,7 +52,7 @@ public:
 private:
 
 public:
-	UPROPERTY(EditAnywhere, Category = "ItemInfo")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
 	FCookingSimulatorItemInfo itemInfoStruct;
 
 };
