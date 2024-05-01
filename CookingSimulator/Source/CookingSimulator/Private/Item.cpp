@@ -2,6 +2,7 @@
 
 
 #include "Item.h"
+#include "CookingSimulatorGameInstance.h"
 
 // Sets default values
 AItem::AItem()
@@ -15,7 +16,21 @@ AItem::AItem()
 void AItem::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	auto gameInstance = GetGameInstance();
+
+	if (gameInstance != nullptr)
+	{
+		auto cookingInstance = CastChecked<UCookingSimulatorGameInstance>(gameInstance);
+
+		if (cookingInstance != nullptr)
+		{
+			if (!ItemName.IsEmpty())
+			{
+				itemInfoStruct = cookingInstance->GetItemDataTable(ItemName);
+			}			
+		}
+	}
 }
 
 // Called every frame

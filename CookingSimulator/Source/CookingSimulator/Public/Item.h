@@ -53,6 +53,8 @@ private:
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
-	FCookingSimulatorItemInfo itemInfoStruct;
+	FString ItemName;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	FCookingSimulatorItemInfo itemInfoStruct;
 };
