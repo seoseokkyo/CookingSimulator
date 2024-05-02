@@ -107,14 +107,22 @@ void ATestCharacter::CheckHitTrace(const FVector& start, const FVector& end)
 	{
 		// 부딪힌 액터의 Render CustomDepthPass를 true로 변경한다
 		// Cast<AItem>(interactedActor)->baseMesh->SetCustomDepthStencilValue();
-		Cast<AItem>(interactedActor)->baseMesh->SetRenderCustomDepth(true);
+		auto item = Cast<AItem>(interactedActor);
+		if (item != nullptr)
+		{
+			item->baseMesh->SetRenderCustomDepth(true);
+		}
+		
 	}
 	else
 	{
-		// 부딪힌 액터의 Render CustomDepthPass를 false로 변경한다
-		Cast<AItem>(interactedActor)->baseMesh->SetRenderCustomDepth(false);
+		auto item = Cast<AItem>(interactedActor);
+		if (item != nullptr)
+		{
+			// 부딪힌 액터의 Render CustomDepthPass를 false로 변경한다
+			item->baseMesh->SetRenderCustomDepth(false);
+		}	
 	}
-
 }
 
 void ATestCharacter::ShowDropPoint(const FVector& start, const FVector& end)
