@@ -4,6 +4,7 @@
 #include "Camera/CameraComponent.h"
 #include "MotionControllerComponent.h"
 #include <../../../../../../../Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputSubsystems.h>
+#include <Item.h>
 
 
 // Sets default values
@@ -77,21 +78,12 @@ void ATestCharacter::Tick(float DeltaTime)
 	// 잘 동작하는지 확인용 선 그리기
 	DrawLine(start,end);
 
-	// lineTrace를 해서 부딪힌 액터가 있다면 액터 아웃라인 강조되도록 머리티얼 상태를 변경한다
-	FHitResult hitInfo;	// 부딪힌 대상
-	bool bHit = HitTest(start, end, hitInfo);
-
-	if (bHit)
-	{
-		// 부딪힌 액터의 Render CustomDepthPass를 true로 변경한다
-		AActor* interactedActor = hitInfo.GetActor();
-		
-	}
-	else
-	{
-		// 부딪힌 액터의 Render CustomDepthPass를 false로 변경한다
-
-	}
+	// 부딪친 대상이 상호작용 가능한 액터라면 외각선 렌더링을 한다
+	// RenderCustomDepth 사용
+	CheckHitTrace(start, end);
+	
+	FVector grabLoc = MeshRight->GetComponentLocation();
+	FVector dropLoc = grabLoc + MotionRight->GetUpVector() * -1000;
 
 
 }
@@ -101,6 +93,45 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void ATestCharacter::CheckHitTrace(const FVector& start, const FVector& end)
+{
+	// lineTrace를 해서 부딪힌 액터가 있다면 액터 아웃라인 강조되도록 머리티얼 상태를 변경한다
+	FHitResult hitInfo;	// 부딪힌 대상
+	bool bHit = HitTest(start, end, hitInfo);
+
+	AActor* interactedActor = hitInfo.GetActor();
+
+	if (bHit)
+	{
+		// 부딪힌 액터의 Render CustomDepthPass를 true로 변경한다
+		// Cast<AItem>(interactedActor)->baseMesh->SetCustomDepthStencilValue();
+		Cast<AItem>(interactedActor)->baseMesh->SetRenderCustomDepth(true);
+	}
+	else
+	{
+		// 부딪힌 액터의 Render CustomDepthPass를 false로 변경한다
+		Cast<AItem>(interactedActor)->baseMesh->SetRenderCustomDepth(false);
+	}
+
+}
+
+void ATestCharacter::ShowDropPoint(const FVector& start, const FVector& end)
+{
+	FHitResult hitInfo;
+	bool bHit = HitTest(start, end, hitInfo);
+
+	FVector dropPoint = hitInfo.ImpactPoint;
+
+	if (bHit)
+	{
+		
+	}
+	else 
+	{
+
+	}
 }
 
 void ATestCharacter::DrawLine(FVector start, FVector end)
