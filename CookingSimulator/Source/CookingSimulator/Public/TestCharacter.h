@@ -54,6 +54,10 @@ public:
 	UPROPERTY()
 	class APlayerController* pc;	
 
+	void CheckHitTrace(const FVector& start, const FVector& end);
+
+	void ShowDropPoint(const FVector& start, const FVector& end);
+
 private:
 	void DrawLine(FVector start, FVector end);
 	bool HitTest(FVector start, FVector end, FHitResult& outHit);

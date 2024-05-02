@@ -25,6 +25,7 @@ public:
 	FText itemDescription;
 };
 
+class UStaticMeshComponent;
 
 UCLASS()
 class COOKINGSIMULATOR_API AItem : public AActor
@@ -45,8 +46,11 @@ public:
 
 private:
 
+	
+
 public:
 	UPROPERTY(EditAnywhere, Category = "ItemInfo")
 	FCookingSimulatorItemInfo itemInfoStruct;
 
+	UStaticMeshComponent* baseMesh;
 };
