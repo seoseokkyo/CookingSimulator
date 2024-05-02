@@ -78,5 +78,7 @@ private:
 	void ShowDropPoint(const FVector& start, const FVector& end);	
 
 public:
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class APointDecalActor> myDecalActor;
 
 };

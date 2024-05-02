@@ -90,7 +90,7 @@ void ATestCharacter::Tick(float DeltaTime)
 	// RenderCustomDepth »ç¿ë
 	CheckHitTrace(start, end);
 	
-	FVector grabLoc = MeshRight->GetComponentLocation();
+	FVector grabLoc = MotionRight->GetComponentLocation();
 	FVector dropLoc = grabLoc + MotionRight->GetUpVector() * -1000;
 }
 
