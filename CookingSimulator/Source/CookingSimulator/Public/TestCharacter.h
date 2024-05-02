@@ -4,7 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include <InputActionValue.h>
 #include "TestCharacter.generated.h"
+
+class UCameraComponent;
+class UMotionControllerComponent;
+class USkeletalMeshComponent;
+class UInputMappingContext;
+class UInputAction;
+class AActor;
+class APlayerController;
 
 UCLASS()
 class COOKINGSIMULATOR_API ATestCharacter : public ACharacter
@@ -26,39 +35,48 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(EditDefaultsOnly)
-	class UCameraComponent* VRCamera;	// vr헤드셋
-
-	UPROPERTY(EditDefaultsOnly)
-	class UMotionControllerComponent* MotionRight;	// 컨트롤러_우
-	UPROPERTY(EditDefaultsOnly)
-	class UMotionControllerComponent* MotionLeft;	// 컨트롤러_좌
-
-	
-	UPROPERTY(EditDefaultsOnly)
-	class USkeletalMeshComponent* MeshRight;	// 오른손
-	UPROPERTY(EditDefaultsOnly)
-	class USkeletalMeshComponent* MeshLeft;		// 왼손
-
-	UPROPERTY(EditDefaultsOnly, Category = VR)
-	class UInputAction* IA_MyMove;
-
-	
-	UPROPERTY(EditDefaultsOnly, Category = VR)
-	class UInputAction* IA_MyTurn;
-
-
-	UPROPERTY(EditDefaultsOnly, Category = VR)
-	class UInputMappingContext* IMC_TestPlayer;
-
-	UPROPERTY()
-	class APlayerController* pc;	
-
-	void CheckHitTrace(const FVector& start, const FVector& end);
-
-	void ShowDropPoint(const FVector& start, const FVector& end);
-
 private:
-	void DrawLine(FVector start, FVector end);
-	bool HitTest(FVector start, FVector end, FHitResult& outHit);
+	// VR Camera Component를 생성하고 루트에 붙이고 싶다.
+	UPROPERTY(EditDefaultsOnly)
+	UCameraComponent* VRCamera;
+
+	// 모션 컨트롤러 왼손, 오른손을 생성하고 루트에 붙이고 싶다.
+	UPROPERTY(EditDefaultsOnly)
+	UMotionControllerComponent* MotionLeft;
+
+	UPROPERTY(EditDefaultsOnly)
+	UMotionControllerComponent* MotionRight;
+	
+	// 왼손과 오른손의 스켈레탈 매쉬컴포넌트를 만들고
+	UPROPERTY(EditDefaultsOnly)
+	USkeletalMeshComponent* MeshLeft;
+
+	UPROPERTY(EditDefaultsOnly)
+	USkeletalMeshComponent* MeshRight;
+	
+	UPROPERTY(EditAnywhere, Category = "VR")
+	UInputMappingContext* IMC_Player;
+
+	UPROPERTY(EditAnywhere, Category = "VR")
+	UInputAction* IA_Move;
+
+	UPROPERTY(EditAnywhere, Category = "VR")
+	UInputAction* IA_Turn;
+	
+	AActor* focusedActor = nullptr;
+	APlayerController* pc = nullptr;
+
+	void OnIAMove(const FInputActionValue& value);
+	void OnIATurn(const FInputActionValue& value);
+
+	void DrawLine(FVector startPos, FVector endPos);
+
+	bool HitTest(FVector startPos, FVector endPos, FHitResult& HitResult);
+
+	void CheckHitTrace(const FVector& startPos, FVector& endPos);
+
+	void ShowDropPoint(const FVector& start, const FVector& end);	
+
+public:
+
 };

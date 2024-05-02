@@ -1,10 +1,20 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TestCharacter.h"
-#include "Camera/CameraComponent.h"
-#include "MotionControllerComponent.h"
-#include <../../../../../../../Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputSubsystems.h>
-#include <Item.h>
+#include <Camera/CameraComponent.h>
+#include <MotionControllerComponent.h>
+#include <Components/SkeletalMeshComponent.h>
+#include <Engine/SkeletalMesh.h>
+#include <UObject/ConstructorHelpers.h>
+#include <Engine/SkeletalMesh.h>
+#include <Animation/AnimInstance.h>
+#include <Engine/LocalPlayer.h>
+#include <EnhancedInputSubsystems.h>
+#include <EnhancedInputComponent.h>
+#include <Kismet/KismetSystemLibrary.h>
+#include <GameFramework/Character.h>
+#include <Components/CapsuleComponent.h>
+#include <item.h>
 
 
 // Sets default values
@@ -17,8 +27,10 @@ ATestCharacter::ATestCharacter()
 	VRCamera->SetupAttachment(RootComponent);
 
 	MotionRight=CreateDefaultSubobject<UMotionControllerComponent>(TEXT("MotionRight"));
+	MotionRight->SetTrackingMotionSource("Right");
 	MotionRight->SetupAttachment(RootComponent);
 	MotionLeft = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("MotionLeft"));
+	MotionLeft->SetTrackingMotionSource("Left");
 	MotionLeft->SetupAttachment(RootComponent);
 
 	MeshRight=CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshRight"));
@@ -40,10 +52,7 @@ ATestCharacter::ATestCharacter()
 	{
 		MeshLeft->SetSkeletalMesh(TempMeshLeft.Object);
 		MeshLeft->SetWorldLocationAndRotation(FVector(-3.0f, -3.5f, 4.5f), FRotator(-25.0f, -180.0f, 90.0f));
-	}
-
-
-
+	}	
 }
 
 // Called when the game starts or when spawned
@@ -51,7 +60,8 @@ void ATestCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	pc = GetController<APlayerController>();
+	//pc = GetController<APlayerController>();
+	pc = Cast<APlayerController>(Controller);
 
 	if (pc)
 	{
@@ -59,11 +69,9 @@ void ATestCharacter::BeginPlay()
 		
 		if (subsys)
 		{
-			subsys->AddMappingContext(IMC_TestPlayer, 0);
+			subsys->AddMappingContext(IMC_Player, 0);
 		}
 	}
-
-
 }
 
 // Called every frame
@@ -84,8 +92,6 @@ void ATestCharacter::Tick(float DeltaTime)
 	
 	FVector grabLoc = MeshRight->GetComponentLocation();
 	FVector dropLoc = grabLoc + MotionRight->GetUpVector() * -1000;
-
-
 }
 
 // Called to bind functionality to input
@@ -93,13 +99,34 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	auto* input = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+	if (input)
+	{
+		input->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ATestCharacter::OnIAMove);
+		input->BindAction(IA_Turn, ETriggerEvent::Triggered, this, &ATestCharacter::OnIATurn);
+	}
+
+	BeginPlay();
 }
 
-void ATestCharacter::CheckHitTrace(const FVector& start, const FVector& end)
+void ATestCharacter::OnIAMove(const FInputActionValue& value)
+{
+	FVector2D v = value.Get<FVector2D>();
+
+	AddMovementInput(GetActorForwardVector(), v.Y);
+	AddMovementInput(GetActorRightVector(), v.X);
+}
+
+void ATestCharacter::OnIATurn(const FInputActionValue& value)
+{
+	AddControllerYawInput(value.Get<float>());
+}
+
+void ATestCharacter::CheckHitTrace(const FVector& startPos, FVector& endPos)
 {
 	// lineTrace를 해서 부딪힌 액터가 있다면 액터 아웃라인 강조되도록 머리티얼 상태를 변경한다
 	FHitResult hitInfo;	// 부딪힌 대상
-	bool bHit = HitTest(start, end, hitInfo);
+	bool bHit = HitTest(startPos, endPos, hitInfo);
 
 	AActor* interactedActor = hitInfo.GetActor();
 
@@ -107,21 +134,32 @@ void ATestCharacter::CheckHitTrace(const FVector& start, const FVector& end)
 	{
 		// 부딪힌 액터의 Render CustomDepthPass를 true로 변경한다
 		// Cast<AItem>(interactedActor)->baseMesh->SetCustomDepthStencilValue();
-		auto item = Cast<AItem>(interactedActor);
+		auto item = Cast<IInteractAbleInterface>(interactedActor);
+
 		if (item != nullptr)
 		{
-			item->baseMesh->SetRenderCustomDepth(true);
+
+			if (focusedActor != nullptr && interactedActor != focusedActor)
+			{
+				IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
+				focusedActor = nullptr;
+			}
+			else
+			{
+				focusedActor = interactedActor;
+
+				IInteractAbleInterface::Execute_DrawOutLine(focusedActor, true);
+			}
 		}
 		
 	}
 	else
 	{
-		auto item = Cast<AItem>(interactedActor);
-		if (item != nullptr)
+		if (focusedActor != nullptr)
 		{
-			// 부딪힌 액터의 Render CustomDepthPass를 false로 변경한다
-			item->baseMesh->SetRenderCustomDepth(false);
-		}	
+			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
+			focusedActor = nullptr;
+		}
 	}
 }
 

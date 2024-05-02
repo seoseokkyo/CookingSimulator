@@ -3,6 +3,7 @@
 
 #include "Item.h"
 #include "CookingSimulatorGameInstance.h"
+#include <../../../../../../../Source/Runtime/Engine/Classes/Components/StaticMeshComponent.h>
 
 // Sets default values
 AItem::AItem()
@@ -10,6 +11,8 @@ AItem::AItem()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	baseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Mesh Comp"));
+	baseMesh->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -38,5 +41,15 @@ void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AItem::DrawOutLine_Implementation(bool bOn)
+{
+	if (baseMesh != nullptr)
+	{
+		baseMesh->SetRenderCustomDepth(bOn);
+
+		baseMesh->SetCustomDepthStencilValue(bOn ? 1 : 0);
+	}
 }
 

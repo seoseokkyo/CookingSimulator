@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Engine/DataTable.h"
+#include "InteractAbleInterface.h"
 #include "Item.generated.h"
 
 
@@ -33,7 +34,7 @@ public:
 
 
 UCLASS()
-class COOKINGSIMULATOR_API AItem : public AActor
+class COOKINGSIMULATOR_API AItem : public AActor, public IInteractAbleInterface
 {
 	GENERATED_BODY()
 	
@@ -51,10 +52,15 @@ public:
 
 private:
 
+	virtual void DrawOutLine_Implementation(bool bOn) override;
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
 	FString ItemName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
 	FCookingSimulatorItemInfo itemInfoStruct;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	UStaticMeshComponent* baseMesh;
 };
