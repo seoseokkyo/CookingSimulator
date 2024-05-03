@@ -35,6 +35,11 @@ public:
 	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
 	class UImage* OrderFoodImage;
 	
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UOverlay* GuideBarOverlay;
+
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UTextBlock* Menu;
 	
 
 	// 연어 가이드 항목 1~22까지 있음
@@ -104,8 +109,7 @@ public:
 	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
 	class UImage* Guide22;
 
-	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
-	class UOverlay* GuideBarOverlay;
+	
 
 	// 항목을 달성했을 때 교체할 이미지 1~22.
 	UPROPERTY(EditAnywhere, Category="MySettings")
@@ -174,6 +178,72 @@ public:
 	UPROPERTY(EditAnywhere, Category="MySettings")
 	UTexture2D* Guide22_Finish;
 
+	// 연어 요리 완성했을 때 바뀔 원래 가이드 이미지들 1~22
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide01_Image;
+	
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide02_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide03_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide04_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide05_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide06_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide07_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide08_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide09_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide10_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide11_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide12_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide13_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide14_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide15_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide16_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide17_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide18_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide19_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide20_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide21_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* Guide22_Image;
 
 	// 햄버거 가이드 항목 1~14까지 있음
 	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
@@ -218,6 +288,7 @@ public:
 	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
 	class UImage* HamGuide14;
 
+	
 	// 햄버거 항목을 달성했을 때 교체할 이미지 1~22.
 	UPROPERTY(EditAnywhere, Category="MySettings")
 	UTexture2D* HamGuide01_Finish;
@@ -260,6 +331,51 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="MySettings")
 	UTexture2D* HamGuide14_Finish;
+
+
+	// 햄버거 요리 완성했을 때 바뀔 원래 가이드 이미지들 1~22
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide01_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide02_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide03_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide04_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide05_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide06_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide07_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide08_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide09_Image;
+	
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide10_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide11_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide12_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide13_Image;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide14_Image;
+
 
 
 	// 결과창 
@@ -313,6 +429,9 @@ public:
 
 	// 연어 스테이크 레시피 가이드
 	void SalmonGuide();
+
+	// 햄버거 레시피 가이드
+	void HamburgerGuide();
 
 	// 결과 창 출력
 	void ShowResult(FString itemName);
