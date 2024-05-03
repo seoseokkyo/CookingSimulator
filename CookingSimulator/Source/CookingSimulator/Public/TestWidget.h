@@ -12,6 +12,7 @@
 
 class UImage;
 class AItem;
+class UButton;
 
 UCLASS()
 class COOKINGSIMULATOR_API UTestWidget : public UUserWidget
@@ -33,9 +34,21 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="MySettings", meta=(BindWidget))
 	UImage* ShowImage;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="MySettings", meta=(BindWidget))
+	UButton* TimerStartButton;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="MySettings", meta=(BindWidget))
+	UButton* TimerResetButton;
+
 	UFUNCTION(BlueprintCallable)
 	void SetBrushImageByItemName(FString itemName);
 
 	UFUNCTION(BlueprintCallable)
 	void SetBrushImageByItem(AItem* itemActor);
+
+	UFUNCTION(BlueprintCallable)
+	void OnClickedTimerStartButtom();
+		
+	UFUNCTION(BlueprintCallable)
+	void OnClickedTimerResetButtom();
 };

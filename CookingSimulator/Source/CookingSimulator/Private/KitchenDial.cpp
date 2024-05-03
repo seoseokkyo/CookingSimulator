@@ -39,16 +39,41 @@ void AKitchenDial::Tick(float DeltaTime)
 		currentTime += DeltaTime;
 		if (currentTime >= limitTime)
 		{
-
+			bStart = false;			
+		}
+		else
+		{
+			dialMesh->SetRelativeRotation(FRotator(FMath::Lerp(0, 360, (currentTime + 3600 - limitTime) / 3600), 180, 0));
 		}
 	}
 }
 
 void AKitchenDial::SetTimer()
 {
-	limitTime = dialMesh->GetRelativeRotation().Pitch * 10;
-	FMath::Clamp(limitTime, 0.f, 3599.f);
+	float rot = dialMesh->GetRelativeRotation().Pitch;
+
+	UE_LOG(LogTemp, Warning, TEXT("rot : %f"), rot);
+
+	if (rot < 0)
+	{
+		rot = 360 - rot;
+	}
+
+	limitTime = FRotator::ClampAxis(rot) * 10;
+
+	UE_LOG(LogTemp, Warning, TEXT("limitTime : %f"), limitTime);
+
+	limitTime = FMath::Clamp(limitTime, 0.f, 3599.f);
 
 	bStart = true;
+}
+
+void AKitchenDial::ResetTimer()
+{
+	bStart = false;
+	limitTime = 0.0f;
+	currentTime = 0.0f;
+
+	dialMesh->SetRelativeRotation(FRotator::ZeroRotator);
 }
 

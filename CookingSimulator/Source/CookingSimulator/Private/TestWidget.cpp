@@ -6,6 +6,9 @@
 #include "CookingSimulatorFunctionLibrary.h"
 #include <Components/Image.h>
 #include "Item.h"
+#include <../../../../../../../Source/Runtime/UMG/Public/Components/Button.h>
+#include "KitchenDial.h"
+#include <../../../../../../../Source/Runtime/CoreUObject/Public/UObject/UObjectIterator.h>
 
 void UTestWidget::NativeConstruct()
 {
@@ -23,6 +26,12 @@ void UTestWidget::NativeConstruct()
 		//SetBrushImageByItemName(ItemNames[0]);
 		//ShowImage->SetBrushFromSoftTexture(UCookingSimulatorFunctionLibrary::GetRecipeImage(GetWorld(), ECookingSimulatorRecipeType::Hamburger), true);
 	}
+
+	ShowImage->SetVisibility(ESlateVisibility::Hidden);
+	
+	TimerStartButton->OnClicked.AddDynamic(this, &UTestWidget::OnClickedTimerStartButtom);
+
+	TimerResetButton->OnClicked.AddDynamic(this, &UTestWidget::OnClickedTimerResetButtom);
 }
 
 void UTestWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -51,5 +60,27 @@ void UTestWidget::SetBrushImageByItem(AItem* itemActor)
 	if (itemActor != nullptr)
 	{
 		ShowImage->SetBrushFromSoftTexture(UCookingSimulatorFunctionLibrary::GetImageByItemName(GetWorld(), itemActor->ItemName), true);
+	}
+}
+
+void UTestWidget::OnClickedTimerStartButtom()
+{
+	for (TObjectIterator<AKitchenDial> It; It; ++It)
+	{
+		if (AKitchenDial* dial = *It)
+		{
+			dial->SetTimer();
+		}
+	}
+}
+
+void UTestWidget::OnClickedTimerResetButtom()
+{
+	for (TObjectIterator<AKitchenDial> It; It; ++It)
+	{
+		if (AKitchenDial* dial = *It)
+		{
+			dial->ResetTimer();
+		}
 	}
 }

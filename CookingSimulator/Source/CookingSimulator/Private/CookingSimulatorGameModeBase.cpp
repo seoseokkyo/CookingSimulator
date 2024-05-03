@@ -6,6 +6,8 @@
 
 void ACookingSimulatorGameModeBase::StartPlay()
 {
+	Super::StartPlay();
+
 	auto gameInstance = CastChecked<UCookingSimulatorGameInstance>(GetGameInstance());
 
 	if (gameInstance != nullptr)
@@ -74,6 +76,8 @@ void ACookingSimulatorGameModeBase::StartPlay()
 
 void ACookingSimulatorGameModeBase::Tick(float DeltaSeconds)
 {
+	Super::Tick(DeltaSeconds);
+
 	if (bCooking)
 	{
 		cookingTimer += DeltaSeconds;

@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "InteractAbleInterface.h"
 #include "KitchenDial.generated.h"
 
 class UStaticMeshComponent;
 
 UCLASS()
-class COOKINGSIMULATOR_API AKitchenDial : public AActor
+class COOKINGSIMULATOR_API AKitchenDial : public AActor, public IInteractAbleInterface
 {
 	GENERATED_BODY()
 	
@@ -31,12 +32,16 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
 	UStaticMeshComponent* dialMesh;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	float limitTime = 3599;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	float currentTime = 0.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	bool bStart = false;
 
 	void SetTimer();
+
+	void ResetTimer();
 };
