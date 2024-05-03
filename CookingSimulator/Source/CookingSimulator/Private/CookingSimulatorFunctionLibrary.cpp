@@ -28,3 +28,24 @@ UTexture2D* UCookingSimulatorFunctionLibrary::GetImageByItemName(UObject* WorldC
 
 	return rtn;
 }
+
+UTexture2D* UCookingSimulatorFunctionLibrary::GetRecipeImage(UObject* WorldContextObject, ECookingSimulatorRecipeType recipeType)
+{
+	UTexture2D* rtn = nullptr;
+
+	auto gameModeBase = UGameplayStatics::GetGameMode(WorldContextObject);
+
+	if (gameModeBase != nullptr)
+	{
+		auto cookingModeBase = CastChecked<ACookingSimulatorGameModeBase>(gameModeBase);
+
+		if (cookingModeBase != nullptr)
+		{
+			FCookingSimulatorRecipeInfo rcpInfo = cookingModeBase->GetRecipe((int)recipeType);
+
+			rtn = UKismetRenderingLibrary::ImportFileAsTexture2D(WorldContextObject, FPaths::ProjectDir() + rcpInfo.recipeImagePath);
+		}
+	}
+
+	return rtn;
+}

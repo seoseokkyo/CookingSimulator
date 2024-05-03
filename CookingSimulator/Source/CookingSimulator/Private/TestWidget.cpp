@@ -20,7 +20,8 @@ void UTestWidget::NativeConstruct()
 
 	if (ShowImage != nullptr)
 	{
-		SetBrushImageByItemName(ItemNames[0]);
+		//SetBrushImageByItemName(ItemNames[0]);
+		//ShowImage->SetBrushFromSoftTexture(UCookingSimulatorFunctionLibrary::GetRecipeImage(GetWorld(), ECookingSimulatorRecipeType::Hamburger), true);
 	}
 }
 
@@ -35,8 +36,8 @@ void UTestWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	if (ImageChangeDelay > 3)
 	{
 		ImageChangeDelay = 0;
-
-		SetBrushImageByItemName(ItemNames[FMath::RandRange(0, 2)]);
+		ShowImage->SetBrushFromSoftTexture(UCookingSimulatorFunctionLibrary::GetRecipeImage(GetWorld(), ECookingSimulatorRecipeType::Hamburger), true);
+		//SetBrushImageByItemName(ItemNames[FMath::RandRange(0, 2)]);
 	}	
 }
 
