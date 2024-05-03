@@ -73,7 +73,9 @@ private:
 
 	bool HitTest(FVector startPos, FVector endPos, FHitResult& HitResult);
 
-	void CheckHitTrace(const FVector& startPos, FVector& endPos);
+	void CheckHitTraceForOutline(const FVector& startPos, FVector& endPos);
+
+	void CheckHitTraceForLaserPointer(const FVector& startPos, FVector& endPos);
 
 	void ShowDropPoint(const FVector& start, const FVector& end);	
 
@@ -81,4 +83,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class APointDecalActor> myDecalActor;
 
+	bool bshowDecal = false;
+
+	class APointDecalActor* redDotDecal_inst = nullptr;
 };

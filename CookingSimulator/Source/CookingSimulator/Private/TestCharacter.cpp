@@ -15,6 +15,8 @@
 #include <GameFramework/Character.h>
 #include <Components/CapsuleComponent.h>
 #include <item.h>
+#include "PointDecalActor.h"
+#include <../../../../../../../Source/Runtime/Engine/Public/EngineUtils.h>
 
 
 // Sets default values
@@ -72,6 +74,16 @@ void ATestCharacter::BeginPlay()
 			subsys->AddMappingContext(IMC_Player, 0);
 		}
 	}
+
+	// 레이저 포인트 데칼
+	FActorSpawnParameters params;
+	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	if (redDotDecal_inst == nullptr)
+	{
+		redDotDecal_inst = GetWorld()->SpawnActor<APointDecalActor>(myDecalActor, GetActorLocation(), FRotator::ZeroRotator, params);
+		redDotDecal_inst->SetActorScale3D(FVector(0.03f));
+	}	
 }
 
 // Called every frame
@@ -83,15 +95,24 @@ void ATestCharacter::Tick(float DeltaTime)
 	FVector start = MeshLeft->GetComponentLocation();
 	FVector end = start + MeshLeft->GetRightVector() * 100000;
 
-	// 잘 동작하는지 확인용 선 그리기
+	// 아웃라인 잘 동작하는지 확인용 선 그리기
 	DrawLine(start,end);
 
 	// 부딪친 대상이 상호작용 가능한 액터라면 외각선 렌더링을 한다
 	// RenderCustomDepth 사용
-	CheckHitTrace(start, end);
+	CheckHitTraceForOutline(start, end);
 	
-	FVector grabLoc = MotionRight->GetComponentLocation();
-	FVector dropLoc = grabLoc + MotionRight->GetUpVector() * -1000;
+	// 소금/후추 등이 들어갈 레이저 포인트 위치를 잡는다 
+	FVector grabLoc = MeshRight->GetComponentLocation();
+	// FVector dropLoc = grabLoc + MeshRight->GetForwardVector() * -1000;
+	FVector dropLoc = grabLoc * FVector(1, 1, 0);
+
+	// 레이저 포인트 잘 작동하는지 확인용 선 그리기
+	DrawLine(grabLoc, dropLoc);
+
+	//myDecalActor->(GetActorLocation());
+	CheckHitTraceForLaserPointer(grabLoc, dropLoc);
+
 }
 
 // Called to bind functionality to input
@@ -106,6 +127,7 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		input->BindAction(IA_Turn, ETriggerEvent::Triggered, this, &ATestCharacter::OnIATurn);
 	}
 
+	// 나중에 문제 해결되면 삭제 예정
 	BeginPlay();
 }
 
@@ -113,8 +135,8 @@ void ATestCharacter::OnIAMove(const FInputActionValue& value)
 {
 	FVector2D v = value.Get<FVector2D>();
 
-	AddMovementInput(GetActorForwardVector(), v.Y);
-	AddMovementInput(GetActorRightVector(), v.X);
+	AddMovementInput(GetActorForwardVector(), v.X);
+	AddMovementInput(GetActorRightVector(), v.Y);
 }
 
 void ATestCharacter::OnIATurn(const FInputActionValue& value)
@@ -122,7 +144,7 @@ void ATestCharacter::OnIATurn(const FInputActionValue& value)
 	AddControllerYawInput(value.Get<float>());
 }
 
-void ATestCharacter::CheckHitTrace(const FVector& startPos, FVector& endPos)
+void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& endPos)
 {
 	// lineTrace를 해서 부딪힌 액터가 있다면 액터 아웃라인 강조되도록 머리티얼 상태를 변경한다
 	FHitResult hitInfo;	// 부딪힌 대상
@@ -136,20 +158,17 @@ void ATestCharacter::CheckHitTrace(const FVector& startPos, FVector& endPos)
 		// Cast<AItem>(interactedActor)->baseMesh->SetCustomDepthStencilValue();
 		auto item = Cast<IInteractAbleInterface>(interactedActor);
 
+		if (focusedActor != nullptr && interactedActor != focusedActor)
+		{
+			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
+			focusedActor = nullptr;
+		}
+
 		if (item != nullptr)
 		{
+			focusedActor = interactedActor;
 
-			if (focusedActor != nullptr && interactedActor != focusedActor)
-			{
-				IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
-				focusedActor = nullptr;
-			}
-			else
-			{
-				focusedActor = interactedActor;
-
-				IInteractAbleInterface::Execute_DrawOutLine(focusedActor, true);
-			}
+			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, true);
 		}
 		
 	}
@@ -163,21 +182,58 @@ void ATestCharacter::CheckHitTrace(const FVector& startPos, FVector& endPos)
 	}
 }
 
-void ATestCharacter::ShowDropPoint(const FVector& start, const FVector& end)
+void ATestCharacter::CheckHitTraceForLaserPointer(const FVector& startPos, FVector& endPos)
 {
 	FHitResult hitInfo;
-	bool bHit = HitTest(start, end, hitInfo);
+	bool bHit = HitTest(startPos, endPos, hitInfo);
 
 	FVector dropPoint = hitInfo.ImpactPoint;
 
+	
+
 	if (bHit)
 	{
-		
+		if (redDotDecal_inst != nullptr)
+		{
+			redDotDecal_inst->SetActorLocation(dropPoint);
+
+			redDotDecal_inst->SetShowDecal(true);
+
+			UE_LOG(LogTemp, Warning, TEXT("redDotDecal_inst Show Decal : %p"), redDotDecal_inst);
+
+			// UE_LOG(LogTemp, Warning, TEXT("redDotDecal_inst Create : %p"), redDotDecal_inst);
+
+			/*FVector dotLoc = redDotDecal_inst->GetActorLocation();
+
+			if (dotLoc != dropPoint)
+			{
+				for (TActorIterator<APointDecalActor> findActor(GetWorld()); findActor; findActor)
+				{
+					findActor->Destroy();
+				}
+			}
+			redDotDecal_inst->Destroy();*/
+			//redDotDecal_inst->SetShowDecal(true);
+		}
 	}
 	else 
 	{
+		if (redDotDecal_inst != nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("redDotDecal_inst Hide"));
+			
+			redDotDecal_inst->SetShowDecal(false);
 
+			//redDotDecal_inst->Destroy();
+			//
+			//redDotDecal_inst = nullptr;
+			
+		}
 	}
+}
+
+void ATestCharacter::ShowDropPoint(const FVector& start, const FVector& end)
+{
 }
 
 void ATestCharacter::DrawLine(FVector start, FVector end)
