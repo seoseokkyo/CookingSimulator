@@ -37,7 +37,7 @@ public:
 	
 	
 
-	// 가이드 항목 1~22까지 있음
+	// 연어 가이드 항목 1~22까지 있음
 	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
 	class UImage* Guide01;
 	
@@ -175,6 +175,93 @@ public:
 	UTexture2D* Guide22_Finish;
 
 
+	// 햄버거 가이드 항목 1~14까지 있음
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UImage* HamGuide01;
+
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UImage* HamGuide02;
+
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UImage* HamGuide03;
+
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UImage* HamGuide04;
+
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UImage* HamGuide05;
+
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UImage* HamGuide06;
+
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UImage* HamGuide07;
+
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UImage* HamGuide08;
+
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UImage* HamGuide09;
+
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UImage* HamGuide10;
+
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UImage* HamGuide11;
+
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UImage* HamGuide12;
+
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UImage* HamGuide13;
+
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UImage* HamGuide14;
+
+	// 햄버거 항목을 달성했을 때 교체할 이미지 1~22.
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide01_Finish;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide02_Finish;
+		
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide03_Finish;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide04_Finish;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide05_Finish;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide06_Finish;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide07_Finish;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide08_Finish;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide09_Finish;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide10_Finish;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide11_Finish;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide12_Finish;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide13_Finish;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	UTexture2D* HamGuide14_Finish;
+
+
 	// 결과창 
 	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
 	UOverlay* Result;
@@ -229,6 +316,9 @@ public:
 
 	// 결과 창 출력
 	void ShowResult(FString itemName);
+
+	// 완료 이미지로 교체된 이미지들을 다시 원래대로 돌려주는 함수
+	void SetOriginImage();
 
 	UFUNCTION(BlueprintCallable)
 	void SetBrushImageByItemName(FString itemName);

@@ -84,6 +84,21 @@ void UMainUI::HideWidget()
 	Guide21->SetVisibility(ESlateVisibility::Hidden);
 	Guide22->SetVisibility(ESlateVisibility::Hidden);
 
+	HamGuide01->SetVisibility(ESlateVisibility::Hidden);
+	HamGuide02->SetVisibility(ESlateVisibility::Hidden);
+	HamGuide03->SetVisibility(ESlateVisibility::Hidden);
+	HamGuide04->SetVisibility(ESlateVisibility::Hidden);
+	HamGuide05->SetVisibility(ESlateVisibility::Hidden);
+	HamGuide06->SetVisibility(ESlateVisibility::Hidden);
+	HamGuide07->SetVisibility(ESlateVisibility::Hidden);
+	HamGuide08->SetVisibility(ESlateVisibility::Hidden);
+	HamGuide09->SetVisibility(ESlateVisibility::Hidden);
+	HamGuide10->SetVisibility(ESlateVisibility::Hidden);
+	HamGuide11->SetVisibility(ESlateVisibility::Hidden);
+	HamGuide12->SetVisibility(ESlateVisibility::Hidden);
+	HamGuide13->SetVisibility(ESlateVisibility::Hidden);
+	HamGuide14->SetVisibility(ESlateVisibility::Hidden);
+
 	//Result->SetVisibility(ESlateVisibility::Hidden);
 }
 
@@ -225,6 +240,11 @@ void UMainUI::ShowResult(FString itemName)
 	{
 		CookedFood->SetBrushFromSoftTexture(foodImage, false);
 	}
+}
+
+void UMainUI::SetOriginImage()
+{
+	//Guide01->SetBrushFromTexture();
 }
 
 void UMainUI::SetBrushImageByItemName(FString itemName)
