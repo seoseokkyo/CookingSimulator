@@ -37,6 +37,30 @@ void ACookingSimulatorGameModeBase::StartPlay()
 			FString ingredientName = TEXT("Tomato");
 			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
 
+			ingredientName = TEXT("Onion");
+			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
+
+			ingredientName = TEXT("Patty");
+			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
+
+			ingredientName = TEXT("BurgerBunUp");
+			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
+
+			ingredientName = TEXT("BurgerBunDown");
+			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
+
+			ingredientName = TEXT("CheddarCheese");
+			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
+
+			ingredientName = TEXT("Ketchup");
+			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
+
+			ingredientName = TEXT("Salt");
+			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
+
+			ingredientName = TEXT("BlackPepper");
+			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
+
 			recipeDetail.cookingTimeLimit = 600;
 
 			// 햄버거 레시피 작성 완료
@@ -64,6 +88,21 @@ void ACookingSimulatorGameModeBase::StartPlay()
 
 			// 감자 추가 예시
 			FString ingredientName = TEXT("Potato");
+			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
+
+			ingredientName = TEXT("SalmonSteak");
+			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
+
+			ingredientName = TEXT("Water");
+			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
+
+			ingredientName = TEXT("SunflowerOil");
+			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
+
+			ingredientName = TEXT("Salt");
+			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
+
+			ingredientName = TEXT("BlackPepper");
 			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
 
 			recipeDetail.cookingTimeLimit = 600;

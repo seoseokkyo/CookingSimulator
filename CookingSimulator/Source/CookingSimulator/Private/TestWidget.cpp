@@ -9,6 +9,10 @@
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/Button.h>
 #include "KitchenDial.h"
 #include <../../../../../../../Source/Runtime/CoreUObject/Public/UObject/UObjectIterator.h>
+#include "CookingSimulatorGameModeBase.h"
+#include <../../../../../../../Source/Runtime/UMG/Public/Components/ScrollBox.h>
+#include "ListWidget.h"
+#include <../../../../../../../Source/Runtime/UMG/Public/Components/TextBlock.h>
 
 void UTestWidget::NativeConstruct()
 {
@@ -45,21 +49,21 @@ void UTestWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	if (ImageChangeDelay > 3)
 	{
 		ImageChangeDelay = 0;
-		ShowImage->SetBrushFromSoftTexture(UCookingSimulatorFunctionLibrary::GetRecipeImage(GetWorld(), ECookingSimulatorRecipeType::Hamburger), true);
+		ShowImage->SetBrushFromSoftTexture(UCookingSimulatorFunctionLibrary::GetRecipeImage(GetWorld(), ECookingSimulatorRecipeType::Hamburger), false);
 		//SetBrushImageByItemName(ItemNames[FMath::RandRange(0, 2)]);
 	}	
 }
 
 void UTestWidget::SetBrushImageByItemName(FString itemName)
 {
-	ShowImage->SetBrushFromSoftTexture(UCookingSimulatorFunctionLibrary::GetImageByItemName(GetWorld(), itemName), true);
+	ShowImage->SetBrushFromSoftTexture(UCookingSimulatorFunctionLibrary::GetImageByItemName(GetWorld(), itemName), false);
 }
 
 void UTestWidget::SetBrushImageByItem(AItem* itemActor)
 {
 	if (itemActor != nullptr)
 	{
-		ShowImage->SetBrushFromSoftTexture(UCookingSimulatorFunctionLibrary::GetImageByItemName(GetWorld(), itemActor->ItemName), true);
+		ShowImage->SetBrushFromSoftTexture(UCookingSimulatorFunctionLibrary::GetImageByItemName(GetWorld(), itemActor->ItemName), false);
 	}
 }
 
@@ -81,6 +85,29 @@ void UTestWidget::OnClickedTimerResetButtom()
 		if (AKitchenDial* dial = *It)
 		{
 			dial->ResetTimer();
+		}
+	}
+}
+
+void UTestWidget::InitList()
+{
+	auto gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
+	
+	if (gm != nullptr)
+	{
+		FCookingSimulatorRecipeInfo currentRCP = gm->GetCurrentRecipe();
+
+		int32 arraySize = currentRCP.ingredientInfoArray.Num()-1;
+
+		for (int32 i = 0; i < arraySize; i++)
+		{
+			auto tempWidget = CreateWidget<UListWidget>(this, listWidget);
+
+			ScrollBox->AddChild((UUserWidget*)tempWidget);
+
+			tempWidget->ShowImage->SetBrushFromSoftTexture(UCookingSimulatorFunctionLibrary::GetImageByItemName(GetWorld(), currentRCP.ingredientInfoArray[i].ingredientName), false);
+
+			tempWidget->ShowText->SetText(FText::FromString(currentRCP.ingredientInfoArray[i].ingredientInfo.itemDescription));
 		}
 	}
 }

@@ -13,6 +13,7 @@
 class UImage;
 class AItem;
 class UButton;
+class UScrollBox;
 
 UCLASS()
 class COOKINGSIMULATOR_API UTestWidget : public UUserWidget
@@ -40,6 +41,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="MySettings", meta=(BindWidget))
 	UButton* TimerResetButton;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="MySettings", meta=(BindWidget))
+	UScrollBox* ScrollBox;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MySettings")
+	TSubclassOf<UUserWidget> listWidget;
+
 	UFUNCTION(BlueprintCallable)
 	void SetBrushImageByItemName(FString itemName);
 
@@ -51,4 +58,7 @@ public:
 		
 	UFUNCTION(BlueprintCallable)
 	void OnClickedTimerResetButtom();
+
+	UFUNCTION(BlueprintCallable)
+	void InitList();
 };

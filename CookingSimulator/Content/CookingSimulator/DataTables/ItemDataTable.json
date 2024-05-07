@@ -16,5 +16,71 @@
 		"itemType": "Ingredient",
 		"itemImagePath": "Content/CookingSimulator/Textures/Tomato.png",
 		"itemDescription": "This is Tomato"
+	},
+	{
+		"Name": "Onion",
+		"itemType": "Ingredient",
+		"itemImagePath": "Content/CookingSimulator/Textures/Onion.png",
+		"itemDescription": "This is Onion"
+	},
+	{
+		"Name": "Patty",
+		"itemType": "Ingredient",
+		"itemImagePath": "Content/CookingSimulator/Textures/Patty.png",
+		"itemDescription": "This is Patty"
+	},
+	{
+		"Name": "BurgerBunUp",
+		"itemType": "Ingredient",
+		"itemImagePath": "Content/CookingSimulator/Textures/BurgerBunUp.png",
+		"itemDescription": "This is BurgerBunUp"
+	},
+	{
+		"Name": "BurgerBunDown",
+		"itemType": "Ingredient",
+		"itemImagePath": "Content/CookingSimulator/Textures/BurgerBunDown.png",
+		"itemDescription": "This is BurgerBunDown"
+	},
+	{
+		"Name": "CheddarCheese",
+		"itemType": "Ingredient",
+		"itemImagePath": "Content/CookingSimulator/Textures/CheddarCheese.png",
+		"itemDescription": "This is CheddarCheese"
+	},
+	{
+		"Name": "Ketchup",
+		"itemType": "Ingredient",
+		"itemImagePath": "Content/CookingSimulator/Textures/Ketchup.png",
+		"itemDescription": "This is Ketchup"
+	},
+	{
+		"Name": "Salt",
+		"itemType": "Ingredient",
+		"itemImagePath": "Content/CookingSimulator/Textures/Salt.png",
+		"itemDescription": "This is Salt"
+	},
+	{
+		"Name": "BlackPepper",
+		"itemType": "Ingredient",
+		"itemImagePath": "Content/CookingSimulator/Textures/BlackPepper.png",
+		"itemDescription": "This is BlackPepper"
+	},
+	{
+		"Name": "SalmonSteak",
+		"itemType": "Ingredient",
+		"itemImagePath": "Content/CookingSimulator/Textures/SalmonSteak.png",
+		"itemDescription": "This is SalmonSteak"
+	},
+	{
+		"Name": "Water",
+		"itemType": "Ingredient",
+		"itemImagePath": "Content/CookingSimulator/Textures/Water.png",
+		"itemDescription": "This is Water"
+	},
+	{
+		"Name": "SunflowerOil",
+		"itemType": "Ingredient",
+		"itemImagePath": "Content/CookingSimulator/Textures/SunflowerOil.png",
+		"itemDescription": "This is SunflowerOil"
 	}
 ]
