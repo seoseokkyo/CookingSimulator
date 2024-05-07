@@ -39,33 +39,44 @@ void AKitchenDial::Tick(float DeltaTime)
 		currentTime += DeltaTime;
 		if (currentTime >= limitTime)
 		{
-			bStart = false;			
+			bStart = false;
+
+			UE_LOG(LogTemp, Warning, TEXT("Timer End"));
 		}
 		else
 		{
-			dialMesh->SetRelativeRotation(FRotator(FMath::Lerp(0, 360, (currentTime + 3600 - limitTime) / 3600), 180, 0));
+			if (bSecType)
+			{
+				dialMesh->SetRelativeRotation(FRotator(FMath::Lerp(0, 360, (currentTime + 360 - limitTime) / 360)*6, 0, 0));
+			}
+			else
+			{
+				dialMesh->SetRelativeRotation(FRotator(FMath::Lerp(0, 360, (currentTime + 3600 - limitTime) / 3600), 0, 0));
+			}			
 		}
 	}
 }
 
 void AKitchenDial::SetTimer()
-{
-	float rot = dialMesh->GetRelativeRotation().Pitch;
+{	
+	float rot = FRotator::ClampAxis(dialMesh->GetRelativeRotation().Clamp().Pitch);
 
-	UE_LOG(LogTemp, Warning, TEXT("rot : %f"), rot);
-
-	if (rot < 0)
+	if (bSecType)
 	{
-		rot = 360 - rot;
+		limitTime = (360 - rot) / 6;
 	}
-
-	limitTime = FRotator::ClampAxis(rot) * 10;
-
-	UE_LOG(LogTemp, Warning, TEXT("limitTime : %f"), limitTime);
+	else
+	{
+		limitTime = (360 - rot) * 10;
+	}	
 
 	limitTime = FMath::Clamp(limitTime, 0.f, 3599.f);
 
 	bStart = true;
+
+	FString strType(bSecType ? "Sec" : "Min");
+
+	UE_LOG(LogTemp, Warning, TEXT("Timer Start ( Type : %s, Time : %f)"), *strType, limitTime);
 }
 
 void AKitchenDial::ResetTimer()

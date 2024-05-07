@@ -41,6 +41,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	bool bStart = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TimeType")
+	bool bSecType = true;
+
 	void SetTimer();
 
 	void ResetTimer();
