@@ -111,6 +111,8 @@ void ACookingSimulatorGameModeBase::StartPlay()
 			recipes.Add(recipeDetail);
 		}
 	}
+
+	SetCurrentRecipe(ECookingSimulatorRecipeType::Hamburger);
 }
 
 void ACookingSimulatorGameModeBase::Tick(float DeltaSeconds)

@@ -26,8 +26,7 @@ void URecipe_On_Monitor::ShowRecipeOnMonitor()
 		// 받아온 이미지를 MonitorListWidget의 이미지 박스에 할당한다
 			if (listTemp != nullptr)
 			{
-
-				/*listTemp->ingrideintImage->SetBrushFromSoftTexture(UCookingSimulatorFunctionLibrary::GetImageByItemName(GetWorld(), rcpInfo.ingredientInfoArray[i].ingredientName), false);*/
+				listTemp->ingrideintImage->SetBrushFromSoftTexture(UCookingSimulatorFunctionLibrary::GetImageByItemName(GetWorld(), rcpInfo.ingredientInfoArray[i].ingredientName), false);
 		
 				// 현재 주문이 들어온 레시피에서 재료들의 이름을 받아온다
 				// fstring 형식인 이름은 ftext로 바꾼다
@@ -37,8 +36,7 @@ void URecipe_On_Monitor::ShowRecipeOnMonitor()
 				listTemp->ingrideintText->SetText(textTemp);
 		
 				// MonitorListWidget을 스크롤 박스에 할당한다.
-				ingridientBox->AddChild(listTemp);
-			
+				ingridientBox->AddChild(listTemp);			
 			}
 			
 		}

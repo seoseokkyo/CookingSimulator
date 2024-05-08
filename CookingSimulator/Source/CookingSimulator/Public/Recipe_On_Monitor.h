@@ -30,7 +30,7 @@ public:
 	UTexture2D* foodImage;
 
 	UPROPERTY(EditAnywhere, Category="MySettings")
-	TSubclassOf<UUserWidget> ingridentList;
+	TSubclassOf<class URecipeOnMonitorListWidget> ingridentList;
 		
 	UFUNCTION(BlueprintCallable)
 	void ShowRecipeOnMonitor();
