@@ -34,8 +34,10 @@ void UTestWidget::NativeConstruct()
 	ShowImage->SetVisibility(ESlateVisibility::Hidden);
 	
 	TimerStartButton->OnClicked.AddDynamic(this, &UTestWidget::OnClickedTimerStartButtom);
+	TimerStartButton->SetVisibility(ESlateVisibility::Hidden);
 
 	TimerResetButton->OnClicked.AddDynamic(this, &UTestWidget::OnClickedTimerResetButtom);
+	TimerResetButton->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UTestWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)

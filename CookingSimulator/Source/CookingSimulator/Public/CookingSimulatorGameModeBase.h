@@ -20,35 +20,6 @@ enum class ECookingSimulatorRecipeType : uint8
 };
 
 USTRUCT(BlueprintType)
-struct FIngredientInfo
-{
-	GENERATED_BODY()
-
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ItemInfo")
-	FString ingredientName;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ItemInfo")
-	FCookingSimulatorItemInfo ingredientInfo;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ItemInfo")
-	int32 ingredientWeight;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ItemInfo")
-	int32 ingredientCookedLevel;
-
-	FIngredientInfo(){}
-
-	FIngredientInfo(FString ingredientName, FCookingSimulatorItemInfo ingredientInfo, int32 ingredientWeight, int32 ingredientCookedLevel)
-	{
-		this->ingredientName = ingredientName;
-		this->ingredientInfo = ingredientInfo;
-		this->ingredientWeight = ingredientWeight;
-		this->ingredientCookedLevel = ingredientCookedLevel;
-	}
-};
-
-USTRUCT(BlueprintType)
 struct FCookingSimulatorRecipeInfo
 {
 	GENERATED_BODY()
