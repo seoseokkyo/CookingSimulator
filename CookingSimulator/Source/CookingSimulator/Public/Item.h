@@ -46,13 +46,16 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void DrawOutLine_Implementation(bool bOn) override;
+
+	virtual void InteractStart_Implementation() override;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 private:
 
-	virtual void DrawOutLine_Implementation(bool bOn) override;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")

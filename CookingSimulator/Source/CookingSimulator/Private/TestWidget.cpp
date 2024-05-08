@@ -13,6 +13,8 @@
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/ScrollBox.h>
 #include "ListWidget.h"
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/TextBlock.h>
+#include "BigPot.h"
+#include "Potato.h"
 
 void UTestWidget::NativeConstruct()
 {
@@ -34,10 +36,14 @@ void UTestWidget::NativeConstruct()
 	ShowImage->SetVisibility(ESlateVisibility::Hidden);
 	
 	TimerStartButton->OnClicked.AddDynamic(this, &UTestWidget::OnClickedTimerStartButtom);
-	TimerStartButton->SetVisibility(ESlateVisibility::Hidden);
+	//TimerStartButton->SetVisibility(ESlateVisibility::Hidden);
 
 	TimerResetButton->OnClicked.AddDynamic(this, &UTestWidget::OnClickedTimerResetButtom);
-	TimerResetButton->SetVisibility(ESlateVisibility::Hidden);
+	//TimerResetButton->SetVisibility(ESlateVisibility::Hidden);
+
+	ScrollBox->SetVisibility(ESlateVisibility::Hidden);
+
+
 }
 
 void UTestWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -71,22 +77,53 @@ void UTestWidget::SetBrushImageByItem(AItem* itemActor)
 
 void UTestWidget::OnClickedTimerStartButtom()
 {
-	for (TObjectIterator<AKitchenDial> It; It; ++It)
+	//for (TObjectIterator<AKitchenDial> It; It; ++It)
+	//{
+	//	if (AKitchenDial* dial = *It)
+	//	{
+	//		dial->SetTimer();
+	//	}
+	//}
+
+	for (TObjectIterator<ABigPot> It; It; ++It)
 	{
-		if (AKitchenDial* dial = *It)
+		if (ABigPot* dial = *It)
 		{
-			dial->SetTimer();
+			if (0)
+			{
+				dial->FillWater(true);
+			}
+
+
+
+			for (TObjectIterator<APotato> ItPotato; ItPotato; ++ItPotato)
+			{
+				if (APotato* potato = *ItPotato)
+				{
+					dial->AddIngredient(potato);
+					break;
+				}
+			}
+			
 		}
 	}
 }
 
 void UTestWidget::OnClickedTimerResetButtom()
 {
-	for (TObjectIterator<AKitchenDial> It; It; ++It)
+	//for (TObjectIterator<AKitchenDial> It; It; ++It)
+	//{
+	//	if (AKitchenDial* dial = *It)
+	//	{
+	//		dial->ResetTimer();
+	//	}
+	//}
+
+	for (TObjectIterator<ABigPot> It; It; ++It)
 	{
-		if (AKitchenDial* dial = *It)
+		if (ABigPot* dial = *It)
 		{
-			dial->ResetTimer();
+			dial->FillWater(false);
 		}
 	}
 }

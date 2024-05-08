@@ -11,6 +11,7 @@
  */
 
  class UStaticMeshComponent;
+ class AIngredient;
 
 UCLASS()
 class COOKINGSIMULATOR_API ABigPot : public ACookingTool
@@ -29,7 +30,7 @@ public:
 
 private:
 
-	TArray<class AIngredient*> InputIngredients;
+	TArray<AIngredient*> InputIngredients;
 
 	void Boiling();
 
@@ -39,6 +40,7 @@ private:
 	float currentTime = 0.0f;
 	float heatUpTimeOffset = 10.0f;
 
+	virtual void InteractStart_Implementation() override;
 
 public:
 	ABigPot();
@@ -46,5 +48,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "MySettings")
 	UStaticMeshComponent* waterMesh;
 
+	bool AddIngredient(AIngredient* Ingredient);
+
 	void SetBoilState(bool bOn) { bBoilingStart = bOn; };
+
+	void FillWater(bool bFill);
 };

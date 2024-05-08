@@ -6,14 +6,68 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/StaticMeshComponent.h>
 
+void ABigPot::InteractStart_Implementation()
+{
+	Super::InteractStart_Implementation();
+
+
+}
+
 ABigPot::ABigPot()
 {
 	waterMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WaterMesh"));
 	waterMesh->SetupAttachment(baseMesh);
+	waterMesh->SetRelativeScale3D(FVector(1, 1, 0));
+}
+
+bool ABigPot::AddIngredient(AIngredient* Ingredient)
+{
+	FVector scaleTemp = waterMesh->GetRelativeScale3D();
+
+	if (scaleTemp.Z > 0.7)
+	{
+		UKismetSystemLibrary::PrintString(GetWorld(), L"Too Many Water");
+		return false;
+	}
+
+	FVector placeLoc = GetActorLocation() + FVector(0, 0, scaleTemp.Z * 10);
+
+	Ingredient->SetActorLocation(placeLoc);
+
+	InputIngredients.Add(Ingredient);
+
+	return true;
+}
+
+void ABigPot::FillWater(bool bFill)
+{
+	FVector scaleTemp = waterMesh->GetRelativeScale3D();
+
+	if (bFill)
+	{
+		scaleTemp.Z = FMath::Clamp(scaleTemp.Z + 0.1, 0, 1.08);
+
+		if (scaleTemp.Z > 1)
+		{
+			UKismetSystemLibrary::PrintString(GetWorld(), L"Pot FullFilledWater");
+		}
+	}
+	else
+	{
+		scaleTemp.Z = FMath::Clamp(scaleTemp.Z - 0.1, 0, 1.08);
+
+		if (scaleTemp.Z < 0.1)
+		{
+			UKismetSystemLibrary::PrintString(GetWorld(), L"Pot Empty");
+		}
+	}
+
+	waterMesh->SetRelativeScale3D(scaleTemp);
 }
 
 void ABigPot::BeginPlay()
 {
+	waterMesh->SetRelativeScale3D(FVector(1, 1, 0));
 }
 
 void ABigPot::Tick(float DeltaTime)

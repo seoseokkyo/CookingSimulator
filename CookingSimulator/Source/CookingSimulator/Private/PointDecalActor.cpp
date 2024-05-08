@@ -14,13 +14,10 @@ void APointDecalActor::BeginPlay()
 	{
 		GetDecal()->DecalSize = decalSizeSet;
 	}
-	UE_LOG(LogTemp,Warning,TEXT("decal"));
 }
 
 void APointDecalActor::SetShowDecal(bool visible)
 {
-	UE_LOG(LogTemp, Warning, TEXT("SetShowDecal Ptr : %p"), GetDecal());
-
 	if (GetDecal() != nullptr)
 	{
 		GetDecal()->SetVisibility(visible);

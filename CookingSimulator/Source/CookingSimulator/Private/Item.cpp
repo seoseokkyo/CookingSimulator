@@ -53,3 +53,9 @@ void AItem::DrawOutLine_Implementation(bool bOn)
 	}
 }
 
+void AItem::InteractStart_Implementation()
+{
+	
+
+}
+

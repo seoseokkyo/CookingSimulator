@@ -25,4 +25,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "InteractAble")
 	void DrawOutLine(bool bOn);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interact")
+	void InteractStart();
 };
