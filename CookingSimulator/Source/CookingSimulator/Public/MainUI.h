@@ -393,6 +393,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
 	class UProgressBar* ScoreBar;
+
+	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
+	class UTextBlock* ResultMenuName;
 		
 	UTexture2D* foodImage;
 

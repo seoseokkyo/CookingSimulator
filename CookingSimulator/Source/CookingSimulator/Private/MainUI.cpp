@@ -29,27 +29,17 @@ void UMainUI::NativeConstruct()
 
 	HideWidget();
 
-	// 임시 테스트
-	ShowResult(ItemNames[0]);
 }
 
 void UMainUI::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
-	// BP에서도 비슷하게 해놓은 예시가 있음
-
-	ImageChangeDelay += InDeltaTime;
-
-	if (ImageChangeDelay > 3)
-	{
-		ImageChangeDelay = 0;
-
-		SetBrushImageByItemName(ItemNames[FMath::RandRange(0, 2)]);
-	}
-
 	NewOrder();
+
+
 }
+
 
 // 위젯 전체 숨기기
 void UMainUI::HideWidget()
@@ -128,6 +118,14 @@ void UMainUI::NewOrder()
 			UE_LOG(LogTemp, Warning, TEXT("Rcp Name : %s"), *rcpInfo.recipeName);
 
 			Menu->SetText(textTemp);
+			Menu->SetColorAndOpacity(FLinearColor::Black);
+
+			foodImage = UCookingSimulatorFunctionLibrary::GetRecipeImage(GetWorld(), rcpInfo.recipeType);
+
+			OrderFoodImage->SetBrushFromSoftTexture(foodImage);
+
+			// 임시 테스트
+			ShowResult(rcpInfo.recipeName);
 
 			if (rcpInfo.recipeType == ECookingSimulatorRecipeType::Hamburger)
 			{
@@ -342,7 +340,15 @@ void UMainUI::ShowResult(FString itemName)
 {
 	if (CookedFood != nullptr)
 	{
-		CookedFood->SetBrushFromSoftTexture(foodImage);
+		ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
+		if (gm != nullptr)
+		{
+			FCookingSimulatorRecipeInfo rcpInfo = gm->GetCurrentRecipe();
+			FText textTemp = FText::FromString(rcpInfo.recipeName);
+			ResultMenuName->SetText(textTemp);
+			//ResultMenuName->SetRenderScale(FVector2D(0.5));
+			CookedFood->SetBrushFromSoftTexture(foodImage);
+		}
 	}
 }
 
@@ -415,7 +421,7 @@ void UMainUI::SetOriginImage()
 
 void UMainUI::SetBrushImageByItemName(FString itemName)
 {
-	foodImage = UCookingSimulatorFunctionLibrary::GetImageByItemName(GetWorld(), itemName);
+	//foodImage = UCookingSimulatorFunctionLibrary::GetImageByItemName(GetWorld(), itemName);
 	OrderFoodImage->SetBrushFromSoftTexture(foodImage);
 }
 
