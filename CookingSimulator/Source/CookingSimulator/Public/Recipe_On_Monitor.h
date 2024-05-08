@@ -24,11 +24,14 @@ public:
 	UPROPERTY(EditAnywhere, Category = "MySettings", meta = (BindWidget))
 	class UScrollBox* ingridientBox;
 
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UImage* recipeScroll;
+
 	UTexture2D* foodImage;
 
 	UPROPERTY(EditAnywhere, Category="MySettings")
 	TSubclassOf<UUserWidget> ingridentList;
 		
-
+	UFUNCTION(BlueprintCallable)
 	void ShowRecipeOnMonitor();
 };
