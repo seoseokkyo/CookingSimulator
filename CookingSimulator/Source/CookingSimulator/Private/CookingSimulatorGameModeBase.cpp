@@ -64,12 +64,17 @@ void ACookingSimulatorGameModeBase::StartPlay()
 			FString ingredientName = TEXT("Potato");
 			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
 
+			ingredientName = TEXT("Tomato");
+			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
+
 			recipeDetail.cookingTimeLimit = 600;
 
 			// 연어스테이크와 삶은감자 레시피 작성 완료
 			recipes.Add(recipeDetail);
 		}
 	}
+
+	SetCurrentRecipe(ECookingSimulatorRecipeType::SalmonSteakAndBoiledPotato);
 }
 
 void ACookingSimulatorGameModeBase::Tick(float DeltaSeconds)

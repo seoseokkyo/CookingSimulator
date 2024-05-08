@@ -47,7 +47,7 @@ void AKitchenDial::Tick(float DeltaTime)
 void AKitchenDial::SetTimer()
 {
 	limitTime = dialMesh->GetRelativeRotation().Pitch * 10;
-	FMath::Clamp(limitTime, 0.f, 3599.f);
+	//FMath::Clamp(limitTime, 0.f, 3599.f);
 
 	bStart = true;
 }
