@@ -36,22 +36,25 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
+
+
+public:
 	// VR Camera Component를 생성하고 루트에 붙이고 싶다.
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UCameraComponent* VRCamera;
 
 	// 모션 컨트롤러 왼손, 오른손을 생성하고 루트에 붙이고 싶다.
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UMotionControllerComponent* MotionLeft;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UMotionControllerComponent* MotionRight;
 	
 	// 왼손과 오른손의 스켈레탈 매쉬컴포넌트를 만들고
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	USkeletalMeshComponent* MeshLeft;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	USkeletalMeshComponent* MeshRight;
 	
 	UPROPERTY(EditAnywhere, Category = "VR")
@@ -77,13 +80,25 @@ private:
 
 	void CheckHitTraceForLaserPointer(const FVector& startPos, FVector& endPos);
 
-	void ShowDropPoint(const FVector& start, const FVector& end);	
-
-public:
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class APointDecalActor> myDecalActor;
+	TSubclassOf<class APointDecalActor> PointDecalActor;
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ALineDecalActor> LineDecalActor;
+	
 
 	bool bshowDecal = false;
 
 	class APointDecalActor* redDotDecal_inst = nullptr;
+	class ALineDecalActor* lineDecal_inst = nullptr;
+
+	UPROPERTY(EditAnywhere, Category = "VR")
+	UInputAction* IA_MyGrip;
+	void OnIAGrip(const FInputActionValue& value);
+	void OnIAUnGrip(const FInputActionValue& value);
+
+	bool bGripSauce = true;
+	bool bGripCookingTool = true;
+
+	void CheckHitTraceForDottedLine(const FVector& startPos, FVector& endPos);
 };

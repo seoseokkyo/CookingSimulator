@@ -4,20 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DecalActor.h"
-#include "PointDecalActor.generated.h"
+#include "LineDecalActor.generated.h"
 
 /**
- *
+ * 
  */
 UCLASS()
-class COOKINGSIMULATOR_API APointDecalActor : public ADecalActor
+class COOKINGSIMULATOR_API ALineDecalActor : public ADecalActor
 {
 	GENERATED_BODY()
-	
+
 public:
-	UPROPERTY(EditAnywhere)
 	// 데칼 크기 설정
-	FVector decalSizeSet = FVector(10, 10, 5);
+	// FVector decalSizeSet = FVector(1, 1, 1);
 
 	void SetShowDecal(bool visible);
 
