@@ -149,7 +149,7 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 	// lineTrace를 해서 부딪힌 액터가 있다면 액터 아웃라인 강조되도록 머리티얼 상태를 변경한다
 	FHitResult hitInfo;	// 부딪힌 대상
 	bool bHit = HitTest(startPos, endPos, hitInfo);
-
+	
 	AActor* interactedActor = hitInfo.GetActor();
 
 	if (bHit)
@@ -199,7 +199,7 @@ void ATestCharacter::CheckHitTraceForLaserPointer(const FVector& startPos, FVect
 
 			redDotDecal_inst->SetShowDecal(true);
 
-			UE_LOG(LogTemp, Warning, TEXT("redDotDecal_inst Show Decal : %p"), redDotDecal_inst);
+			//UE_LOG(LogTemp, Warning, TEXT("redDotDecal_inst Show Decal : %p"), redDotDecal_inst);
 
 			// UE_LOG(LogTemp, Warning, TEXT("redDotDecal_inst Create : %p"), redDotDecal_inst);
 
@@ -220,7 +220,7 @@ void ATestCharacter::CheckHitTraceForLaserPointer(const FVector& startPos, FVect
 	{
 		if (redDotDecal_inst != nullptr)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("redDotDecal_inst Hide"));
+			//UE_LOG(LogTemp, Warning, TEXT("redDotDecal_inst Hide"));
 			
 			redDotDecal_inst->SetShowDecal(false);
 

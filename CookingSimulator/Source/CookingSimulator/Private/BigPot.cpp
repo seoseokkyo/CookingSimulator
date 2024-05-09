@@ -42,6 +42,7 @@ bool ABigPot::AddIngredient(AIngredient* Ingredient)
 void ABigPot::FillWater(bool bFill)
 {
 	FVector scaleTemp = waterMesh->GetRelativeScale3D();
+	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("scaleTemp X : %f, scaleTemp Y : %f, scaleTemp Z : %f"), scaleTemp.X, scaleTemp.Y, scaleTemp.Z));
 
 	if (bFill)
 	{

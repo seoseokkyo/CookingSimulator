@@ -101,7 +101,7 @@ void UTestWidget::OnClickedTimerStartButtom()
 				if (APotato* potato = *ItPotato)
 				{
 					dial->AddIngredient(potato);
-					break;
+					//break;
 				}
 			}
 			
