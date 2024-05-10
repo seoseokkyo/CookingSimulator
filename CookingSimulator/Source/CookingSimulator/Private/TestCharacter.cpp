@@ -18,6 +18,8 @@
 #include "PointDecalActor.h"
 #include "LineDecalActor.h"
 #include <../../../../../../../Source/Runtime/Engine/Public/EngineUtils.h>
+#include <../../../../../../../Source/Runtime/Engine/Classes/GameFramework/Actor.h>
+#include <../../../../../../../Source/Runtime/Engine/Classes/Components/SceneComponent.h>
 
 
 // Sets default values
@@ -41,6 +43,16 @@ ATestCharacter::ATestCharacter()
 	MeshLeft = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshLeft"));
 	MeshLeft->SetupAttachment(MotionLeft);
 
+	// 오른손에 쥘 스테틱메시컴포넌트
+	GripItemRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripRightItem"));
+	GripItemRight->SetupAttachment(MotionRight);
+	GripItemRight->SetVisibility(false);
+
+	// 왼손에 쥘 스테틱메시컴포넌트
+	GripItemLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripLeftItem"));
+	GripItemLeft->SetupAttachment(MotionLeft);
+	GripItemLeft->SetVisibility(false);
+
 	// 오른손 세팅
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> TempMeshRight(TEXT("/Script/Engine.SkeletalMesh'/Game/Characters/MannequinsXR/Meshes/SKM_MannyXR_right.SKM_MannyXR_right'"));
 	if (TempMeshRight.Succeeded())
@@ -63,18 +75,30 @@ void ATestCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//pc = GetController<APlayerController>();
+	// pc = GetController<APlayerController>();
 	pc = Cast<APlayerController>(Controller);
+
+	/*
+	for (TActorIterator<APlayerController> it(GetWorld()); it; ++it)
+	{
+		pc = *it;
+	}
+	*/
 
 	if (pc)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("1111111111"));
+
 		UEnhancedInputLocalPlayerSubsystem* subsys = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(pc->GetLocalPlayer());
 
 		if (subsys)
 		{
+			UE_LOG(LogTemp, Warning, TEXT("2222222222"));
+
 			subsys->AddMappingContext(IMC_Player, 0);
 		}
 	}
+
 
 	// 레이저 포인트 데칼
 
@@ -101,8 +125,8 @@ void ATestCharacter::Tick(float DeltaTime)
 
 
 	// 플레이 중에는 항상 왼손(스켈레탈메시)에서 트레이싱이 진행된다
-	FVector start = MeshLeft->GetComponentLocation();
-	FVector end = start + MeshLeft->GetRightVector() * 100000;
+	FVector start = MeshRight->GetComponentLocation();
+	FVector end = start + MeshRight->GetRightVector() * 100000;
 
 	// 아웃라인 잘 동작하는지 확인용 선 그리기
 	DrawLine(start, end);
@@ -125,8 +149,11 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		input->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ATestCharacter::OnIAMove);
 		input->BindAction(IA_Turn, ETriggerEvent::Triggered, this, &ATestCharacter::OnIATurn);
 
-		input->BindAction(IA_MyGrip, ETriggerEvent::Triggered, this, &ATestCharacter::OnIAGrip);
-		input->BindAction(IA_MyGrip, ETriggerEvent::Completed, this, &ATestCharacter::OnIAUnGrip);
+		input->BindAction(IA_MyGripR, ETriggerEvent::Triggered, this, &ATestCharacter::OnIAGripR);
+		input->BindAction(IA_MyGripR, ETriggerEvent::Completed, this, &ATestCharacter::OnIAUnGripR);
+
+		input->BindAction(IA_MyGripL, ETriggerEvent::Triggered, this, &ATestCharacter::OnIAGripL);
+		input->BindAction(IA_MyGripL, ETriggerEvent::Completed, this, &ATestCharacter::OnIAUnGripL);
 	}
 
 	// 나중에 문제 해결되면 삭제 예정
@@ -146,10 +173,36 @@ void ATestCharacter::OnIATurn(const FInputActionValue& value)
 	AddControllerYawInput(value.Get<float>());
 }
 
-void ATestCharacter::OnIAGrip(const FInputActionValue& value)
+void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 {
+	FVector startPos = MotionRight->GetComponentLocation();
+	FVector endPos = startPos + MotionRight->GetUpVector() * -100000;
+
+	FHitResult hitInfo;	// 부딪힌 대상
+	// bool bHit = HitTest(startPos, endPos, hitInfo);
+
+	TArray<FOverlapResult> hits;
+	FVector origin = MotionRight->GetComponentLocation();
+	FQuat rot = FQuat::Identity;
+	FCollisionQueryParams params;
+	params.AddIgnoredActor(this);
+	params.AddIgnoredComponent(MeshRight);
+	params.AddIgnoredComponent(MeshLeft);
+
+	bool bHit = HitTest(startPos, endPos, hitInfo);
+
+	// 만약 검출된것이 있다면
+	if (bHit)
+	{
+		if (bCanGrip)
+		{
+			// 해당 아이템을 쥔다
+			GripItem(GripObject);
+		}
+	}
+
 	// 소금/후추 등이 들어갈 레이저 포인트 위치를 잡는다 
-	FVector grabLoc = MeshRight->GetComponentLocation();
+	FVector grabLoc = MotionRight->GetComponentLocation();
 	FVector dropLoc = grabLoc + FVector(0, 0, -1) * 1000;
 	// FVector dropLoc = grabLoc * FVector(1, 1, 0);
 
@@ -171,16 +224,52 @@ void ATestCharacter::OnIAGrip(const FInputActionValue& value)
 	}
 }
 
-void ATestCharacter::OnIAUnGrip(const FInputActionValue& value)
+void ATestCharacter::OnIAUnGripR(const FInputActionValue& value)
 {
-	if (redDotDecal_inst != nullptr)
+	
+	meshright->setvisibility(true);
+	gripobject->detachfromcomponent(fdetachmenttransformrules::keepworldtransform);
+	gripobject->setsimulatephysics(true);
+
+
+	if (reddotdecal_inst != nullptr)
 	{
-		redDotDecal_inst->SetShowDecal(false);
+		reddotdecal_inst->setshowdecal(false);
 	}
-	if (lineDecal_inst != nullptr)
+	if (linedecal_inst != nullptr)
 	{
-		lineDecal_inst->SetShowDecal(false);
+		linedecal_inst->setshowdecal(false);
 	}
+	
+}
+
+void ATestCharacter::OnIAGripL(const FInputActionValue& value)
+{
+}
+
+void ATestCharacter::OnIAUnGripL(const FInputActionValue& value)
+{
+}
+
+void ATestCharacter::GripItem(UPrimitiveComponent* item)
+{
+
+	// 기존 손 메시를 없애고
+	MeshRight->SetVisibility(false);
+	// 잡은 아이템을 위치시킴
+	//item->SetSimulatePhysics(false);
+	//item->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	item->AttachToComponent(MotionRight, FAttachmentTransformRules::KeepWorldTransform);
+	if (item != nullptr)
+	{
+	//item->SetActorEnableCollision(ECollisionEnabled::NoCollision);
+	item->SetRelativeLocation(MotionRight->GetComponentLocation());
+	// item->IgnoreComponentWhenMoving(GetCapsuleComponent(), true);
+
+	IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
+	}
+	
 }
 
 
@@ -195,13 +284,15 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 	if (bHit)
 	{
 		// 부딪힌 액터의 Render CustomDepthPass를 true로 변경한다
-		// Cast<AItem>(interactedActor)->baseMesh->SetCustomDepthStencilValue();
 		auto item = Cast<IInteractAbleInterface>(interactedActor);
 
 		if (focusedActor != nullptr && interactedActor != focusedActor)
 		{
 			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
 			focusedActor = nullptr;
+
+			// 여기에다가도 쓰는게 맞나
+			bCanGrip = false;
 		}
 
 		if (item != nullptr)
@@ -209,6 +300,9 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 			focusedActor = interactedActor;
 
 			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, true);
+
+			GripObject = Cast<UPrimitiveComponent>(focusedActor);
+			bCanGrip = true;
 		}
 
 	}
@@ -218,6 +312,8 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 		{
 			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
 			focusedActor = nullptr;
+
+			bCanGrip = false;
 		}
 	}
 }
