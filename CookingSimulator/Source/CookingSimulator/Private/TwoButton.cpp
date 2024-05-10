@@ -13,12 +13,12 @@ ATwoButton::ATwoButton()
 
 	baseMesh->SetStaticMesh(ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("/Script/Engine.StaticMesh'/Game/CookingSimulator/Blueprints/CookingTools/Mesh/Switch/ButtonBody.ButtonBody'")).Object);
 
-	buttonTop = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Button Top"));
+	buttonTop = CreateDefaultSubobject<UInteractComponent>(TEXT("Button Top"));
 	buttonTop->SetStaticMesh(ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("/Script/Engine.StaticMesh'/Game/CookingSimulator/Blueprints/CookingTools/Mesh/Switch/ButtonTop.ButtonTop'")).Object);
 	buttonTop->SetupAttachment(baseMesh);
 	buttonTop->SetRelativeLocation(FVector(1.0f, 0.0f, 2.7f));
 
-	buttonBottom = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Button Bottom"));
+	buttonBottom = CreateDefaultSubobject<UInteractComponent>(TEXT("Button Bottom"));
 	buttonBottom->SetupAttachment(baseMesh);
 	buttonBottom->SetStaticMesh(ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("/Script/Engine.StaticMesh'/Game/CookingSimulator/Blueprints/CookingTools/Mesh/Switch/ButtonBottom.ButtonBottom'")).Object);
 	buttonBottom->SetRelativeLocation(FVector(1.0f, 0.0f, -2.6f));
@@ -36,6 +36,7 @@ void ATwoButton::BeginPlay()
 		TimelineProgress.BindDynamic(this, &ATwoButton::UpButtonMove);
 		LerpTimeLineFinishedCallback.BindUFunction(this, FName("UpButtonPushEndEvent"));
 		upButtonPushTimeline.AddInterpFloat(curveUpButtonPush, TimelineProgress);
+		upButtonPushTimeline.SetTimelineFinishedFunc(LerpTimeLineFinishedCallback);
 	}
 
 	if (curveBottomButtonPush)		// Timeline에 OpenDoor 함수를 바인딩
@@ -45,15 +46,12 @@ void ATwoButton::BeginPlay()
 		TimelineProgress.BindDynamic(this, &ATwoButton::BottomButtonMove);
 		LerpTimeLineFinishedCallback.BindUFunction(this, FName("BottomButtonPushEndEvent"));
 		bottomButtonPushTimeline.AddInterpFloat(curveBottomButtonPush, TimelineProgress);
+		bottomButtonPushTimeline.SetTimelineFinishedFunc(LerpTimeLineFinishedCallback);
 	}
 
-	//buttonTop->OnInputTouchEnter.AddDynamic(this, &ATwoButton::UpButtonTouch);
-	buttonTop->OnClicked.AddDynamic(this, &ATwoButton::UpButtonTouch);
-	buttonTop->OnComponentBeginOverlap.AddDynamic(this, &ATwoButton::OnOverlapUpButton);
-
-	//buttonBottom->OnInputTouchEnter.AddDynamic(this, &ATwoButton::BottomButtonTouch);
-	buttonBottom->OnClicked.AddDynamic(this, &ATwoButton::BottomButtonTouch);
-	buttonBottom->OnComponentBeginOverlap.AddDynamic(this, &ATwoButton::OnOverlapBottomButton);
+	buttonTop->startEventDelegate.BindUFunction(this, FName("UpButtonTouch"));
+	
+	buttonBottom->startEventDelegate.BindUFunction(this, FName("BottomButtonTouch"));
 }
 
 // Called every frame
@@ -65,46 +63,38 @@ void ATwoButton::Tick(float DeltaTime)
 	bottomButtonPushTimeline.TickTimeline(DeltaTime);
 }
 
-void ATwoButton::UpButtonTouch(UPrimitiveComponent* TouchedComponent, FKey ButtonPressed)
+void ATwoButton::UpButtonTouch()
 {
-	UKismetSystemLibrary::PrintString(GetWorld(), FString(L"UpButtonTouched"));
-
 	upButtonPushTimeline.PlayFromStart();
 }
 
-void ATwoButton::OnOverlapUpButton(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ATwoButton::BottomButtonTouch()
 {
-	UKismetSystemLibrary::PrintString(GetWorld(), FString(L"OnOverlapUpButton"));
-}
-
-void ATwoButton::BottomButtonTouch(UPrimitiveComponent* TouchedComponent, FKey ButtonPressed)
-{
-	UKismetSystemLibrary::PrintString(GetWorld(), FString(L"BottomButtonTouch"));
-
 	bottomButtonPushTimeline.PlayFromStart();
-}
-
-void ATwoButton::OnOverlapBottomButton(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	UKismetSystemLibrary::PrintString(GetWorld(), FString(L"OnOverlapBottomButton"));
 }
 
 void ATwoButton::UpButtonMove(float Value)
 {
-	buttonTop->SetRelativeLocation(FVector(Value * -0.5, 0, 0));
+	FVector newLoc(1.0f - (Value * 0.3), 0.0f, 2.7f);
+	buttonTop->SetRelativeLocation(newLoc);
+
+	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("buttonTop X : %.03f"), newLoc.X));
 }
 
 void ATwoButton::BottomButtonMove(float Value)
 {
-	buttonBottom->SetRelativeLocation(FVector(Value * -0.5, 0, 0));
+	buttonBottom->SetRelativeLocation(FVector(1.0f - (Value * 0.3), 0.0f, -2.6f));
 }
 
 void ATwoButton::UpButtonPushEndEvent()
 {
-	upButtonPushTimeline.ReverseFromEnd();
+	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("UpButtonPushEndEvent() Call"));
+	//upButtonPushTimeline.ReverseFromEnd();
+	upButtonPushTimeline.Reverse();
 }
 
 void ATwoButton::BottomButtonPushEndEvent()
 {
-	bottomButtonPushTimeline.ReverseFromEnd();
+	//bottomButtonPushTimeline.ReverseFromEnd();
+	bottomButtonPushTimeline.Reverse();
 }

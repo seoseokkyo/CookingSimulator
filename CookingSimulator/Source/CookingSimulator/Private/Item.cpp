@@ -55,7 +55,11 @@ void AItem::DrawOutLine_Implementation(bool bOn)
 
 void AItem::InteractStart_Implementation()
 {
-	
 
+
+}
+
+void AItem::InteractEnd_Implementation()
+{
 }
 

@@ -14,6 +14,7 @@ class UInputMappingContext;
 class UInputAction;
 class AActor;
 class APlayerController;
+class UInteractComponent;
 
 UCLASS()
 class COOKINGSIMULATOR_API ATestCharacter : public ACharacter
@@ -63,11 +64,17 @@ private:
 	UPROPERTY(EditAnywhere, Category = "VR")
 	UInputAction* IA_Turn;
 	
+	UPROPERTY(EditAnywhere, Category = "VR")
+	UInputAction* IA_Trigger;
+
 	AActor* focusedActor = nullptr;
 	APlayerController* pc = nullptr;
 
+	UInteractComponent* targetComp = nullptr;
+
 	void OnIAMove(const FInputActionValue& value);
 	void OnIATurn(const FInputActionValue& value);
+	void OnIATrigger(const FInputActionValue& value);
 
 	void DrawLine(FVector startPos, FVector endPos);
 
@@ -77,7 +84,7 @@ private:
 
 	void CheckHitTraceForLaserPointer(const FVector& startPos, FVector& endPos);
 
-	void ShowDropPoint(const FVector& start, const FVector& end);	
+	void ShowDropPoint(const FVector& start, const FVector& end);		
 
 public:
 	UPROPERTY(EditAnywhere)
@@ -86,4 +93,6 @@ public:
 	bool bshowDecal = false;
 
 	class APointDecalActor* redDotDecal_inst = nullptr;
+
+
 };

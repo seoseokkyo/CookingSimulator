@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "CookingTool.h"
 #include <Components/TimelineComponent.h>
+#include "InteractComponent.h"
 #include "TwoButton.generated.h"
 
 class UStaticMeshComponent;
@@ -34,10 +35,10 @@ private:
 public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="MySettings")
-	UStaticMeshComponent* buttonTop;
+	UInteractComponent* buttonTop;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="MySettings")
-	UStaticMeshComponent* buttonBottom;
+	UInteractComponent* buttonBottom;
 
 	UPROPERTY(EditAnywhere, Category = "MySettings")
 	FTimeline upButtonPushTimeline;
@@ -55,19 +56,13 @@ public:
 	//void UpButtonTouch(ETouchIndex::Type FingerIndex, UPrimitiveComponent* TouchedComponent);
 
 	UFUNCTION()
-	void UpButtonTouch(UPrimitiveComponent* TouchedComponent, FKey ButtonPressed);
-
-	UFUNCTION()
-	void OnOverlapUpButton(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void UpButtonTouch();
 
 	//UFUNCTION()
 	//void BottomButtonTouch(ETouchIndex::Type FingerIndex, UPrimitiveComponent* TouchedComponent);
 
 	UFUNCTION()
-	void BottomButtonTouch(UPrimitiveComponent* TouchedComponent, FKey ButtonPressed);
-
-	UFUNCTION()
-	void OnOverlapBottomButton(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void BottomButtonTouch();
 
 	UFUNCTION()
 	void UpButtonMove(float Value);

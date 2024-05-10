@@ -17,6 +17,7 @@
 #include <item.h>
 #include "PointDecalActor.h"
 #include <../../../../../../../Source/Runtime/Engine/Public/EngineUtils.h>
+#include "InteractComponent.h"
 
 
 // Sets default values
@@ -125,6 +126,7 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	{
 		input->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ATestCharacter::OnIAMove);
 		input->BindAction(IA_Turn, ETriggerEvent::Triggered, this, &ATestCharacter::OnIATurn);
+		input->BindAction(IA_Trigger, ETriggerEvent::Started, this, &ATestCharacter::OnIATrigger);
 	}
 
 	// 나중에 문제 해결되면 삭제 예정
@@ -144,6 +146,15 @@ void ATestCharacter::OnIATurn(const FInputActionValue& value)
 	AddControllerYawInput(value.Get<float>());
 }
 
+void ATestCharacter::OnIATrigger(const FInputActionValue& value)
+{
+	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("%p"), targetComp));
+	if (targetComp != nullptr)
+	{
+		IInteractAbleInterface::Execute_InteractStart(targetComp);
+	}
+}
+
 void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& endPos)
 {
 	// lineTrace를 해서 부딪힌 액터가 있다면 액터 아웃라인 강조되도록 머리티얼 상태를 변경한다
@@ -151,6 +162,12 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 	bool bHit = HitTest(startPos, endPos, hitInfo);
 	
 	AActor* interactedActor = hitInfo.GetActor();
+
+	UInteractComponent* compCheck = Cast<UInteractComponent>(hitInfo.GetComponent());
+	if (compCheck != nullptr)
+	{
+		targetComp = compCheck;
+	}
 
 	if (bHit)
 	{
@@ -162,6 +179,7 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 		{
 			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
 			focusedActor = nullptr;
+			targetComp = nullptr;
 		}
 
 		if (item != nullptr)
@@ -169,8 +187,7 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 			focusedActor = interactedActor;
 
 			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, true);
-		}
-		
+		}		
 	}
 	else
 	{
@@ -178,6 +195,7 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 		{
 			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
 			focusedActor = nullptr;
+			targetComp = nullptr;
 		}
 	}
 }
@@ -188,8 +206,6 @@ void ATestCharacter::CheckHitTraceForLaserPointer(const FVector& startPos, FVect
 	bool bHit = HitTest(startPos, endPos, hitInfo);
 
 	FVector dropPoint = hitInfo.ImpactPoint;
-
-	
 
 	if (bHit)
 	{

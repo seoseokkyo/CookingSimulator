@@ -50,6 +50,8 @@ protected:
 
 	virtual void InteractStart_Implementation() override;
 
+	virtual void InteractEnd_Implementation() override;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
