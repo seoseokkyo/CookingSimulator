@@ -17,28 +17,37 @@ void UNewOrderWidget::NativeConstruct()
 	
 	//HideWidget();
 	
-	NewOrder();	
 }
+
 
 void UNewOrderWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
+	Super::NativeTick(MyGeometry, InDeltaTime);
+	NewOrder();	
+	
 	ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
 
 	if (gm != nullptr)
 	{
 		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("UNewOrderWidget::NativeTick %d : %d"), (int)(gm->cookingTimer) / 60, (int)(gm->cookingTimer) % 60));
 
-		if (OrderTimeMinutes != nullptr)
-		{
-			OrderTimeMinutes->SetText(FText::FromString(FString::FromInt((int)(gm->cookingTimer) / 60)));
-		}
+		FString minString = FString::FromInt((int)(gm->cookingTimer) / 60);
+		FText min = FText::FromString(minString);
+		OrderTimeMinutes->SetText(min);
 
-		if (OrderTimeSeconds != nullptr)
+		FString secString = FString::FromInt((int)(gm->cookingTimer) % 60);
+		FText sec = FText::FromString(secString);
+		OrderTimeSeconds->SetText(sec);
+		/*if (OrderTimeMinutes != nullptr)
+		{
+		}*/
+
+		/*if (OrderTimeSeconds != nullptr)
 		{
 			OrderTimeSeconds->SetText(FText::FromString(FString::FromInt((int)(gm->cookingTimer) % 60)));
-		}		
+		}*/
 	}
-}
+};
 
 
 void UNewOrderWidget::SetBrushImageByItemName(FString itemName)
@@ -76,12 +85,12 @@ void UNewOrderWidget::NewOrder()
 
 		OrderFoodImage->SetBrushFromSoftTexture(foodImage);
 
-		//FString minString = FString::FromInt(gm->minutes);
-		//FText min = FText::FromString(minString);
+	/*	FString minString = FString::FromInt(gm->minutes);
+		FText min = FText::FromString(minString);
 
-		//FString secString = FString::FromInt(gm->seconds);
-		//FText sec = FText::FromString(secString);
-		
+		FString secString = FString::FromInt(gm->seconds);
+		FText sec = FText::FromString(secString);
+		*/
 
 
 	}

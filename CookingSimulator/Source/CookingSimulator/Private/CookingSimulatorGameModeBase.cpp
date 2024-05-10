@@ -10,8 +10,8 @@ void ACookingSimulatorGameModeBase::StartPlay()
 {
 	Super::StartPlay();
 
-	//FTimerHandle timerHandle;
-	//GetWorldTimerManager().SetTimer(timerHandle, this, &ACookingSimulatorGameModeBase::CookingCountTime, 5.f, false, 0.0f);
+	/*FTimerHandle timerHandle;
+	GetWorldTimerManager().SetTimer(timerHandle, this, &ACookingSimulatorGameModeBase::CookingCountTime, 5.f, false, 0.0f);*/
 
 	auto gameInstance = CastChecked<UCookingSimulatorGameInstance>(GetGameInstance());
 
