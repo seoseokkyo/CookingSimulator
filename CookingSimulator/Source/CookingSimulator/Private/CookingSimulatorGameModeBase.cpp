@@ -3,10 +3,15 @@
 
 #include "CookingSimulatorGameModeBase.h"
 #include "CookingSimulatorGameInstance.h"
+#include "NewOrderWidget.h"
+#include <../../../../../../../Source/Runtime/UMG/Public/Components/TextBlock.h>
 
 void ACookingSimulatorGameModeBase::StartPlay()
 {
 	Super::StartPlay();
+
+	//FTimerHandle timerHandle;
+	//GetWorldTimerManager().SetTimer(timerHandle, this, &ACookingSimulatorGameModeBase::CookingCountTime, 5.f, false, 0.0f);
 
 	auto gameInstance = CastChecked<UCookingSimulatorGameInstance>(GetGameInstance());
 
@@ -61,7 +66,7 @@ void ACookingSimulatorGameModeBase::StartPlay()
 			ingredientName = TEXT("BlackPepper");
 			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
 
-			recipeDetail.cookingTimeLimit = 600;
+			recipeDetail.cookingTimeLimit = 300;
 
 			// 햄버거 레시피 작성 완료
 			recipes.Add(recipeDetail);
@@ -105,7 +110,7 @@ void ACookingSimulatorGameModeBase::StartPlay()
 			ingredientName = TEXT("BlackPepper");
 			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
 
-			recipeDetail.cookingTimeLimit = 600;
+			recipeDetail.cookingTimeLimit = 300;
 
 			// 연어스테이크와 삶은감자 레시피 작성 완료
 			recipes.Add(recipeDetail);
@@ -122,9 +127,9 @@ void ACookingSimulatorGameModeBase::Tick(float DeltaSeconds)
 
 	if (bCooking)
 	{
-		cookingTimer += DeltaSeconds;
+		cookingTimer -= DeltaSeconds;
 
-		if (cookingTimer >= currentRecipe.cookingTimeLimit)
+		if (cookingTimer <= 0)
 		{
 			cookingTimer = 0;
 			bCooking = false;
@@ -132,6 +137,8 @@ void ACookingSimulatorGameModeBase::Tick(float DeltaSeconds)
 			UE_LOG(LogTemp, Warning, TEXT("Cook Time Over"));
 		}
 	}
+	
+	
 }
 
 bool ACookingSimulatorGameModeBase::SetCurrentRecipe(ECookingSimulatorRecipeType eType)
@@ -144,6 +151,12 @@ bool ACookingSimulatorGameModeBase::SetCurrentRecipe(ECookingSimulatorRecipeType
 		if (rcpInfo.recipeType == eType)
 		{
 			currentRecipe = rcpInfo;
+
+			cookingTimer = currentRecipe.cookingTimeLimit;
+
+			CookingCountTime();
+
+			bCooking = true;
 
 			return true;
 		}
@@ -160,4 +173,30 @@ FCookingSimulatorRecipeInfo ACookingSimulatorGameModeBase::GetRecipe(int32 recip
 	}	
 
 	return FCookingSimulatorRecipeInfo();
+}
+
+ACookingSimulatorGameModeBase::ACookingSimulatorGameModeBase()
+{
+	PrimaryActorTick.bCanEverTick = true;
+}
+
+void ACookingSimulatorGameModeBase::CookingCountTime()
+{
+	if (seconds != 0)
+	{
+		seconds -= 1;
+	}
+	else
+	{
+		if (minutes == 0)
+		{
+
+		}
+		else
+		{
+			minutes -= 1;
+			seconds = 59;
+		}
+	}
+	
 }

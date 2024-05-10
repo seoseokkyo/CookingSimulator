@@ -17,6 +17,7 @@
 #include <item.h>
 #include "PointDecalActor.h"
 #include <../../../../../../../Source/Runtime/Engine/Public/EngineUtils.h>
+#include "CookingSimulatorGameModeBase.h"
 
 
 // Sets default values
@@ -84,6 +85,11 @@ void ATestCharacter::BeginPlay()
 		redDotDecal_inst = GetWorld()->SpawnActor<APointDecalActor>(myDecalActor, GetActorLocation(), FRotator::ZeroRotator, params);
 		redDotDecal_inst->SetActorScale3D(FVector(0.03f));
 	}	
+	ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
+	if (gm != nullptr)
+	{
+		gm->SetCurrentRecipe(ECookingSimulatorRecipeType::Hamburger);
+	}
 }
 
 // Called every frame
@@ -199,8 +205,6 @@ void ATestCharacter::CheckHitTraceForLaserPointer(const FVector& startPos, FVect
 
 			redDotDecal_inst->SetShowDecal(true);
 
-			UE_LOG(LogTemp, Warning, TEXT("redDotDecal_inst Show Decal : %p"), redDotDecal_inst);
-
 			// UE_LOG(LogTemp, Warning, TEXT("redDotDecal_inst Create : %p"), redDotDecal_inst);
 
 			/*FVector dotLoc = redDotDecal_inst->GetActorLocation();
@@ -220,8 +224,6 @@ void ATestCharacter::CheckHitTraceForLaserPointer(const FVector& startPos, FVect
 	{
 		if (redDotDecal_inst != nullptr)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("redDotDecal_inst Hide"));
-			
 			redDotDecal_inst->SetShowDecal(false);
 
 			//redDotDecal_inst->Destroy();

@@ -16,7 +16,7 @@
 
 void UTestWidget::NativeConstruct()
 {
-	UpdateCanTick();
+	//UpdateCanTick();
 
 	ImageChangeDelay = 0;
 
