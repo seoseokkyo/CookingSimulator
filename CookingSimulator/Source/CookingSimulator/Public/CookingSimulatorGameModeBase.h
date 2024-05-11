@@ -66,8 +66,18 @@ protected:
 	virtual void Tick(float DeltaSeconds) override;
 
 public:
+	ACookingSimulatorGameModeBase();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Recipe")
 	TArray<FCookingSimulatorRecipeInfo> recipes;
+
+	UPROPERTY()
+	int32 minutes = 5;
+
+	UPROPERTY()
+	int32 seconds;
+		
+	float cookingTimer = 300;
 
 	UFUNCTION(BlueprintCallable)
 	bool SetCurrentRecipe(ECookingSimulatorRecipeType eType);
@@ -83,4 +93,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void CompareDeliveryFood(FCookingSimulatorRecipeInfo cookResult);
+	
+	UFUNCTION(BlueprintCallable)
+	void CookingCountTime();
 };

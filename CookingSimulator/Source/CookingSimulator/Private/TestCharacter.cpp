@@ -1,3 +1,6 @@
+
+
+
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TestCharacter.h"
@@ -17,6 +20,7 @@
 #include <item.h>
 #include "PointDecalActor.h"
 #include <../../../../../../../Source/Runtime/Engine/Public/EngineUtils.h>
+#include "CookingSimulatorGameModeBase.h"
 #include "InteractComponent.h"
 
 
@@ -85,6 +89,11 @@ void ATestCharacter::BeginPlay()
 		redDotDecal_inst = GetWorld()->SpawnActor<APointDecalActor>(myDecalActor, GetActorLocation(), FRotator::ZeroRotator, params);
 		redDotDecal_inst->SetActorScale3D(FVector(0.03f));
 	}	
+	ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
+	if (gm != nullptr)
+	{
+		gm->SetCurrentRecipe(ECookingSimulatorRecipeType::Hamburger);
+	}
 }
 
 // Called every frame

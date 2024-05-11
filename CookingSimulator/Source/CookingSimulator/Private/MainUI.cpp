@@ -22,10 +22,7 @@ void UMainUI::NativeConstruct()
 	ItemNames.Add(TEXT("FrenchKnife"));
 	ItemNames.Add(TEXT("Potato"));
 
-	if (OrderFoodImage != nullptr)
-	{
-		SetBrushImageByItemName(ItemNames[0]);
-	}
+	
 
 	HideWidget();
 
@@ -44,11 +41,7 @@ void UMainUI::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 // 위젯 전체 숨기기
 void UMainUI::HideWidget()
 {
-	OrderTimeText->SetVisibility(ESlateVisibility::Hidden);
-	OrderText->SetVisibility(ESlateVisibility::Hidden);
-	OrderWindowImage->SetVisibility(ESlateVisibility::Hidden);
-	OrderFoodImage->SetVisibility(ESlateVisibility::Hidden);
-	timerBar->SetVisibility(ESlateVisibility::Hidden);
+	
 	
 	GuideBarOverlay->SetVisibility(ESlateVisibility::Hidden);
 	
@@ -90,7 +83,7 @@ void UMainUI::HideWidget()
 	HamGuide13->SetVisibility(ESlateVisibility::Hidden);
 	HamGuide14->SetVisibility(ESlateVisibility::Hidden);
 
-	//Result->SetVisibility(ESlateVisibility::Hidden);
+	
 }
 
 // 새로운 주문이 들어왔을 때 bNewOrder == true가 된다. 그리고 새로운 주문 UI, 가이드 UI 띄운다.
@@ -105,11 +98,6 @@ void UMainUI::NewOrder()
 		{
 			FCookingSimulatorRecipeInfo rcpInfo = gm->GetCurrentRecipe();
 
-			OrderTimeText->SetVisibility(ESlateVisibility::Visible);
-			OrderText->SetVisibility(ESlateVisibility::Visible);
-			OrderWindowImage->SetVisibility(ESlateVisibility::Visible);
-			OrderFoodImage->SetVisibility(ESlateVisibility::Visible);
-			timerBar->SetVisibility(ESlateVisibility::Visible);
 
 			GuideBarOverlay->SetVisibility(ESlateVisibility::Visible);
 
@@ -120,12 +108,10 @@ void UMainUI::NewOrder()
 			Menu->SetText(textTemp);
 			Menu->SetColorAndOpacity(FLinearColor::Black);
 
-			foodImage = UCookingSimulatorFunctionLibrary::GetRecipeImage(GetWorld(), rcpInfo.recipeType);
+			
+						
 
-			OrderFoodImage->SetBrushFromSoftTexture(foodImage);
-
-			// 임시 테스트
-			ShowResult(rcpInfo.recipeName);
+		
 
 			if (rcpInfo.recipeType == ECookingSimulatorRecipeType::Hamburger)
 			{
