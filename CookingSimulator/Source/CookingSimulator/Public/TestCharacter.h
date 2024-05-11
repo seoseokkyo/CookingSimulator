@@ -52,8 +52,16 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	USkeletalMeshComponent* MeshLeft;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	USkeletalMeshComponent* MeshRight;
+	
+	// ¿Þ¼Õ°ú ¿À¸¥¼Õ¿¡ Áæ ½ºÅ×Æ½ ¸Þ½Ã ÄÄÆ÷³ÍÆ®
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UStaticMeshComponent* GripItemLeft;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UStaticMeshComponent* GripItemRight;
+
 	
 	UPROPERTY(EditAnywhere, Category = "VR")
 	UInputMappingContext* IMC_Player;
@@ -84,15 +92,41 @@ private:
 
 	void CheckHitTraceForLaserPointer(const FVector& startPos, FVector& endPos);
 
-	void ShowDropPoint(const FVector& start, const FVector& end);		
 
 public:
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class APointDecalActor> myDecalActor;
+	TSubclassOf<class APointDecalActor> PointDecalActor;	
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ALineDecalActor> LineDecalActor;
 
 	bool bshowDecal = false;
 
 	class APointDecalActor* redDotDecal_inst = nullptr;
+	
+	class ALineDecalActor* lineDecal_inst = nullptr;
+
+	UPROPERTY(EditAnywhere, Category = "VR")
+	UInputAction* IA_MyGripR;
+	void OnIAGripR(const FInputActionValue& value);
+	void OnIAUnGripR(const FInputActionValue& value);
+		
+	UPROPERTY(EditAnywhere, Category = "VR")
+	UInputAction* IA_MyGripL; 
+	void OnIAGripL(const FInputActionValue& value);
+	void OnIAUnGripL(const FInputActionValue& value);
+
+	void GripItem(UPrimitiveComponent* item);
+
+	bool bCanGrip = false;
+
+	bool bGripSauce = true;
+	bool bGripCookingTool = true;
+
+	void CheckHitTraceForDottedLine(const FVector& startPos, FVector& endPos);
+
+	UPROPERTY()
+	class UPrimitiveComponent* GripObject;
 
 
 };
