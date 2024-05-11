@@ -89,8 +89,8 @@ void UMainUI::HideWidget()
 // 새로운 주문이 들어왔을 때 bNewOrder == true가 된다. 그리고 새로운 주문 UI, 가이드 UI 띄운다.
 void UMainUI::NewOrder()
 {
-	if (true == bNewOrder)
-	{
+	//if (true == bNewOrder)
+	//{
 		bNewOrder = false;
 
 		ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
@@ -126,7 +126,7 @@ void UMainUI::NewOrder()
 				UE_LOG(LogTemp, Warning, TEXT("Recipe Type Error"));
 			}
 		}			
-	}
+	//}
 }
 
 // 연어스테이크 레시피 가이드
@@ -246,6 +246,7 @@ void UMainUI::SalmonGuide()
 	}
 }
 
+// 햄버거 레시피 가이드
 void UMainUI::HamburgerGuide()
 {
 	HamGuide01->SetVisibility(ESlateVisibility::Visible);
@@ -322,22 +323,8 @@ void UMainUI::HamburgerGuide()
 	}
 }
 
-void UMainUI::ShowResult(FString itemName)
-{
-	if (CookedFood != nullptr)
-	{
-		ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
-		if (gm != nullptr)
-		{
-			FCookingSimulatorRecipeInfo rcpInfo = gm->GetCurrentRecipe();
-			FText textTemp = FText::FromString(rcpInfo.recipeName);
-			ResultMenuName->SetText(textTemp);
-			//ResultMenuName->SetRenderScale(FVector2D(0.5));
-			CookedFood->SetBrushFromSoftTexture(foodImage);
-		}
-	}
-}
 
+// 요리 완성 후에 레시피 가이드 원래대로 돌리기
 void UMainUI::SetOriginImage()
 {
 	// 연어 레시피 미완 상태로 돌리기
@@ -405,9 +392,4 @@ void UMainUI::SetOriginImage()
 	bGuide22_Success = false;
 }
 
-void UMainUI::SetBrushImageByItemName(FString itemName)
-{
-	//foodImage = UCookingSimulatorFunctionLibrary::GetImageByItemName(GetWorld(), itemName);
-	OrderFoodImage->SetBrushFromSoftTexture(foodImage);
-}
 

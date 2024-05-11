@@ -21,21 +21,6 @@ class COOKINGSIMULATOR_API UMainUI : public UUserWidget
 public:
 
 	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
-	class UTextBlock* OrderTimeText;
-
-	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
-	class UEditableTextBox* OrderText;
-
-	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
-	class UImage* OrderWindowImage;
-	
-	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
-	class UImage* timerBar;
-
-	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
-	class UImage* OrderFoodImage;
-	
-	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
 	class UOverlay* GuideBarOverlay;
 
 	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
@@ -378,26 +363,7 @@ public:
 
 
 
-	// 결과창 
-	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
-	UOverlay* Result;
-
-	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
-	UImage* CookedFood;
-
-	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
-	class UProgressBar* TasteBar;
-
-	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
-	class UProgressBar* SpendTimeBar;
-
-	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
-	class UProgressBar* ScoreBar;
-
-	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
-	class UTextBlock* ResultMenuName;
-		
-	UTexture2D* foodImage;
+	
 
 	// 가이드 항목마다 bool 값이 있어서, 성공 여부에 따라 brush를 바꿔줌. 1~22까지 있음.
 	bool bGuide01_Success = false;
@@ -436,14 +402,12 @@ public:
 	// 햄버거 레시피 가이드
 	void HamburgerGuide();
 
-	// 결과 창 출력
-	void ShowResult(FString itemName);
+
 
 	// 완료 이미지로 교체된 이미지들을 다시 원래대로 돌려주는 함수
 	void SetOriginImage();
 
-	UFUNCTION(BlueprintCallable)
-	void SetBrushImageByItemName(FString itemName);
+	
 	
 private:
 	float ImageChangeDelay;
