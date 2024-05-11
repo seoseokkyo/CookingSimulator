@@ -226,19 +226,18 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 
 void ATestCharacter::OnIAUnGripR(const FInputActionValue& value)
 {
-	
-	meshright->setvisibility(true);
-	gripobject->detachfromcomponent(fdetachmenttransformrules::keepworldtransform);
-	gripobject->setsimulatephysics(true);
+	MeshRight->SetVisibility(true);
+	GripObject->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	GripObject->SetSimulatePhysics(true);
 
 
-	if (reddotdecal_inst != nullptr)
+	if (redDotDecal_inst != nullptr)
 	{
-		reddotdecal_inst->setshowdecal(false);
+		redDotDecal_inst->SetShowDecal(false);
 	}
-	if (linedecal_inst != nullptr)
+	if (lineDecal_inst != nullptr)
 	{
-		linedecal_inst->setshowdecal(false);
+		lineDecal_inst->SetShowDecal(false);
 	}
 	
 }
@@ -300,7 +299,6 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 			focusedActor = interactedActor;
 
 			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, true);
-
 			GripObject = Cast<UPrimitiveComponent>(focusedActor);
 			bCanGrip = true;
 		}
