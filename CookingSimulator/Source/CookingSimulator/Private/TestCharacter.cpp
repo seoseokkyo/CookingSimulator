@@ -64,7 +64,7 @@ void ATestCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 	//pc = GetController<APlayerController>();
-	pc = Cast<APlayerController>(Controller);
+	pc = Cast<APlayerController>(GetController());
 
 	if (pc)
 	{
@@ -214,36 +214,13 @@ void ATestCharacter::CheckHitTraceForLaserPointer(const FVector& startPos, FVect
 			redDotDecal_inst->SetActorLocation(dropPoint);
 
 			redDotDecal_inst->SetShowDecal(true);
-
-			//UE_LOG(LogTemp, Warning, TEXT("redDotDecal_inst Show Decal : %p"), redDotDecal_inst);
-
-			// UE_LOG(LogTemp, Warning, TEXT("redDotDecal_inst Create : %p"), redDotDecal_inst);
-
-			/*FVector dotLoc = redDotDecal_inst->GetActorLocation();
-
-			if (dotLoc != dropPoint)
-			{
-				for (TActorIterator<APointDecalActor> findActor(GetWorld()); findActor; findActor)
-				{
-					findActor->Destroy();
-				}
-			}
-			redDotDecal_inst->Destroy();*/
-			//redDotDecal_inst->SetShowDecal(true);
 		}
 	}
 	else 
 	{
 		if (redDotDecal_inst != nullptr)
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("redDotDecal_inst Hide"));
-			
 			redDotDecal_inst->SetShowDecal(false);
-
-			//redDotDecal_inst->Destroy();
-			//
-			//redDotDecal_inst = nullptr;
-			
 		}
 	}
 }
@@ -254,15 +231,11 @@ void ATestCharacter::ShowDropPoint(const FVector& start, const FVector& end)
 
 void ATestCharacter::DrawLine(FVector start, FVector end)
 {
-	// throw std::logic_error("The method or operation is not implemented.");
-
 	DrawDebugLine(GetWorld(), start, end, FColor::Red, false, -1.0f, 0, 0.5f);
 }
 
 bool ATestCharacter::HitTest(FVector start, FVector end, FHitResult& outHit)
 {
-	// throw std::logic_error("The method or operation is not implemented.");
-
 	FCollisionQueryParams params;
 	params.AddIgnoredActor(this);
 

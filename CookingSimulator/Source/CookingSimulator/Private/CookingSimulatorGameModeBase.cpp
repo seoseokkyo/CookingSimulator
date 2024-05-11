@@ -1,8 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "CookingSimulatorGameModeBase.h"
 #include "CookingSimulatorGameInstance.h"
+#include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h>
 
 void ACookingSimulatorGameModeBase::StartPlay()
 {
@@ -14,26 +15,26 @@ void ACookingSimulatorGameModeBase::StartPlay()
 	{
 		recipes.Reset();
 
-		// ÇÜ¹ö°Å ·¹½ÃÇÇ ÀÛ¼º
+		// í–„ë²„ê±° ë ˆì‹œí”¼ ì‘ì„±
 		{
-			// ·¹½ÃÇÇ ÀÛ¼º
+			// ë ˆì‹œí”¼ ì‘ì„±
 			FCookingSimulatorRecipeInfo recipeDetail;
 
 			recipeDetail.recipeName = TEXT("Hamburger");
 
-			// ·¹½ÃÇÇ Å¸ÀÔ ¼³Á¤
+			// ë ˆì‹œí”¼ íƒ€ì… ì„¤ì •
 			recipeDetail.recipeType = ECookingSimulatorRecipeType::Hamburger;
 
-			// ·¹½ÃÇÇ ÀÌ¹ÌÁö °æ·Î ¼³Á¤ ¿¹½Ã
+			// ë ˆì‹œí”¼ ì´ë¯¸ì§€ ê²½ë¡œ ì„¤ì • ì˜ˆì‹œ
 			recipeDetail.recipeImagePath = "Content\\CookingSimulator\\Textures\\Hamburger.png";
 
-			// ·¹½ÃÇÇ ¼³¸í ¼³Á¤ ¿¹½Ã
+			// ë ˆì‹œí”¼ ì„¤ëª… ì„¤ì • ì˜ˆì‹œ
 			recipeDetail.recipeDescription = "This is Hamburger";
 
-			// ·¹½ÃÇÇ¿¡ µé¾î°¡´Â ½ÄÀç·á ¼³Á¤
+			// ë ˆì‹œí”¼ì— ë“¤ì–´ê°€ëŠ” ì‹ì¬ë£Œ ì„¤ì •
 			recipeDetail.ingredientInfoArray.Reset();
 
-			// Åä¸¶Åä Ãß°¡ ¿¹½Ã
+			// í† ë§ˆí†  ì¶”ê°€ ì˜ˆì‹œ
 			FString ingredientName = TEXT("Tomato");
 			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
 
@@ -63,30 +64,30 @@ void ACookingSimulatorGameModeBase::StartPlay()
 
 			recipeDetail.cookingTimeLimit = 600;
 
-			// ÇÜ¹ö°Å ·¹½ÃÇÇ ÀÛ¼º ¿Ï·á
+			// í–„ë²„ê±° ë ˆì‹œí”¼ ì‘ì„± ì™„ë£Œ
 			recipes.Add(recipeDetail);
 		}
 
-		// ¿¬¾î½ºÅ×ÀÌÅ©¿Í »îÀº°¨ÀÚ ·¹½ÃÇÇ ÀÛ¼º
+		// ì—°ì–´ìŠ¤í…Œì´í¬ì™€ ì‚¶ì€ê°ì ë ˆì‹œí”¼ ì‘ì„±
 		{
-			// ·¹½ÃÇÇ ÀÛ¼º
+			// ë ˆì‹œí”¼ ì‘ì„±
 			FCookingSimulatorRecipeInfo recipeDetail;
 
 			recipeDetail.recipeName = TEXT("SalmonSteakAndBoiledPotato");
 
-			// ·¹½ÃÇÇ Å¸ÀÔ ¼³Á¤
+			// ë ˆì‹œí”¼ íƒ€ì… ì„¤ì •
 			recipeDetail.recipeType = ECookingSimulatorRecipeType::SalmonSteakAndBoiledPotato;
 
-			// ·¹½ÃÇÇ ÀÌ¹ÌÁö °æ·Î ¼³Á¤ ¿¹½Ã
+			// ë ˆì‹œí”¼ ì´ë¯¸ì§€ ê²½ë¡œ ì„¤ì • ì˜ˆì‹œ
 			recipeDetail.recipeImagePath = "Content\\CookingSimulator\\Textures\\SalmonSteakAndBoiledPotato.png";
 
-			// ·¹½ÃÇÇ ¼³¸í ¼³Á¤ ¿¹½Ã
+			// ë ˆì‹œí”¼ ì„¤ëª… ì„¤ì • ì˜ˆì‹œ
 			recipeDetail.recipeDescription = "This is SalmonSteakAndBoiledPotato";
 
-			// ·¹½ÃÇÇ¿¡ µé¾î°¡´Â ½ÄÀç·á ¼³Á¤
+			// ë ˆì‹œí”¼ì— ë“¤ì–´ê°€ëŠ” ì‹ì¬ë£Œ ì„¤ì •
 			recipeDetail.ingredientInfoArray.Reset();
 
-			// °¨ÀÚ Ãß°¡ ¿¹½Ã
+			// ê°ì ì¶”ê°€ ì˜ˆì‹œ
 			FString ingredientName = TEXT("Potato");
 			recipeDetail.ingredientInfoArray.Add(FIngredientInfo(ingredientName, gameInstance->GetItemDataTable(ingredientName), 50, 100));
 
@@ -107,12 +108,13 @@ void ACookingSimulatorGameModeBase::StartPlay()
 
 			recipeDetail.cookingTimeLimit = 600;
 
-			// ¿¬¾î½ºÅ×ÀÌÅ©¿Í »îÀº°¨ÀÚ ·¹½ÃÇÇ ÀÛ¼º ¿Ï·á
+			// ì—°ì–´ìŠ¤í…Œì´í¬ì™€ ì‚¶ì€ê°ì ë ˆì‹œí”¼ ì‘ì„± ì™„ë£Œ
 			recipes.Add(recipeDetail);
 		}
 	}
 
-	SetCurrentRecipe(ECookingSimulatorRecipeType::Hamburger);
+	//SetCurrentRecipe(ECookingSimulatorRecipeType::Hamburger);
+	SetCurrentRecipe(ECookingSimulatorRecipeType::SalmonSteakAndBoiledPotato);
 }
 
 void ACookingSimulatorGameModeBase::Tick(float DeltaSeconds)
@@ -159,4 +161,123 @@ FCookingSimulatorRecipeInfo ACookingSimulatorGameModeBase::GetRecipe(int32 recip
 	}	
 
 	return FCookingSimulatorRecipeInfo();
+}
+
+void ACookingSimulatorGameModeBase::CompareDeliveryFood(FCookingSimulatorRecipeInfo cookResult)
+{
+	FCookingSimulatorRecipeInfo refRcp = GetCurrentRecipe();
+
+	TArray<FIngredientInfo> refRcpList = refRcp.ingredientInfoArray;
+	TArray<FIngredientInfo> cookResultList = cookResult.ingredientInfoArray;
+	TArray<FString> resultComments;
+	resultComments.Reset();
+
+	TSet<int32> resultCheck;
+	resultCheck.Reset();
+
+	for (const auto ingredient : refRcpList)
+	{
+		bool bFind = false;
+		int32 ingredientCookedLevel = 0;
+		int32 ingredientWeight = 0;
+
+		int32 count = 0;
+
+		for (const auto resultIngredient : cookResultList)
+		{
+			if (resultIngredient.ingredientName.Len() > 0)
+			{
+				if (ingredient.ingredientName.Contains(resultIngredient.ingredientName))
+				{
+					bFind = true;
+
+					ingredientCookedLevel = resultIngredient.ingredientCookedLevel;
+					ingredientWeight = resultIngredient.ingredientWeight;
+
+					resultCheck.Add(count);
+				}
+			}
+
+			count++;
+		}
+
+		if (false == bFind)
+		{
+			resultComments.Add(FString::Printf(TEXT("%sê°€ ì—†ë„¤ìš”?"), *ingredient.ingredientName));
+
+			cookResult.rankPoint -= 20;
+		}
+		else
+		{
+			if (ingredientCookedLevel < 45)
+			{
+				int32 commentIndex = FMath::RandRange(0, 1);
+
+				switch (commentIndex)
+				{
+				case 0:
+					resultComments.Add(FString::Printf(TEXT("%sê°€ ëœ ìµì—ˆì–´ìš”."), *ingredient.ingredientName));
+					break;
+				case 1:
+					resultComments.Add(FString::Printf(TEXT("%së¥¼ ìµíˆë‹¤ ë§ì•˜ë„¤ìš”."), *ingredient.ingredientName));
+					break;
+				default:
+					break;
+				}
+
+				cookResult.rankPoint -= 10;
+			}
+			else if (45 <= ingredientCookedLevel && ingredientCookedLevel <= 55)
+			{
+				resultComments.Add(FString::Printf(TEXT("%sê°€ ì™„ë²½í•©ë‹ˆë‹¤."), *ingredient.ingredientName));
+			}
+			else
+			{
+				int32 commentIndex = FMath::RandRange(0, 1);
+
+				switch (commentIndex)
+				{
+				case 0:
+					resultComments.Add(FString::Printf(TEXT("%sê°€ ìƒˆì¹´ë§£ê²Œ íƒ”ë„¤ìš”."), *ingredient.ingredientName));
+					break;
+				case 1:
+					resultComments.Add(FString::Printf(TEXT("%së¥¼ ì—°í•„ ëŒ€ì‹  ì¨ë„ ë˜ê² ì–´ìš”."), *ingredient.ingredientName));
+					break;
+				default:
+					break;
+				}
+
+				cookResult.rankPoint -= 10;
+			}
+		}
+	}
+
+	//TArray<bool> addedOtherIngredientCheck(false, cookResultList.Num());
+	TArray<bool> addedOtherIngredientCheck;
+	addedOtherIngredientCheck.Reset();
+	addedOtherIngredientCheck.SetNum(cookResultList.Num());
+	for (auto& temp : addedOtherIngredientCheck)
+	{
+		temp = false;
+	}
+
+	for (auto index : resultCheck)
+	{
+		addedOtherIngredientCheck[index] = true;
+	}
+
+	for (int32 i = 0; i < cookResultList.Num() - 1; i++)
+	{
+		if (false == addedOtherIngredientCheck[i])
+		{
+			resultComments.Add(FString::Printf(TEXT("%sëŠ” ì£¼ë¬¸í•œ ìš”ë¦¬ì™€ ìƒê´€ì—†ëŠ” ì¬ë£Œì…ë‹ˆë‹¤."), *cookResultList[i].ingredientName));
+		}
+	}
+
+	for (auto resultComment : resultComments)
+	{
+		UKismetSystemLibrary::PrintString(GetWorld(), resultComment, true, true, FLinearColor::Red, 10.0f);
+	}
+
+	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("ìš”ë¦¬ ì ìˆ˜ : %03d"), cookResult.rankPoint), true, true, FLinearColor::Red, 10.0f);
 }

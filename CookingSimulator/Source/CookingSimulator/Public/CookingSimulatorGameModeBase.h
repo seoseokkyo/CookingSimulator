@@ -41,6 +41,9 @@ public:
 	TArray<FIngredientInfo> ingredientInfoArray;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="RecipeInfo")
+	int32 rankPoint = 100;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="RecipeInfo")
 	float cookingTimeLimit;
 };
 
@@ -77,4 +80,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void CookingStart() { bCooking = true;};
+
+	UFUNCTION(BlueprintCallable)
+	void CompareDeliveryFood(FCookingSimulatorRecipeInfo cookResult);
 };

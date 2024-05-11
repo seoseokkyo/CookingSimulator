@@ -14,6 +14,7 @@ class UImage;
 class AItem;
 class UButton;
 class UScrollBox;
+class UComboBoxString;
 
 UCLASS()
 class COOKINGSIMULATOR_API UTestWidget : public UUserWidget
@@ -43,6 +44,12 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="MySettings", meta=(BindWidget))
 	UScrollBox* ScrollBox;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="MySettings", meta=(BindWidget))
+	UComboBoxString* RcpComboBox;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="MySettings", meta=(BindWidget))
+	UButton* RcpChangeButton;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MySettings")
 	TSubclassOf<UUserWidget> listWidget;

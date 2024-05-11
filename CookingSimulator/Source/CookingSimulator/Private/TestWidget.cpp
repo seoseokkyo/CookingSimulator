@@ -15,6 +15,8 @@
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/TextBlock.h>
 #include "BigPot.h"
 #include "Potato.h"
+#include <../../../../../../../Source/Runtime/UMG/Public/Components/ComboBoxString.h>
+#include "Dumbwaiter.h"
 
 void UTestWidget::NativeConstruct()
 {
@@ -42,8 +44,11 @@ void UTestWidget::NativeConstruct()
 	//TimerResetButton->SetVisibility(ESlateVisibility::Hidden);
 
 	ScrollBox->SetVisibility(ESlateVisibility::Hidden);
+	
+	RcpComboBox->AddOption(FString(TEXT("Hamburger")));
+	RcpComboBox->AddOption(FString(TEXT("SalmonSteakAndBoiledPotato")));
 
-
+	RcpComboBox->SetSelectedIndex(0);
 }
 
 void UTestWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -85,28 +90,50 @@ void UTestWidget::OnClickedTimerStartButtom()
 	//	}
 	//}
 
-	for (TObjectIterator<ABigPot> It; It; ++It)
-	{
-		if (ABigPot* dial = *It)
-		{
-			if (0)
-			{
-				dial->FillWater(true);
-			}
+	//for (TObjectIterator<ABigPot> It; It; ++It)
+	//{
+	//	if (ABigPot* dial = *It)
+	//	{
+	//		if (0)
+	//		{
+	//			dial->FillWater(true);
+	//		}
 
 
 
-			for (TObjectIterator<APotato> ItPotato; ItPotato; ++ItPotato)
-			{
-				if (APotato* potato = *ItPotato)
-				{
-					dial->AddIngredient(potato);
-					//break;
-				}
-			}
-			
-		}
-	}
+	//		for (TObjectIterator<APotato> ItPotato; ItPotato; ++ItPotato)
+	//		{
+	//			if (APotato* potato = *ItPotato)
+	//			{
+	//				dial->AddIngredient(potato);
+	//			}
+	//		}
+	//		
+	//	}
+	//}
+
+	FCookingSimulatorRecipeInfo testRcp;
+	
+	// 버거
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Tomato"), FCookingSimulatorItemInfo(), 50, 40));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Onion"), FCookingSimulatorItemInfo(), 50, 40));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Patty"), FCookingSimulatorItemInfo(), 50, 60));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("BurgerBunUp"), FCookingSimulatorItemInfo(), 50, 40));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("BurgerBunDown"), FCookingSimulatorItemInfo(), 50, 50));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("CheddarCheese"), FCookingSimulatorItemInfo(), 50, 55));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Ketchup"), FCookingSimulatorItemInfo(), 50, 46));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Salt"), FCookingSimulatorItemInfo(), 50, 78));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("BlackPepper"), FCookingSimulatorItemInfo(), 50, 100));
+
+	// 연어 스테이크
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Potato"), FCookingSimulatorItemInfo(), 50, 44));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("SalmonSteak"), FCookingSimulatorItemInfo(), 50, 45));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Water"), FCookingSimulatorItemInfo(), 50, 55));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("SunflowerOil"), FCookingSimulatorItemInfo(), 50, 56));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Salt"), FCookingSimulatorItemInfo(), 50, 0));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("BlackPepper"), FCookingSimulatorItemInfo(), 50, 100));
+
+	GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>()->CompareDeliveryFood(testRcp);
 }
 
 void UTestWidget::OnClickedTimerResetButtom()
@@ -119,11 +146,19 @@ void UTestWidget::OnClickedTimerResetButtom()
 	//	}
 	//}
 
-	for (TObjectIterator<ABigPot> It; It; ++It)
+	//for (TObjectIterator<ABigPot> It; It; ++It)
+	//{
+	//	if (ABigPot* dial = *It)
+	//	{
+	//		dial->FillWater(false);
+	//	}
+	//}
+
+	for (TObjectIterator<ADumbwaiter> It; It; ++It)
 	{
-		if (ABigPot* dial = *It)
+		if (ADumbwaiter* dial = *It)
 		{
-			dial->FillWater(false);
+			dial->FoodDelivery();
 		}
 	}
 }

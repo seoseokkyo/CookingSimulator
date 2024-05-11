@@ -2,6 +2,7 @@
 
 
 #include "Ingredient.h"
+#include "CookingSimulatorGameInstance.h"
 
 //AIngredient::AIngredient(FString ingredientName)
 //{
@@ -11,4 +12,13 @@
 void AIngredient::HeatUP()
 {
 	IngredientInfo.ingredientCookedLevel += 1;
+}
+
+void AIngredient::InitIngredientInfo()
+{
+	auto gi = GetGameInstance<UCookingSimulatorGameInstance>();
+	if (gi != nullptr)
+	{
+		IngredientInfo.ingredientInfo = gi->GetItemDataTable(IngredientInfo.ingredientName);
+	}
 }

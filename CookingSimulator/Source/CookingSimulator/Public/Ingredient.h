@@ -46,8 +46,9 @@ class COOKINGSIMULATOR_API AIngredient : public AItem
 {
 	GENERATED_BODY()
 
-
 private:
+
+protected:
 	FIngredientInfo IngredientInfo;
 	
 public:
@@ -59,4 +60,6 @@ public:
 
 	FIngredientInfo GetIngredientInfo() { return IngredientInfo; };
 	int32 GetCookedLevel() { return IngredientInfo.ingredientCookedLevel; };
+
+	void InitIngredientInfo();
 };
