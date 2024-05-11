@@ -315,3 +315,4 @@ void ACookingSimulatorGameModeBase::CookingCountTime()
 			seconds = 59;
 		}
 	}
+}

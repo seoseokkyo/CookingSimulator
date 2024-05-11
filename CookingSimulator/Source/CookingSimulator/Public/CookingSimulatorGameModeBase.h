@@ -58,7 +58,6 @@ private:
 
 	FCookingSimulatorRecipeInfo currentRecipe;
 	bool bCooking;
-	float cookingTimer;
 
 protected:
 	virtual void StartPlay() override;

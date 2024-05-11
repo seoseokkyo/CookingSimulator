@@ -158,7 +158,7 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	}
 
 	// 나중에 문제 해결되면 삭제 예정
-	BeginPlay();
+	//BeginPlay();
 }
 
 void ATestCharacter::OnIAMove(const FInputActionValue& value)

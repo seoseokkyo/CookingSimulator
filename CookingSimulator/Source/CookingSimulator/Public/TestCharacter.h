@@ -52,27 +52,27 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	USkeletalMeshComponent* MeshLeft;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly)
 	USkeletalMeshComponent* MeshRight;
 	
 	// ¿Þ¼Õ°ú ¿À¸¥¼Õ¿¡ Áæ ½ºÅ×Æ½ ¸Þ½Ã ÄÄÆ÷³ÍÆ®
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* GripItemLeft;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* GripItemRight;
 
 	
-	UPROPERTY(EditAnywhere, Category = "VR")
+	UPROPERTY(EditDefaultsOnly, Category = "VR")
 	UInputMappingContext* IMC_Player;
 
-	UPROPERTY(EditAnywhere, Category = "VR")
+	UPROPERTY(EditDefaultsOnly, Category = "VR")
 	UInputAction* IA_Move;
 
-	UPROPERTY(EditAnywhere, Category = "VR")
+	UPROPERTY(EditDefaultsOnly, Category = "VR")
 	UInputAction* IA_Turn;
 	
-	UPROPERTY(EditAnywhere, Category = "VR")
+	UPROPERTY(EditDefaultsOnly, Category = "VR")
 	UInputAction* IA_Trigger;
 
 	AActor* focusedActor = nullptr;
@@ -125,7 +125,7 @@ public:
 
 	void CheckHitTraceForDottedLine(const FVector& startPos, FVector& endPos);
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, Category = "VR")
 	class UPrimitiveComponent* GripObject;
 
 
