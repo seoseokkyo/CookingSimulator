@@ -16,16 +16,25 @@ class COOKINGSIMULATOR_API URecipe_On_Monitor : public UUserWidget
 	
 public:
 	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
+	class UCanvasPanel* RecipeCanvas;
+
+	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
 	class UImage* currentFood;
 
 	UPROPERTY(EditAnywhere, Category = "MySettings", meta = (BindWidget))
-	class UScrollBox* recipeScrollBox;
+	class UScrollBox* SalmonRecipeScrollBox;
+
+	UPROPERTY(EditAnywhere, Category = "MySettings", meta = (BindWidget))
+	class UScrollBox* HamburgerRecipeScrollBox;
 
 	UPROPERTY(EditAnywhere, Category = "MySettings", meta = (BindWidget))
 	class UScrollBox* ingridientBox;
 
-	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
-	class UImage* recipeScroll;
+	UPROPERTY(EditAnywhere, Category = "MySettings", meta = (BindWidget))
+	class UTextBlock* SalmonText;
+
+	UPROPERTY(EditAnywhere, Category = "MySettings", meta = (BindWidget))
+	UTextBlock* HamText;
 
 	UTexture2D* foodImage;
 
@@ -34,4 +43,7 @@ public:
 		
 	UFUNCTION(BlueprintCallable)
 	void ShowRecipeOnMonitor();
+
+private:
+	virtual void NativeConstruct() override;
 };

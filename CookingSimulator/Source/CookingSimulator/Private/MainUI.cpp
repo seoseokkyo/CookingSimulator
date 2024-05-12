@@ -10,6 +10,7 @@
 #include <Components/Overlay.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Engine/Texture2D.h>
 #include "CookingSimulatorGameModeBase.h"
+#include "Components/CanvasPanel.h"
 
 void UMainUI::NativeConstruct()
 {
@@ -41,7 +42,7 @@ void UMainUI::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 // À§Á¬ ÀüÃ¼ ¼û±â±â
 void UMainUI::HideWidget()
 {
-	
+	GuideCanvas->SetVisibility(ESlateVisibility::Hidden);
 	
 	GuideBarOverlay->SetVisibility(ESlateVisibility::Hidden);
 	
@@ -91,7 +92,7 @@ void UMainUI::NewOrder()
 {
 	//if (true == bNewOrder)
 	//{
-		bNewOrder = false;
+		//bNewOrder = false;
 
 		ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
 		if (gm != nullptr)
@@ -103,7 +104,7 @@ void UMainUI::NewOrder()
 
 			FText textTemp = FText::FromString(rcpInfo.recipeName);
 
-			UE_LOG(LogTemp, Warning, TEXT("Rcp Name : %s"), *rcpInfo.recipeName);
+			//UE_LOG(LogTemp, Warning, TEXT("Rcp Name : %s"), *rcpInfo.recipeName);
 
 			Menu->SetText(textTemp);
 			Menu->SetColorAndOpacity(FLinearColor::Black);

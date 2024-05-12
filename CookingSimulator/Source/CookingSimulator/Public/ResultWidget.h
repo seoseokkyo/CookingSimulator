@@ -34,6 +34,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
 	class UTextBlock* ResultMenuName;
+
+	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
+	class UCanvasPanel* ResultCanvas;
 		
 	UTexture2D* foodImage;
 

@@ -6,10 +6,16 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h>
 #include "NewOrderWidget.h"
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/TextBlock.h>
+#include "MenuWidget.h"
 
 void ACookingSimulatorGameModeBase::StartPlay()
 {
 	Super::StartPlay();
+
+	if (menu_BP != nullptr)
+	{
+		menuUI = CreateWidget<UMenuWidget>(GetWorld(), menu_BP);
+	}
 
 	auto gameInstance = CastChecked<UCookingSimulatorGameInstance>(GetGameInstance());
 
@@ -156,6 +162,8 @@ bool ACookingSimulatorGameModeBase::SetCurrentRecipe(ECookingSimulatorRecipeType
 
 			bCooking = true;
 
+			menuUI->bNewOrder = true;
+			
 			return true;
 		}
 	}
@@ -293,6 +301,9 @@ void ACookingSimulatorGameModeBase::CompareDeliveryFood(FCookingSimulatorRecipeI
 	{
 		UKismetSystemLibrary::PrintString(GetWorld(), resultComment, true, true, FLinearColor::Red, 10.0f);
 	}
+
+	// 결과창UI 출력하는 Bool 값 바꿔줌
+	menuUI->bShowResult = true;
 
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("요리 점수 : %03d"), cookResult.rankPoint), true, true, FLinearColor::Red, 10.0f);
 }

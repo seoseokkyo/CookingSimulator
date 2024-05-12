@@ -33,6 +33,9 @@ public:
 	UPROPERTY(EditAnywhere, Category="MySettings", meta=(BindWidget))
 	class UImage* OrderFoodImage;
 
+	UPROPERTY(EditAnywhere, Category = "MySettings", meta = (BindWidget))
+	class UCanvasPanel* NewOrderCanvas;
+
 	UTexture2D* foodImage;
 
 	float timer = 0;

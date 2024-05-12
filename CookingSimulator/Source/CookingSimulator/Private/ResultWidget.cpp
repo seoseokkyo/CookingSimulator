@@ -6,6 +6,7 @@
 #include "CookingSimulatorFunctionLibrary.h"
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/TextBlock.h>
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/Image.h>
+#include "Components/CanvasPanel.h"
 
 void UResultWidget::NativeConstruct()
 {
