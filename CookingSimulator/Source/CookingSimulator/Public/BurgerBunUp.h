@@ -3,26 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
 #include "Ingredient.h"
-#include "BlackPepper.generated.h"
+#include "BurgerBunUp.generated.h"
 
-/**
- * 
- */
 UCLASS()
-class COOKINGSIMULATOR_API ABlackPepper : public AIngredient
+class COOKINGSIMULATOR_API ABurgerBunUp : public AIngredient
 {
 	GENERATED_BODY()
-
-public:
+	
+public:	
 	// Sets default values for this actor's properties
-	ABlackPepper();
+	ABurgerBunUp();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:
+public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

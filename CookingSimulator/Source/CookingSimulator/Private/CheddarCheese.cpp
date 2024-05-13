@@ -1,22 +1,22 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Salt.h"
+#include "CheddarCheese.h"
 
 // Sets default values
-ASalt::ASalt()
+ACheddarCheese::ACheddarCheese()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 }
 
 // Called when the game starts or when spawned
-void ASalt::BeginPlay()
+void ACheddarCheese::BeginPlay()
 {
 	Super::BeginPlay();
 
-	IngredientInfo.ingredientName = TEXT("Salt");
+	IngredientInfo.ingredientName = TEXT("CheddarCheese");
 	IngredientInfo.ingredientCookedLevel = 0;
 	IngredientInfo.ingredientWeight = 0;
 
@@ -24,7 +24,7 @@ void ASalt::BeginPlay()
 }
 
 // Called every frame
-void ASalt::Tick(float DeltaTime)
+void ACheddarCheese::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 

@@ -25,6 +25,7 @@
 #include "InteractComponent.h"
 #include <../../../../../../../Source/Runtime/Engine/Classes/GameFramework/Actor.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/SceneComponent.h>
+#include "Dumbwaiter.h"
 
 
 // Sets default values
@@ -272,6 +273,12 @@ void ATestCharacter::GripItem(AItem* item)
 {
 	if (item != nullptr)
 	{
+		auto dumbwaiter = Cast<ADumbwaiter>(item);
+		if (dumbwaiter != nullptr)
+		{
+			return;
+		}
+
 		// 기존 손 메시를 없애고
 		MeshRight->SetVisibility(false);
 		// 잡은 아이템을 위치시킴
@@ -279,6 +286,9 @@ void ATestCharacter::GripItem(AItem* item)
 		// item->SetActorEnableCollision(ECollisionEnabled::NoCollision);
 		item->SetActorEnableCollision(true);
 		GripObject->baseMesh->SetSimulatePhysics(false);
+
+		item->SetActorRelativeLocation(MeshRight->GetComponentLocation() + MeshRight->GetForwardVector() * 700, true);
+
 		item->baseMesh->SetWorldLocation(MotionRight->GetComponentLocation());
 
 		IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);

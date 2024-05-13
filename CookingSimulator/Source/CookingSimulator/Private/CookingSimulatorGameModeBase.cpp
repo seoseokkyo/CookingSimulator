@@ -281,7 +281,7 @@ void ACookingSimulatorGameModeBase::CompareDeliveryFood(FCookingSimulatorRecipeI
 		addedOtherIngredientCheck[index] = true;
 	}
 
-	for (int32 i = 0; i < cookResultList.Num() - 1; i++)
+	for (int32 i = 0; i <= cookResultList.Num() - 1; i++)
 	{
 		if (false == addedOtherIngredientCheck[i])
 		{
