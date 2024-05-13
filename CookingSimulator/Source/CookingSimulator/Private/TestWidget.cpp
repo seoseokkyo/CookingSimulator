@@ -115,23 +115,23 @@ void UTestWidget::OnClickedTimerStartButtom()
 	FCookingSimulatorRecipeInfo testRcp;
 	
 	// 버거
-	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Tomato"), FCookingSimulatorItemInfo(), 50, 40));
-	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Onion"), FCookingSimulatorItemInfo(), 50, 40));
-	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Patty"), FCookingSimulatorItemInfo(), 50, 60));
-	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("BurgerBunUp"), FCookingSimulatorItemInfo(), 50, 40));
-	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("BurgerBunDown"), FCookingSimulatorItemInfo(), 50, 50));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Tomato"), FCookingSimulatorItemInfo(), 50, 55));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Onion"), FCookingSimulatorItemInfo(), 50, 55));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Patty"), FCookingSimulatorItemInfo(), 50, 55));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("BurgerBunUp"), FCookingSimulatorItemInfo(), 50, 55));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("BurgerBunDown"), FCookingSimulatorItemInfo(), 50, 55));
 	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("CheddarCheese"), FCookingSimulatorItemInfo(), 50, 55));
-	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Ketchup"), FCookingSimulatorItemInfo(), 50, 46));
-	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Salt"), FCookingSimulatorItemInfo(), 50, 78));
-	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("BlackPepper"), FCookingSimulatorItemInfo(), 50, 100));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Ketchup"), FCookingSimulatorItemInfo(), 50, 55));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Salt"), FCookingSimulatorItemInfo(), 50, 55));
+	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("BlackPepper"), FCookingSimulatorItemInfo(), 50, 55));
 
 	// 연어 스테이크
 	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Potato"), FCookingSimulatorItemInfo(), 50, 44));
 	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("SalmonSteak"), FCookingSimulatorItemInfo(), 50, 45));
 	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Water"), FCookingSimulatorItemInfo(), 50, 55));
 	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("SunflowerOil"), FCookingSimulatorItemInfo(), 50, 56));
-	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Salt"), FCookingSimulatorItemInfo(), 50, 0));
-	testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("BlackPepper"), FCookingSimulatorItemInfo(), 50, 100));
+	//testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("Salt"), FCookingSimulatorItemInfo(), 50, 0));
+	//testRcp.ingredientInfoArray.Add(FIngredientInfo(TEXT("BlackPepper"), FCookingSimulatorItemInfo(), 50, 100));
 
 	GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>()->CompareDeliveryFood(testRcp);
 }

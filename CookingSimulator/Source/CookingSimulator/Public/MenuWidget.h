@@ -24,6 +24,9 @@ public:
 	UPROPERTY(EditAnywhere, Category="MySettings", meta = (BindWidget))
 	UButton* RecipeButton;
 
+	UPROPERTY(EditAnywhere, Category="MySettings", meta = (BindWidget))
+	class UVerticalBox* menuViewBox;
+
 	UPROPERTY(EditAnywhere, Category ="MySettings")
 	TSubclassOf<class URecipe_On_Monitor> recipeUI_BP;
 
@@ -42,12 +45,16 @@ public:
 	UPROPERTY(EditAnywhere, Category="MySettings")
 	bool bShowResult = false;
 
+	UPROPERTY(EditAnywhere, Category="MySettings")
 	class UMainUI* mainUI;
 
+	UPROPERTY(EditAnywhere, Category="MySettings")
 	class UResultWidget* resultUI;
 
+	UPROPERTY(EditAnywhere, Category="MySettings")
 	class URecipe_On_Monitor* recipeUI;
 
+	UPROPERTY(EditAnywhere, Category="MySettings")
 	class UNewOrderWidget* newOrderUI;
 
 
@@ -62,6 +69,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ShowResult();
+
+	void InitSubUI();
 
 protected:
 	virtual void NativeConstruct() override;

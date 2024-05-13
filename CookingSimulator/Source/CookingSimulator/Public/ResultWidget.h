@@ -37,13 +37,22 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
 	class UCanvasPanel* ResultCanvas;
+
+	float getScore = 0;
 		
 	UTexture2D* foodImage;
 
+	TArray<FString> resultComments;
+
 	// 결과 창 출력
+	UFUNCTION(BlueprintCallable)
 	void ShowResult();
 
+	void SetResult(TArray<FString> comments, int32 rankPoint);
+
 	void HideWidget();
+
+	float GetScorePercent();
 
 private:
 	void NativeConstruct() override;

@@ -80,7 +80,7 @@ public:
 	TSubclassOf<class UMenuWidget> menu_BP;
 		
 	float cookingTimer = 300;
-
+	
 	UMenuWidget* menuUI;
 
 	UFUNCTION(BlueprintCallable)

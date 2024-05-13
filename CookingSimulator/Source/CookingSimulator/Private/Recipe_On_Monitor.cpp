@@ -20,6 +20,8 @@ void URecipe_On_Monitor::ShowRecipeOnMonitor()
 		foodImage = UCookingSimulatorFunctionLibrary::GetRecipeImage(GetWorld(),rcpInfo.recipeType);
 		currentFood->SetBrushFromSoftTexture(foodImage);
 		
+		ingridientBox->ClearChildren();
+
 		for (int32 i = 0; i < rcpInfo.ingredientInfoArray.Num() - 1; i++)
 		{
 		// MonitorListWidget을 반복해서 CreateWidget한다

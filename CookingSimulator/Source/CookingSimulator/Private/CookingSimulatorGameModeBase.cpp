@@ -7,6 +7,7 @@
 #include "NewOrderWidget.h"
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/TextBlock.h>
 #include "MenuWidget.h"
+#include "ResultWidget.h"
 
 void ACookingSimulatorGameModeBase::StartPlay()
 {
@@ -15,7 +16,10 @@ void ACookingSimulatorGameModeBase::StartPlay()
 	if (menu_BP != nullptr)
 	{
 		menuUI = CreateWidget<UMenuWidget>(GetWorld(), menu_BP);
+		menuUI->InitSubUI();
 	}
+		
+
 
 	auto gameInstance = CastChecked<UCookingSimulatorGameInstance>(GetGameInstance());
 
@@ -302,8 +306,12 @@ void ACookingSimulatorGameModeBase::CompareDeliveryFood(FCookingSimulatorRecipeI
 		UKismetSystemLibrary::PrintString(GetWorld(), resultComment, true, true, FLinearColor::Red, 10.0f);
 	}
 
+	menuUI->resultUI->SetResult(resultComments, cookResult.rankPoint);
+
 	// 결과창UI 출력하는 Bool 값 바꿔줌
-	menuUI->bShowResult = true;
+	menuUI->bShowResult = true;	
+
+	menuUI->ShowResult();
 
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("요리 점수 : %03d"), cookResult.rankPoint), true, true, FLinearColor::Red, 10.0f);
 }
