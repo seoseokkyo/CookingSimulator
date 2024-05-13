@@ -368,10 +368,12 @@ void ATestCharacter::CheckHitTraceForLaserPointer(const FVector& startPos, FVect
 	{
 		if (redDotDecal_inst != nullptr)
 		{
-			redDotDecal_inst->SetActorLocation(dropPoint);
-			if (GripObject != nullptr)
+			
+			if (hitInfo.GetActor() == GripObject)
 			{
 				params.AddIgnoredActor(GripObject);
+				params.AddIgnoredComponent(MeshLeft);
+				redDotDecal_inst->SetActorLocation(dropPoint);
 			}
 			redDotDecal_inst->SetShowDecal(true);
 		}
@@ -398,10 +400,9 @@ void ATestCharacter::CheckHitTraceForDottedLine(const FVector& startPos, FVector
 		if (lineDecal_inst != nullptr)
 		{
 			lineDecal_inst->SetActorLocation(dropPoint);
-			if (GripObject != nullptr)
-			{
-				params.AddIgnoredActor(GripObject);
-			}
+			params.AddIgnoredComponent(MeshLeft);
+			params.AddIgnoredActor(GripObject);
+			
 			lineDecal_inst->SetShowDecal(true);
 		}
 	}
@@ -425,7 +426,8 @@ bool ATestCharacter::HitTest(FVector start, FVector end, FHitResult& outHit)
 {
 	FCollisionQueryParams params;
 	params.AddIgnoredActor(this);
-	/*if (GripObject != nullptr)
+	params.AddIgnoredComponent(MeshLeft);
+	/*if (GripObject == nullptr)
 	{
 		params.AddIgnoredActor(GripObject);
 	}*/
