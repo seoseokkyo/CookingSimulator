@@ -127,7 +127,8 @@ public:
 	void CheckHitTraceForDottedLine(const FVector& startPos, FVector& endPos);
 
 	UPROPERTY(EditAnywhere, Category = "VR")
-	AItem* GripActor;
+	AItem* GripObject = nullptr;
 
+	bool bCanTrace = true;
 
 };
