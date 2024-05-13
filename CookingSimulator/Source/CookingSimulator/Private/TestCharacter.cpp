@@ -147,7 +147,7 @@ void ATestCharacter::Tick(float DeltaTime)
 void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	
 	auto* input = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
 	if (input)
 	{
@@ -171,7 +171,7 @@ void ATestCharacter::OnIAMove(const FInputActionValue& value)
 	FVector2D v = value.Get<FVector2D>();
 
 	AddMovementInput(GetActorForwardVector(), v.X);
-	AddMovementInput(GetActorRightVector(), v.Y);
+	AddMovementInput(GetActorRightVector(), v.Y * -1.f);
 }
 
 void ATestCharacter::OnIATurn(const FInputActionValue& value)
@@ -288,6 +288,7 @@ void ATestCharacter::GripItem(AItem* item)
 		GripObject->baseMesh->SetSimulatePhysics(false);
 
 		item->SetActorRelativeLocation(MeshRight->GetComponentLocation() + MeshRight->GetForwardVector() * 700, true);
+		item->SetActorRelativeRotation(FRotator(0, -90, 90));
 
 		item->baseMesh->SetWorldLocation(MotionRight->GetComponentLocation());
 
@@ -360,15 +361,18 @@ void ATestCharacter::CheckHitTraceForLaserPointer(const FVector& startPos, FVect
 {
 	FHitResult hitInfo;
 	bool bHit = HitTest(startPos, endPos, hitInfo);
-
 	FVector dropPoint = hitInfo.ImpactPoint;
+	FCollisionQueryParams params;
 
 	if (bHit)
 	{
 		if (redDotDecal_inst != nullptr)
 		{
 			redDotDecal_inst->SetActorLocation(dropPoint);
-
+			if (GripObject != nullptr)
+			{
+				params.AddIgnoredActor(GripObject);
+			}
 			redDotDecal_inst->SetShowDecal(true);
 		}
 	}
@@ -394,7 +398,10 @@ void ATestCharacter::CheckHitTraceForDottedLine(const FVector& startPos, FVector
 		if (lineDecal_inst != nullptr)
 		{
 			lineDecal_inst->SetActorLocation(dropPoint);
-			params.AddIgnoredActor(GripObject);
+			if (GripObject != nullptr)
+			{
+				params.AddIgnoredActor(GripObject);
+			}
 			lineDecal_inst->SetShowDecal(true);
 		}
 	}
@@ -418,6 +425,10 @@ bool ATestCharacter::HitTest(FVector start, FVector end, FHitResult& outHit)
 {
 	FCollisionQueryParams params;
 	params.AddIgnoredActor(this);
+	/*if (GripObject != nullptr)
+	{
+		params.AddIgnoredActor(GripObject);
+	}*/
 
 	return GetWorld()->LineTraceSingleByChannel(outHit, start, end, ECC_Visibility, params);
 }
