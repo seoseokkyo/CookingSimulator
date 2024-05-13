@@ -116,7 +116,7 @@ void ACookingSimulatorGameModeBase::StartPlay()
 	}
 
 	//SetCurrentRecipe(ECookingSimulatorRecipeType::Hamburger);
-	SetCurrentRecipe(ECookingSimulatorRecipeType::SalmonSteakAndBoiledPotato);
+	SetCurrentRecipe(ECookingSimulatorRecipeType::Hamburger);
 }
 
 void ACookingSimulatorGameModeBase::Tick(float DeltaSeconds)

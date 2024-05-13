@@ -15,6 +15,7 @@ class UInputAction;
 class AActor;
 class APlayerController;
 class UInteractComponent;
+class AItem;
 
 UCLASS()
 class COOKINGSIMULATOR_API ATestCharacter : public ACharacter
@@ -116,7 +117,7 @@ public:
 	void OnIAGripL(const FInputActionValue& value);
 	void OnIAUnGripL(const FInputActionValue& value);
 
-	void GripItem(UPrimitiveComponent* item);
+	void GripItem(AItem* item);
 
 	bool bCanGrip = false;
 
@@ -126,7 +127,7 @@ public:
 	void CheckHitTraceForDottedLine(const FVector& startPos, FVector& endPos);
 
 	UPROPERTY(EditAnywhere, Category = "VR")
-	class UPrimitiveComponent* GripObject;
+	AItem* GripActor;
 
 
 };

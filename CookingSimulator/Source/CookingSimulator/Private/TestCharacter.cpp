@@ -206,10 +206,10 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 		if (bCanGrip)
 		{
 			// 해당 아이템을 쥔다
-			GripItem(GripObject);
+			GripItem(GripActor);
 		}
 	}
-
+	
 	// 소금/후추 등이 들어갈 레이저 포인트 위치를 잡는다 
 	FVector grabLoc = MotionRight->GetComponentLocation();
 	FVector dropLoc = grabLoc + FVector(0, 0, -1) * 1000;
@@ -236,8 +236,10 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 void ATestCharacter::OnIAUnGripR(const FInputActionValue& value)
 {
 	MeshRight->SetVisibility(true);
-	GripObject->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-	GripObject->SetSimulatePhysics(true);
+	//GripActor->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	GripActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	//GripActor->SetSimulatePhysics(true);
+	GripActor->baseMesh->SetSimulatePhysics(true);
 
 
 	if (redDotDecal_inst != nullptr)
@@ -259,7 +261,7 @@ void ATestCharacter::OnIAUnGripL(const FInputActionValue& value)
 {
 }
 
-void ATestCharacter::GripItem(UPrimitiveComponent* item)
+void ATestCharacter::GripItem(AItem* item)
 {
 
 	// 기존 손 메시를 없애고
@@ -271,11 +273,14 @@ void ATestCharacter::GripItem(UPrimitiveComponent* item)
 	item->AttachToComponent(MotionRight, FAttachmentTransformRules::KeepWorldTransform);
 	if (item != nullptr)
 	{
-	//item->SetActorEnableCollision(ECollisionEnabled::NoCollision);
-	item->SetRelativeLocation(MotionRight->GetComponentLocation());
-	// item->IgnoreComponentWhenMoving(GetCapsuleComponent(), true);
+		//item->SetActorEnableCollision(ECollisionEnabled::NoCollision);
+		//item->baseMesh->SetSimulatePhysics(false);
 
-	IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
+		item->SetActorRelativeLocation(MotionRight->GetComponentLocation());
+		
+		// item->IgnoreComponentWhenMoving(GetCapsuleComponent(), true);
+
+		IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
 	}
 	
 }
@@ -314,7 +319,7 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 			focusedActor = interactedActor;
 
 			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, true);
-			GripObject = Cast<UPrimitiveComponent>(focusedActor);
+			GripActor = Cast<AItem>(focusedActor);
 			bCanGrip = true;
 		}
 
