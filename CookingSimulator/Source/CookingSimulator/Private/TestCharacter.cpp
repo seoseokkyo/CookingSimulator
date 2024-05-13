@@ -287,7 +287,7 @@ void ATestCharacter::GripItem(AItem* item)
 		item->SetActorEnableCollision(true);
 		GripObject->baseMesh->SetSimulatePhysics(false);
 
-		item->SetActorRelativeLocation(MeshRight->GetComponentLocation() + MeshRight->GetForwardVector() * 700, true);
+		item->SetActorLocation(MeshRight->GetComponentLocation() + MeshRight->GetForwardVector() * 700, true);
 
 		item->baseMesh->SetWorldLocation(MotionRight->GetComponentLocation());
 
