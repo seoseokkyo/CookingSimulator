@@ -37,16 +37,16 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-private:
+// private:
 	// VR Camera Component를 생성하고 루트에 붙이고 싶다.
 	UPROPERTY(EditDefaultsOnly)
 	UCameraComponent* VRCamera;
 
 	// 모션 컨트롤러 왼손, 오른손을 생성하고 루트에 붙이고 싶다.
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UMotionControllerComponent* MotionLeft;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UMotionControllerComponent* MotionRight;
 	
 	// 왼손과 오른손의 스켈레탈 매쉬컴포넌트를 만들고
@@ -93,6 +93,7 @@ private:
 
 	void CheckHitTraceForLaserPointer(const FVector& startPos, FVector& endPos);
 
+	FCollisionQueryParams params;
 
 public:
 	UPROPERTY(EditAnywhere)

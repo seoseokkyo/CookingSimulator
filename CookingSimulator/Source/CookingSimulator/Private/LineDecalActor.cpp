@@ -13,7 +13,7 @@ void ALineDecalActor::BeginPlay()
 
 	if (GetDecal() != nullptr)
 	{
-		GetDecal()->DecalSize = FVector(64);
+		GetDecal()->DecalSize = FVector(20);
 
 
 	}

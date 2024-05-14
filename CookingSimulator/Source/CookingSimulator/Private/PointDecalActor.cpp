@@ -12,7 +12,7 @@ void APointDecalActor::BeginPlay()
 
 	if (GetDecal() != nullptr)
 	{
-		GetDecal()->DecalSize = decalSizeSet;
+		GetDecal()->DecalSize = FVector(10);
 	}
 }
 

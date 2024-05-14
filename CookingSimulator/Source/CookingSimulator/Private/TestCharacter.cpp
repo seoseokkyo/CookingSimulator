@@ -99,16 +99,16 @@ void ATestCharacter::BeginPlay()
 
 	if (redDotDecal_inst == nullptr)
 	{
-		FActorSpawnParameters params;
-		params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		redDotDecal_inst = GetWorld()->SpawnActor<APointDecalActor>(PointDecalActor, FVector(0, 0, -50000), FRotator::ZeroRotator, params);
+		FActorSpawnParameters spawnParams;
+		spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		redDotDecal_inst = GetWorld()->SpawnActor<APointDecalActor>(PointDecalActor, FVector(0, 0, -50000), FRotator::ZeroRotator, spawnParams);
 	}
 
 	if (lineDecal_inst == nullptr)
 	{
-		FActorSpawnParameters params;
-		params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		lineDecal_inst = GetWorld()->SpawnActor<ALineDecalActor>(LineDecalActor, FVector(0, 0, -50000), FRotator::ZeroRotator, params);
+		FActorSpawnParameters spawnParams;
+		spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		lineDecal_inst = GetWorld()->SpawnActor<ALineDecalActor>(LineDecalActor, FVector(0, 0, -50000), FRotator::ZeroRotator, spawnParams);
 		//lineDecal_inst->SetActorScale3D(FVector(5));
 	}
 
@@ -117,6 +117,10 @@ void ATestCharacter::BeginPlay()
 	{
 		gm->SetCurrentRecipe(ECookingSimulatorRecipeType::Hamburger);
 	}
+
+	params.AddIgnoredActor(this);
+	
+	params.AddIgnoredComponent(MeshLeft);
 }
 
 // Called every frame
@@ -205,6 +209,9 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 		{
 			// 해당 아이템을 쥔다
 			GripItem(GripObject);
+			params.AddIgnoredActor(GripObject);
+			params.AddIgnoredActor(this);
+			// 그립되는 이 위치에서 무시할 액터 체크해야함 주의..
 		}
 	}
 
@@ -212,10 +219,9 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 	if (GripObject != nullptr)
 	{
 		FVector grabLoc = GripObject->GetActorLocation();
-		FVector dropLoc = grabLoc * FVector(1, 1, 0);
-		//FVector dropLoc = grabLoc + FVector(0, 0, -1) * 1000;
+		FVector dropLoc = grabLoc + FVector(0, 0, -1) * 100000;
 		// 레이저 포인트 잘 작동하는지 확인용 선 그리기
-		// sDrawLine(grabLoc, dropLoc);
+		// DrawLine(grabLoc, dropLoc);
 		// 케찹 소금 올리브유 등 소스를 잡고있다면 
 		if (!GripObject->GetName().Contains(TEXT("BP_KitchenKnife")))
 		{
@@ -241,7 +247,7 @@ void ATestCharacter::OnIAUnGripR(const FInputActionValue& value)
 
 	if (GripObject == nullptr)
 		return;
-
+	params.ClearIgnoredActors();
 	MeshRight->SetVisibility(true);
 	//GripObject->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 	GripObject->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
@@ -287,7 +293,8 @@ void ATestCharacter::GripItem(AItem* item)
 		item->SetActorEnableCollision(true);
 		GripObject->baseMesh->SetSimulatePhysics(false);
 
-		item->SetActorRelativeLocation(MeshRight->GetComponentLocation() + MeshRight->GetForwardVector() * 700, true);
+		// item->SetActorRelativeLocation(MeshRight->GetComponentLocation() + MeshRight->GetForwardVector() * 700, true);
+		item->SetActorRelativeLocation(MeshRight->GetComponentLocation(), true);
 		item->SetActorRelativeRotation(FRotator(0, -90, 90));
 
 		item->baseMesh->SetWorldLocation(MotionRight->GetComponentLocation());
@@ -362,19 +369,15 @@ void ATestCharacter::CheckHitTraceForLaserPointer(const FVector& startPos, FVect
 	FHitResult hitInfo;
 	bool bHit = HitTest(startPos, endPos, hitInfo);
 	FVector dropPoint = hitInfo.ImpactPoint;
-	FCollisionQueryParams params;
-
+	
+	UE_LOG(LogTemp, Warning, TEXT("%f %f %f"), dropPoint.X, dropPoint.Y, dropPoint.Z);
+	
 	if (bHit)
 	{
 		if (redDotDecal_inst != nullptr)
 		{
 			
-			if (hitInfo.GetActor() == GripObject)
-			{
-				params.AddIgnoredActor(GripObject);
-				params.AddIgnoredComponent(MeshLeft);
-				redDotDecal_inst->SetActorLocation(dropPoint);
-			}
+			redDotDecal_inst->SetActorLocation(dropPoint);
 			redDotDecal_inst->SetShowDecal(true);
 		}
 	}
@@ -392,7 +395,6 @@ void ATestCharacter::CheckHitTraceForDottedLine(const FVector& startPos, FVector
 	FHitResult hitInfo;
 	bool bHit = HitTest(startPos, endPos, hitInfo);
 	FVector dropPoint = hitInfo.ImpactPoint;
-	FCollisionQueryParams params;
 
 	if (bHit)
 	{
@@ -400,8 +402,6 @@ void ATestCharacter::CheckHitTraceForDottedLine(const FVector& startPos, FVector
 		if (lineDecal_inst != nullptr)
 		{
 			lineDecal_inst->SetActorLocation(dropPoint);
-			params.AddIgnoredComponent(MeshLeft);
-			params.AddIgnoredActor(GripObject);
 			
 			lineDecal_inst->SetShowDecal(true);
 		}
@@ -419,14 +419,11 @@ void ATestCharacter::DrawLine(FVector start, FVector end)
 {
 	// throw std::logic_error("The method or operation is not implemented.");
 
-	DrawDebugLine(GetWorld(), start, end, FColor::Red, false, 0, 0, 0.5f);
+	DrawDebugLine(GetWorld(), start, end, FColor::White, false, 0, 0, 0.5f);
 }
 
 bool ATestCharacter::HitTest(FVector start, FVector end, FHitResult& outHit)
 {
-	FCollisionQueryParams params;
-	params.AddIgnoredActor(this);
-	params.AddIgnoredComponent(MeshLeft);
 	/*if (GripObject == nullptr)
 	{
 		params.AddIgnoredActor(GripObject);
