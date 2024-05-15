@@ -25,6 +25,11 @@
 #include "InteractComponent.h"
 #include <../../../../../../../Source/Runtime/Engine/Classes/GameFramework/Actor.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/SceneComponent.h>
+#include "ItemWidget.h"
+#include "Components/CanvasPanel.h"
+#include "CookingSimulatorFunctionLibrary.h"
+#include "Components/Image.h"
+#include "Components/TextBlock.h"
 
 
 // Sets default values
@@ -79,6 +84,17 @@ ATestCharacter::ATestCharacter()
 void ATestCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// 아이템 UI가 있다면 임시로 뷰포트에 생성하고 숨긴다.
+	if (itemUI_BP != nullptr)
+	{
+		itemUI = CreateWidget<UItemWidget>(GetWorld(), itemUI_BP);
+
+		itemUI->AddToViewport();
+
+		itemUI->SetVisibility(ESlateVisibility::Hidden);
+	}
+
 	
 	//pc = GetController<APlayerController>();
 	pc = Cast<APlayerController>(GetController());
@@ -307,6 +323,15 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 
 			// 여기에다가도 쓰는게 맞나
 			bCanGrip = false;
+
+			// 이미지 가져오는 부분 확실하지 않아서 점검 필요
+			ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
+			FIngredientInfo rcpInfo;
+			foodImage = UCookingSimulatorFunctionLibrary::GetImageByItemName(GetWorld(), rcpInfo.ingredientName);
+			itemUI->itemImage->SetBrushFromSoftTexture(foodImage);
+			FText itemName = FText::FromString(rcpInfo.ingredientName);
+			itemUI->itemName->SetText(itemName);
+			itemUI->SetVisibility(ESlateVisibility::Visible);
 		}
 
 		if (item != nullptr)
@@ -329,6 +354,8 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 			
 			bCanGrip = false;
 		}
+		// 다시 아이템 UI 숨기기
+		itemUI->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 

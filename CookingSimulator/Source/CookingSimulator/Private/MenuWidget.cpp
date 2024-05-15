@@ -10,10 +10,12 @@
 #include "NewOrderWidget.h"
 #include "ResultWidget.h"
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/VerticalBox.h>
+#include "Components/Overlay.h"
 
 void UMenuWidget::NativeConstruct()
 {
 	UpdateCanTick();
+	
 	InitSubUI();
 }
 
@@ -26,19 +28,21 @@ void UMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 
 void UMenuWidget::OpenGuide()
 {
-	//mainUI->GuideCanvas->SetVisibility(ESlateVisibility::Visible);
+	mainUI->GuideCanvas->SetVisibility(ESlateVisibility::Visible);
+	mainUI->NewOrder();
+	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("xx")));
+	recipeUI->RemoveFromParent();
 	menuViewBox->AddChild(mainUI);
 	//recipeUI->RecipeCanvas->SetVisibility(ESlateVisibility::Hidden);
-	recipeUI->RemoveFromParent();
 	//newOrderUI->NewOrderCanvas->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UMenuWidget::OpenRecipe()
 {
-	//recipeUI->RecipeCanvas->SetVisibility(ESlateVisibility::Visible);
+	recipeUI->RecipeCanvas->SetVisibility(ESlateVisibility::Visible);
 	recipeUI->ShowRecipeOnMonitor();
-	menuViewBox->AddChild(recipeUI);
 	mainUI->RemoveFromParent();
+	menuViewBox->AddChild(recipeUI);
 	//mainUI->GuideCanvas->SetVisibility(ESlateVisibility::Hidden);
 	//newOrderUI->NewOrderCanvas->SetVisibility(ESlateVisibility::Hidden);
 }
@@ -83,7 +87,8 @@ void UMenuWidget::InitSubUI()
 		menuViewBox->AddChild(mainUI);
 		mainUI->SetRenderScale(FVector2D(1.0f));
 		
-		//mainUI->GuideCanvas->SetVisibility(ESlateVisibility::Hidden);
+		mainUI->GuideCanvas->SetVisibility(ESlateVisibility::Hidden);
+		mainUI->HideWidget();
 	}
 	else
 	{
@@ -96,7 +101,7 @@ void UMenuWidget::InitSubUI()
 		// ÀÓ½Ã·Î ºäÆ÷Æ®¿¡ ¶ç¿ò
 		//recipeUI->AddToViewport();
 		menuViewBox->AddChild(recipeUI);
-		//recipeUI->RecipeCanvas->SetVisibility(ESlateVisibility::Hidden);
+		recipeUI->RecipeCanvas->SetVisibility(ESlateVisibility::Hidden);
 
 		//recipeUI->SetRenderScale(FVector2D(2.0f, 1.0f));
 		//UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("o")));

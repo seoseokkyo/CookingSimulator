@@ -410,6 +410,8 @@ public:
 	// 완료 이미지로 교체된 이미지들을 다시 원래대로 돌려주는 함수
 	void SetOriginImage();
 
+	// 위젯 숨기기
+	void HideWidget();
 	
 	
 private:
@@ -423,8 +425,6 @@ private:
 
 	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
-	// 위젯 숨기기
-	void HideWidget();
 
 	
 	

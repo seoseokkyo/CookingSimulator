@@ -36,6 +36,15 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(EditAnywhere, Category = "MySettings")
+	TSubclassOf<class UItemWidget> itemUI_BP;
+
+	UPROPERTY(EditAnywhere, Category = "MySettigns")
+	UItemWidget* itemUI;
+
+	UPROPERTY(EditAnywhere, Category = "MySettgins")
+	class UTexture2D* foodImage;
+
 private:
 	// VR Camera Component를 생성하고 루트에 붙이고 싶다.
 	UPROPERTY(EditDefaultsOnly)

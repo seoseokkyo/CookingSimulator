@@ -25,7 +25,7 @@ void UMainUI::NativeConstruct()
 
 	
 
-	HideWidget();
+	//HideWidget();
 
 }
 
@@ -33,7 +33,7 @@ void UMainUI::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
-	NewOrder();
+	
 
 
 }
@@ -42,9 +42,9 @@ void UMainUI::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 // 위젯 전체 숨기기
 void UMainUI::HideWidget()
 {
-	GuideCanvas->SetVisibility(ESlateVisibility::Hidden);
+	//GuideCanvas->SetVisibility(ESlateVisibility::Hidden);
 	
-	GuideBarOverlay->SetVisibility(ESlateVisibility::Hidden);
+	//GuideBarOverlay->SetVisibility(ESlateVisibility::Hidden);
 	
 	Guide01->SetVisibility(ESlateVisibility::Hidden);
 	Guide02->SetVisibility(ESlateVisibility::Hidden);
@@ -88,6 +88,7 @@ void UMainUI::HideWidget()
 }
 
 // 새로운 주문이 들어왔을 때 bNewOrder == true가 된다. 그리고 새로운 주문 UI, 가이드 UI 띄운다.
+// 메뉴 위젯의 NewOrder 함수가 불려질 때 이 함수도 같이 불려져야 함. 그래고 MenuUI에서는 가이드 UI의 캔버스만 껐다 켰다 해야됨
 void UMainUI::NewOrder()
 {
 	//if (true == bNewOrder)
@@ -97,6 +98,7 @@ void UMainUI::NewOrder()
 		ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
 		if (gm != nullptr)
 		{
+		
 			FCookingSimulatorRecipeInfo rcpInfo = gm->GetCurrentRecipe();
 
 
@@ -108,12 +110,7 @@ void UMainUI::NewOrder()
 
 			Menu->SetText(textTemp);
 			Menu->SetColorAndOpacity(FLinearColor::Black);
-
-			
-						
-
 		
-
 			if (rcpInfo.recipeType == ECookingSimulatorRecipeType::Hamburger)
 			{
 				HamburgerGuide();
