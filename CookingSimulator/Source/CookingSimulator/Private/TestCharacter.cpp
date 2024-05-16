@@ -230,10 +230,13 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 		}
 
 		// 칼 등 조리 도구를 잡고있다면
-		if(GripObject->GetName().Contains(TEXT("BP_KitchenKnife")))
+		if(GripObject->GetName().Contains(TEXT("BP_SliceKnife")))
 		{
+			FTimerHandle timerHandle;
+			GetWorld()->GetTimerManager().SetTimer(timerHandle, 0.2f, false);
 			// 자를 지점에 점선 표시
 			CheckHitTraceForDottedLine(grabLoc, dropLoc);
+			bSlice = true;
 		}
 	}
 
@@ -244,6 +247,7 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 void ATestCharacter::OnIAUnGripR(const FInputActionValue& value)
 {
 	bCanTrace = true;
+	bSlice = false;
 
 	if (GripObject == nullptr)
 		return;

@@ -132,4 +132,7 @@ public:
 
 	bool bCanTrace = true;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bSlice = false;
+
 };
