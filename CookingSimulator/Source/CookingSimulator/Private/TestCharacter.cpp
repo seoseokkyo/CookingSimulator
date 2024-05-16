@@ -30,6 +30,7 @@
 #include "CookingSimulatorFunctionLibrary.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
+#include <../../../../../../../Source/Runtime/UMG/Public/Components/WidgetComponent.h>
 
 
 // Sets default values
@@ -78,6 +79,8 @@ ATestCharacter::ATestCharacter()
 		MeshLeft->SetSkeletalMesh(TempMeshLeft.Object);
 		MeshLeft->SetWorldLocationAndRotation(FVector(-3.0f, -3.5f, 4.5f), FRotator(-25.0f, -180.0f, 90.0f));
 	}	
+
+	
 }
 
 // Called when the game starts or when spawned
@@ -90,9 +93,11 @@ void ATestCharacter::BeginPlay()
 	{
 		itemUI = CreateWidget<UItemWidget>(GetWorld(), itemUI_BP);
 
-		itemUI->AddToViewport();
+		//itemUI->AddToViewport();
 
-		itemUI->SetVisibility(ESlateVisibility::Hidden);
+		//itemUI->SetVisibility(ESlateVisibility::Hidden);
+
+		
 	}
 
 	
@@ -151,7 +156,7 @@ void ATestCharacter::Tick(float DeltaTime)
 	// RenderCustomDepth 사용
 	CheckHitTraceForOutline(start, end);
 
-
+	
 }
 
 // Called to bind functionality to input
@@ -324,14 +329,6 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 			// 여기에다가도 쓰는게 맞나
 			bCanGrip = false;
 
-			// 이미지 가져오는 부분 확실하지 않아서 점검 필요
-			ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
-			FIngredientInfo rcpInfo;
-			foodImage = UCookingSimulatorFunctionLibrary::GetImageByItemName(GetWorld(), rcpInfo.ingredientName);
-			itemUI->itemImage->SetBrushFromSoftTexture(foodImage);
-			FText itemName = FText::FromString(rcpInfo.ingredientName);
-			itemUI->itemName->SetText(itemName);
-			itemUI->SetVisibility(ESlateVisibility::Visible);
 		}
 
 		if (item != nullptr)
@@ -341,6 +338,26 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, true);
 			GripObject = Cast<UPrimitiveComponent>(focusedActor);
 			bCanGrip = true;
+
+			// 이미지 가져오는 부분 확실하지 않아서 점검 필요
+			ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
+
+			auto itemCheck = CastChecked<AItem>(interactedActor);
+
+			if (itemCheck != nullptr)
+			{
+				//UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("rr")));
+				itemUI->SetVisibility(ESlateVisibility::Visible);
+				FString itemName_ = itemCheck->ItemName;
+				if (itemName_ != "EmptyName")
+				{
+					FText itemNameText = FText::FromString(itemName_);
+					itemUI->itemName->SetText(itemNameText);
+					foodImage = UCookingSimulatorFunctionLibrary::GetImageByItemName(GetWorld(), itemName_);
+					itemUI->itemImage->SetBrushFromSoftTexture(foodImage);
+					UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("rr")));
+				}
+			}
 		}
 
 	}
@@ -354,8 +371,9 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 			
 			bCanGrip = false;
 		}
-		// 다시 아이템 UI 숨기기
-		itemUI->SetVisibility(ESlateVisibility::Hidden);
+		
+	// 다시 아이템 UI 숨기기
+	itemUI->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 

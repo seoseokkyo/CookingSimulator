@@ -10,7 +10,6 @@ void ABigPot::InteractStart_Implementation()
 {
 	Super::InteractStart_Implementation();
 
-
 }
 
 ABigPot::ABigPot()
@@ -18,6 +17,9 @@ ABigPot::ABigPot()
 	waterMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WaterMesh"));
 	waterMesh->SetupAttachment(baseMesh);
 	waterMesh->SetRelativeScale3D(FVector(1, 1, 0));
+
+
+	ItemName = TEXT("BigPot");
 }
 
 bool ABigPot::AddIngredient(AIngredient* Ingredient)

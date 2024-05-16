@@ -9,5 +9,12 @@ FCookingSimulatorItemInfo UCookingSimulatorGameInstance::GetItemDataTable(const 
 	FString errorText;
 	FCookingSimulatorItemInfo* cookingSimulatorItemInfo = dt_itemDataTable->FindRow<FCookingSimulatorItemInfo>(FName(rowName), errorText);
 
-	return *cookingSimulatorItemInfo;
+	if (errorText.Compare(TEXT("Empty")))
+	{
+		return FCookingSimulatorItemInfo();
+	}
+	else
+	{
+		return *cookingSimulatorItemInfo;
+	}	
 }

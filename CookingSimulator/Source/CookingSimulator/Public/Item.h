@@ -56,16 +56,18 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-private:
-
-
-public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
-	FString ItemName;
+	FString ItemName = TEXT("EmptyName");
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
 	FCookingSimulatorItemInfo itemInfoStruct;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
 	UStaticMeshComponent* baseMesh;
+
+private:
+
+
+
+	
 };

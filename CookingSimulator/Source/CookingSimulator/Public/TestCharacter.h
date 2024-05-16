@@ -36,11 +36,12 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+		
 	UPROPERTY(EditAnywhere, Category = "MySettings")
 	TSubclassOf<class UItemWidget> itemUI_BP;
 
-	UPROPERTY(EditAnywhere, Category = "MySettigns")
-	UItemWidget* itemUI;
+	UPROPERTY()
+	UItemWidget* itemUI = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "MySettgins")
 	class UTexture2D* foodImage;
