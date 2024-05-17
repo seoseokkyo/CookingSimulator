@@ -32,6 +32,9 @@
 #include "Components/TextBlock.h"
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/WidgetComponent.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h>
+#include "Tablet.h"
+#include <../../../../../../../Source/Runtime/Engine/Classes/Engine/StaticMeshSocket.h>
+#include <../../../../../../../Source/Runtime/Engine/Classes/Engine/SkeletalMeshSocket.h>
 
 
 // Sets default values
@@ -100,6 +103,31 @@ void ATestCharacter::BeginPlay()
 		itemUI->SetVisibility(ESlateVisibility::Hidden);
 	}
 
+	// 태블릿을 왼손에 attach하고 숨긴다
+	if (tablet_BP != nullptr)
+	{
+		FActorSpawnParameters params;
+		params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		
+		spawnTablet = GetWorld()->SpawnActor<ATablet>(tablet_BP);
+
+		const USkeletalMeshSocket* tabletSocket = MeshLeft->GetSocketByName("TabletSocket");
+
+		
+		if (spawnTablet && tabletSocket)
+		{
+			tabletSocket->AttachActor(spawnTablet, MeshLeft);
+			//UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("rr")));
+			spawnTablet->AttachToComponent(MeshLeft, FAttachmentTransformRules::KeepRelativeTransform, FName(TEXT("TabletSocket")));
+		}
+		else
+		{
+			//UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("null")));
+		}
+
+		spawnTablet->SetActorHiddenInGame(true);
+	}	
+	
 	
 	//pc = GetController<APlayerController>();
 	pc = Cast<APlayerController>(GetController());
@@ -176,6 +204,7 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 		input->BindAction(IA_MyGripL, ETriggerEvent::Triggered, this, &ATestCharacter::OnIAGripL);
 		input->BindAction(IA_MyGripL, ETriggerEvent::Completed, this, &ATestCharacter::OnIAUnGripL);
+		input->BindAction(IA_ShowTablet, ETriggerEvent::Started, this, &ATestCharacter::ShowTablet);
 	}
 
 	// 나중에 문제 해결되면 삭제 예정
@@ -203,6 +232,27 @@ void ATestCharacter::OnIATrigger(const FInputActionValue& value)
 		IInteractAbleInterface::Execute_InteractStart(targetComp);
 	}
 }
+
+// 태블릿 띄우고 숨기는 함수
+void ATestCharacter::ShowTablet(const FInputActionValue& value)
+{		
+	// bshow 가 false라면 태블릿을 띄우고 bshow를 true로 바꾼다
+	if (false == bshow)
+	{
+		spawnTablet->SetActorHiddenInGame(false);
+		bshow = true;
+		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("sr")));
+	}
+	// bshow 가 true라면 태블릿을 숨기고 false로 바꾼다
+	else
+	{
+		spawnTablet->SetActorHiddenInGame(true);
+		bshow = false;
+		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("none")));
+	}
+}
+
+
 void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 {
 	FVector startPos = MotionRight->GetComponentLocation();
