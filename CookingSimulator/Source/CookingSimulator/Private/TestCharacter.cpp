@@ -31,6 +31,7 @@
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/WidgetComponent.h>
+#include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h>
 
 
 // Sets default values
@@ -80,7 +81,11 @@ ATestCharacter::ATestCharacter()
 		MeshLeft->SetWorldLocationAndRotation(FVector(-3.0f, -3.5f, 4.5f), FRotator(-25.0f, -180.0f, 90.0f));
 	}	
 
-	
+	// 아이템 위젯 컴포넌트를 생성한다
+	itemWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Item Widget Component"));
+	itemWidgetComp->SetupAttachment(RootComponent);
+	itemWidgetComp->SetWorldRotation(FRotator(180,0,0));
+	itemWidgetComp->SetWorldScale3D(FVector(0.3f));
 }
 
 // Called when the game starts or when spawned
@@ -88,16 +93,11 @@ void ATestCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// 아이템 UI가 있다면 임시로 뷰포트에 생성하고 숨긴다.
-	if (itemUI_BP != nullptr)
+	// 아이템 UI가 있다면 생성하고 숨긴다.
+	if (itemWidgetComp != nullptr)
 	{
-		itemUI = CreateWidget<UItemWidget>(GetWorld(), itemUI_BP);
-
-		//itemUI->AddToViewport();
-
-		//itemUI->SetVisibility(ESlateVisibility::Hidden);
-
-		
+		itemUI = Cast<UItemWidget>(itemWidgetComp->GetWidget());
+		itemUI->SetVisibility(ESlateVisibility::Hidden);
 	}
 
 	
@@ -144,7 +144,7 @@ void ATestCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-
+	
 	// 플레이 중에는 항상 왼손(스켈레탈메시)에서 트레이싱이 진행된다
 	FVector start = MeshRight->GetComponentLocation();
 	FVector end = start + MeshRight->GetRightVector() * 100000;
@@ -329,6 +329,7 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 			// 여기에다가도 쓰는게 맞나
 			bCanGrip = false;
 
+			itemUI->SetVisibility(ESlateVisibility::Hidden);
 		}
 
 		if (item != nullptr)
@@ -344,12 +345,23 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 
 			auto itemCheck = CastChecked<AItem>(interactedActor);
 
+			// itemWidget을 빌보드 처리한다
+			auto* fpc = GetWorld()->GetFirstPlayerController();
+			if (fpc != nullptr)
+			{
+				FVector dir = fpc->PlayerCameraManager->GetCameraLocation() - itemWidgetComp->GetComponentLocation();
+				itemWidgetComp->SetWorldRotation(UKismetMathLibrary::MakeRotFromX(dir.GetSafeNormal()));
+
+				//itemWidgetComp->SetWorldLocation(fpc->PlayerCameraManager->GetCameraLocation() + fpc->PlayerCameraManager->GetActorForwardVector() * 500);
+				itemWidgetComp ->SetWorldLocation(focusedActor->GetActorLocation() + focusedActor->GetActorUpVector() * 100);
+			}
+
 			if (itemCheck != nullptr)
 			{
 				//UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("rr")));
-				itemUI->SetVisibility(ESlateVisibility::Visible);
 				FString itemName_ = itemCheck->ItemName;
-				if (itemName_ != "EmptyName")
+				if (itemName_.Compare(TEXT("Name")) != 0)
+				itemUI->SetVisibility(ESlateVisibility::Visible);
 				{
 					FText itemNameText = FText::FromString(itemName_);
 					itemUI->itemName->SetText(itemNameText);
@@ -370,10 +382,12 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 			targetComp = nullptr;
 			
 			bCanGrip = false;
+
 		}
 		
-	// 다시 아이템 UI 숨기기
-	itemUI->SetVisibility(ESlateVisibility::Hidden);
+
+		// 다시 아이템 UI 숨기기
+		itemUI->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 
@@ -401,6 +415,8 @@ void ATestCharacter::CheckHitTraceForLaserPointer(const FVector& startPos, FVect
 		}
 	}
 }
+
+
 
 void ATestCharacter::CheckHitTraceForDottedLine(const FVector& startPos, FVector& endPos)
 {

@@ -14,21 +14,17 @@ UTexture2D* UCookingSimulatorFunctionLibrary::GetImageByItemName(UObject* WorldC
 
 	auto gameInstance = UGameplayStatics::GetGameInstance(WorldContextObject);
 
-	if(rowName != FString(TEXT("EmptyName")))
+	if (gameInstance != nullptr)
 	{
-		
-		if (gameInstance != nullptr)
+
+		auto cookingInstance = CastChecked<UCookingSimulatorGameInstance>(gameInstance);
+
+		if (cookingInstance != nullptr)
 		{
-		
-			auto cookingInstance = CastChecked<UCookingSimulatorGameInstance>(gameInstance);
 
-			if (cookingInstance != nullptr)
-			{
-		
-				FCookingSimulatorItemInfo itemInfo = cookingInstance->GetItemDataTable(rowName);
+			FCookingSimulatorItemInfo itemInfo = cookingInstance->GetItemDataTable(rowName);
 
-				rtn = UKismetRenderingLibrary::ImportFileAsTexture2D(WorldContextObject, FPaths::ProjectDir() + itemInfo.itemImagePath);
-			}
+			rtn = UKismetRenderingLibrary::ImportFileAsTexture2D(WorldContextObject, FPaths::ProjectDir() + itemInfo.itemImagePath);
 		}
 	}
 

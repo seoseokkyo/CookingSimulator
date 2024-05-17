@@ -28,7 +28,7 @@ void AItem::BeginPlay()
 
 		if (cookingInstance != nullptr)
 		{
-			if (!ItemName.IsEmpty())
+			if (ItemName.Compare(TEXT("Name")) != 0)
 			{
 				itemInfoStruct = cookingInstance->GetItemDataTable(ItemName);
 			}			

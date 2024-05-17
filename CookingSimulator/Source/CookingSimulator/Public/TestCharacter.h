@@ -36,7 +36,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-		
+	UPROPERTY(EditAnywhere, Category = "MySettigns")
+	class UWidgetComponent* itemWidgetComp;
+	
 	UPROPERTY(EditAnywhere, Category = "MySettings")
 	TSubclassOf<class UItemWidget> itemUI_BP;
 
@@ -101,6 +103,8 @@ private:
 	void CheckHitTraceForOutline(const FVector& startPos, FVector& endPos);
 
 	void CheckHitTraceForLaserPointer(const FVector& startPos, FVector& endPos);
+
+	
 
 
 public:

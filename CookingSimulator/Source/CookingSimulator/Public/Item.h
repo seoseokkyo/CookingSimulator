@@ -57,7 +57,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
-	FString ItemName = TEXT("EmptyName");
+	FString ItemName = TEXT("Name");
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
 	FCookingSimulatorItemInfo itemInfoStruct;
