@@ -120,7 +120,7 @@ void ATestCharacter::BeginPlay()
 	}
 
 	params.AddIgnoredActor(this);
-	
+
 	params.AddIgnoredComponent(MeshLeft);
 }
 
@@ -152,7 +152,7 @@ void ATestCharacter::Tick(float DeltaTime)
 void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	
+
 	auto* input = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
 	if (input)
 	{
@@ -214,35 +214,80 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 			params.AddIgnoredActor(this);
 			// 그립되는 이 위치에서 무시할 액터 체크해야함 주의..
 		}
-	}
 
-	// 소금/후추 등이 들어갈 레이저 포인트 위치를 잡는다
-	if (GripObject != nullptr)
-	{
-		FVector grabLoc = GripObject->GetActorLocation();
-		FVector dropLoc = grabLoc + FVector(0, 0, -1) * 100000;
-		// 레이저 포인트 잘 작동하는지 확인용 선 그리기
-		// DrawLine(grabLoc, dropLoc);
-		// 케찹 소금 올리브유 등 소스를 잡고있다면 
-		if (!GripObject->GetActorNameOrLabel().Contains(TEXT("BP_SliceKnife")))
+
+		//if (bHit)
+		//{
+		//	if (bCanGrip)
+		//	{
+		//		// 닿은 대상이 조리도구 
+		//		if (hitInfo.GetActor())
+		//		{
+		//			MeshRight->SetVisibility(false);
+		//			
+		//			GripObject->AttachToComponent(MotionRight, FAttachmentTransformRules::KeepWorldTransform);
+		//			GripObject->SetActorRelativeLocation(MeshRight->GetComponentLocation(), true);
+		//			GripObject->SetActorRelativeRotation(FRotator(0, -90, 90));
+		//			
+		//			GripObject->SetActorEnableCollision(true);
+		//			
+		//			// GripObject->baseMesh->SetWorldLocation(MotionRight->GetComponentLocation());
+		//			// GripObject->baseMesh->SetSimulatePhysics(false);
+
+		//			params.AddIgnoredActor(GripObject);
+		//			params.AddIgnoredActor(this);
+		//		}
+
+		//		// 닿은 대상이 요리재료 ProceduralMeshComp
+		//		if (hitInfo.GetComponent())
+		//		{
+		//			MeshRight->SetVisibility(false);
+
+		//			GripProcedural->AttachToComponent(MotionRight, FAttachmentTransformRules::KeepWorldTransform);
+		//			GripProcedural->SetRelativeLocation(MeshRight->GetComponentLocation(), true);
+		//			GripProcedural->SetRelativeRotation(FRotator(0, -90, 90));
+
+		//			// GripProcedural->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		//			GripProcedural->SetSimulatePhysics(false);
+
+		//			GripProcedural->SetWorldLocation(MotionRight->GetComponentLocation());
+
+		//			params.AddIgnoredComponent(GripProcedural);
+		//			params.AddIgnoredActor(this);
+		//		}
+
+		//	}
+		//}
+
+		// 소금/후추 등이 들어갈 레이저 포인트 위치를 잡는다
+		//if (GripProcedural != nullptr)	// 왜 둘 다 돼?
+		if (GripObject != nullptr)
 		{
-			// 떨어지는 지점에 레이저 포인트 표시
-			CheckHitTraceForLaserPointer(grabLoc, dropLoc);
+			FVector grabLoc = GripObject->GetActorLocation();
+			FVector dropLoc = grabLoc + FVector(0, 0, -1) * 100000;
+			// 레이저 포인트 잘 작동하는지 확인용 선 그리기
+			// DrawLine(grabLoc, dropLoc);
+			// 케찹 소금 올리브유 등 소스를 잡고있다면 
+			if (!GripObject->GetActorNameOrLabel().Contains(TEXT("BP_SliceKnife")))
+			{
+				// 떨어지는 지점에 레이저 포인트 표시
+				CheckHitTraceForLaserPointer(grabLoc, dropLoc);
+			}
+
+			// 칼 등 조리 도구를 잡고있다면
+			if (GripObject->GetActorNameOrLabel().Contains(TEXT("BP_SliceKnife")))
+			{
+				FTimerHandle timerHandle;
+				// 히트되고 0.2초 뒤에 동작되도록 딜레이 넣기
+				GetWorld()->GetTimerManager().SetTimer(timerHandle, [&]() {
+					// 자를 지점에 점선 표시
+					CheckHitTraceForDottedLine(grabLoc, dropLoc);
+					bSlice = true;
+					}, 1.f, false);
+			}
 		}
 
-		// 칼 등 조리 도구를 잡고있다면
-		if(GripObject->GetActorNameOrLabel().Contains(TEXT("BP_SliceKnife")))
-		{
-			FTimerHandle timerHandle;
-			// 히트되고 0.2초 뒤에 동작되도록 딜레이 넣기
-			GetWorld()->GetTimerManager().SetTimer(timerHandle, [&]() {
-				// 자를 지점에 점선 표시
-				CheckHitTraceForDottedLine(grabLoc, dropLoc);
-				bSlice = true;
-			}, 0.2f, false);
-		}
 	}
-
 
 
 }
@@ -291,9 +336,10 @@ void ATestCharacter::OnIAUnGripL(const FInputActionValue& value)
 
 void ATestCharacter::GripItem(AItem* item)
 {
+	// UE_LOG(LogTemp, Warning, TEXT("hhhhhhhhhhhhhh"));
 	auto itemCheck = Cast<AItem>(GripProcedural->GetOwner());
 
-	if (itemCheck != nullptr)
+	if (itemCheck != nullptr || item != nullptr)
 	{
 		auto dumbwaiter = Cast<ADumbwaiter>(itemCheck);
 		if (dumbwaiter != nullptr)
@@ -301,27 +347,28 @@ void ATestCharacter::GripItem(AItem* item)
 			return;
 		}
 
-
-		if (itemCheck->itemInfoStruct.itemType == ECookingSimulatorItemType::CookingTool)
+		// 잡은 오브젝트가 칼 등 조리도구인 경우
+		// if (item->itemInfoStruct.itemType == ECookingSimulatorItemType::CookingTool)
 		{
+
 			// 기존 손 메시를 없애고
 			MeshRight->SetVisibility(false);
 			// 잡은 아이템을 위치시킴
-			itemCheck->AttachToComponent(MotionRight, FAttachmentTransformRules::KeepWorldTransform);
+			item->AttachToComponent(MotionRight, FAttachmentTransformRules::KeepWorldTransform);
 			// item->SetActorEnableCollision(ECollisionEnabled::NoCollision);
-			itemCheck->SetActorEnableCollision(true);
-			GripObject->baseMesh->SetSimulatePhysics(false);
+			item->SetActorEnableCollision(true);
+			item->baseMesh->SetSimulatePhysics(false);
 
 			// item->SetActorRelativeLocation(MeshRight->GetComponentLocation() + MeshRight->GetForwardVector() * 700, true);
-			itemCheck->SetActorRelativeLocation(MeshRight->GetComponentLocation(), true);
-			itemCheck->SetActorRelativeRotation(FRotator(0, -90, 90));
+			item->SetActorRelativeLocation(MeshRight->GetComponentLocation(), true);
+			item->SetActorRelativeRotation(FRotator(0, -90, 90));
 
-			itemCheck->baseMesh->SetWorldLocation(MotionRight->GetComponentLocation());
+			item->baseMesh->SetWorldLocation(MotionRight->GetComponentLocation());
 		}
-		else if (itemCheck->itemInfoStruct.itemType == ECookingSimulatorItemType::Ingredient)
-		{
-			UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Grab"));
 
+		// 잡은 오브젝트가 토마토 등 요리재료인 경우
+		if (itemCheck->itemInfoStruct.itemType == ECookingSimulatorItemType::Ingredient)
+		{
 			// 기존 손 메시를 없애고
 			MeshRight->SetVisibility(false);
 			// 잡은 아이템을 위치시킴
@@ -337,11 +384,12 @@ void ATestCharacter::GripItem(AItem* item)
 			GripProcedural->SetWorldLocation(MotionRight->GetComponentLocation());
 		}
 
-
 		IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
 	}
 
 }
+
+
 void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& endPos)
 {
 	//if (bCanGrip)
@@ -352,10 +400,10 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 	bool bHit = HitTest(startPos, endPos, hitInfo);
 
 	AActor* interactedActor = hitInfo.GetActor();
-
-	auto* tempActor = hitInfo.GetComponent();
+	auto* interactedComp = hitInfo.GetComponent();
 
 	UInteractComponent* compCheck = Cast<UInteractComponent>(hitInfo.GetComponent());
+
 	if (compCheck != nullptr)
 	{
 		targetComp = compCheck;
@@ -367,7 +415,7 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 		// Cast<AItem>(interactedActor)->baseMesh->SetCustomDepthStencilValue();
 		auto item = Cast<IInteractAbleInterface>(interactedActor);
 
-		auto proceduralMeshCheck = Cast<UProceduralMeshComponent>(tempActor);
+		auto proceduralMeshCheck = Cast<UProceduralMeshComponent>(interactedComp);
 
 		if (focusedActor != nullptr && interactedActor != focusedActor)
 		{
@@ -389,9 +437,9 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 			if (GripProcedural)
 			{
 				bCanGrip = true;
-			}			
-			
-			
+			}
+
+
 			GripObject = Cast<AItem>(hitInfo.GetActor());
 			UE_LOG(LogTemp, Warning, TEXT("gripObject 캐스트 성공"));
 			if (GripObject)
@@ -419,14 +467,14 @@ void ATestCharacter::CheckHitTraceForLaserPointer(const FVector& startPos, FVect
 	FHitResult hitInfo;
 	bool bHit = HitTest(startPos, endPos, hitInfo);
 	FVector dropPoint = hitInfo.ImpactPoint;
-	
+
 	UE_LOG(LogTemp, Warning, TEXT("%f %f %f"), dropPoint.X, dropPoint.Y, dropPoint.Z);
-	
+
 	if (bHit)
 	{
 		if (redDotDecal_inst != nullptr)
 		{
-			
+
 			redDotDecal_inst->SetActorLocation(dropPoint);
 			redDotDecal_inst->SetShowDecal(true);
 		}
@@ -452,7 +500,7 @@ void ATestCharacter::CheckHitTraceForDottedLine(const FVector& startPos, FVector
 		if (lineDecal_inst != nullptr)
 		{
 			lineDecal_inst->SetActorLocation(dropPoint);
-			
+
 			lineDecal_inst->SetShowDecal(true);
 		}
 	}
