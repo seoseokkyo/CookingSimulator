@@ -252,14 +252,20 @@ void ATestCharacter::OnIAUnGripR(const FInputActionValue& value)
 	bCanTrace = true;
 	bSlice = false;
 
-	if (GripObject == nullptr)
+	if (GripObject == nullptr && GripProcedural == nullptr)
 		return;
+
 	params.ClearIgnoredActors();
 	MeshRight->SetVisibility(true);
 	//GripObject->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 	GripObject->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	GripObject->baseMesh->SetSimulatePhysics(true);
 	GripObject->SetActorEnableCollision(true);
+
+	GripProcedural->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	GripProcedural->SetSimulatePhysics(true);
+	GripProcedural->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
 
 	if (redDotDecal_inst != nullptr)
 	{
@@ -271,6 +277,7 @@ void ATestCharacter::OnIAUnGripR(const FInputActionValue& value)
 	}
 
 	GripObject = nullptr;
+	GripProcedural = nullptr;
 
 }
 
