@@ -17,7 +17,7 @@ void ATomato::BeginPlay()
 	Super::BeginPlay();
 
 	IngredientInfo.ingredientName = TEXT("Tomato");
-	IngredientInfo.ingredientCookedLevel = 0;
+	IngredientInfo.ingredientCookedLevel = 50;
 	IngredientInfo.ingredientWeight = 0;
 
 	InitIngredientInfo();

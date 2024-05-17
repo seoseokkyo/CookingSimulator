@@ -26,6 +26,7 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/GameFramework/Actor.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/SceneComponent.h>
 #include "Dumbwaiter.h"
+#include "ProceduralMeshComponent.h"
 
 
 // Sets default values
@@ -223,20 +224,22 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 		// 레이저 포인트 잘 작동하는지 확인용 선 그리기
 		// DrawLine(grabLoc, dropLoc);
 		// 케찹 소금 올리브유 등 소스를 잡고있다면 
-		if (!GripObject->GetName().Contains(TEXT("BP_KitchenKnife")))
+		if (!GripObject->GetActorNameOrLabel().Contains(TEXT("BP_SliceKnife")))
 		{
 			// 떨어지는 지점에 레이저 포인트 표시
 			CheckHitTraceForLaserPointer(grabLoc, dropLoc);
 		}
 
 		// 칼 등 조리 도구를 잡고있다면
-		if(GripObject->GetName().Contains(TEXT("BP_SliceKnife")))
+		if(GripObject->GetActorNameOrLabel().Contains(TEXT("BP_SliceKnife")))
 		{
 			FTimerHandle timerHandle;
-			GetWorld()->GetTimerManager().SetTimer(timerHandle, 0.2f, false);
-			// 자를 지점에 점선 표시
-			CheckHitTraceForDottedLine(grabLoc, dropLoc);
-			bSlice = true;
+			// 히트되고 0.2초 뒤에 동작되도록 딜레이 넣기
+			GetWorld()->GetTimerManager().SetTimer(timerHandle, [&]() {
+				// 자를 지점에 점선 표시
+				CheckHitTraceForDottedLine(grabLoc, dropLoc);
+				bSlice = true;
+			}, 0.2f, false);
 		}
 	}
 
@@ -281,27 +284,52 @@ void ATestCharacter::OnIAUnGripL(const FInputActionValue& value)
 
 void ATestCharacter::GripItem(AItem* item)
 {
-	if (item != nullptr)
+	auto itemCheck = Cast<AItem>(GripProcedural->GetOwner());
+
+	if (itemCheck != nullptr)
 	{
-		auto dumbwaiter = Cast<ADumbwaiter>(item);
+		auto dumbwaiter = Cast<ADumbwaiter>(itemCheck);
 		if (dumbwaiter != nullptr)
 		{
 			return;
 		}
 
-		// 기존 손 메시를 없애고
-		MeshRight->SetVisibility(false);
-		// 잡은 아이템을 위치시킴
-		item->AttachToComponent(MotionRight, FAttachmentTransformRules::KeepWorldTransform);
-		// item->SetActorEnableCollision(ECollisionEnabled::NoCollision);
-		item->SetActorEnableCollision(true);
-		GripObject->baseMesh->SetSimulatePhysics(false);
 
-		// item->SetActorRelativeLocation(MeshRight->GetComponentLocation() + MeshRight->GetForwardVector() * 700, true);
-		item->SetActorRelativeLocation(MeshRight->GetComponentLocation(), true);
-		item->SetActorRelativeRotation(FRotator(0, -90, 90));
+		if (itemCheck->itemInfoStruct.itemType == ECookingSimulatorItemType::CookingTool)
+		{
+			// 기존 손 메시를 없애고
+			MeshRight->SetVisibility(false);
+			// 잡은 아이템을 위치시킴
+			itemCheck->AttachToComponent(MotionRight, FAttachmentTransformRules::KeepWorldTransform);
+			// item->SetActorEnableCollision(ECollisionEnabled::NoCollision);
+			itemCheck->SetActorEnableCollision(true);
+			GripObject->baseMesh->SetSimulatePhysics(false);
 
-		item->baseMesh->SetWorldLocation(MotionRight->GetComponentLocation());
+			// item->SetActorRelativeLocation(MeshRight->GetComponentLocation() + MeshRight->GetForwardVector() * 700, true);
+			itemCheck->SetActorRelativeLocation(MeshRight->GetComponentLocation(), true);
+			itemCheck->SetActorRelativeRotation(FRotator(0, -90, 90));
+
+			itemCheck->baseMesh->SetWorldLocation(MotionRight->GetComponentLocation());
+		}
+		else if (itemCheck->itemInfoStruct.itemType == ECookingSimulatorItemType::Ingredient)
+		{
+			UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Grab"));
+
+			// 기존 손 메시를 없애고
+			MeshRight->SetVisibility(false);
+			// 잡은 아이템을 위치시킴
+			itemCheck->AttachToComponent(MotionRight, FAttachmentTransformRules::KeepWorldTransform);
+			// item->SetActorEnableCollision(ECollisionEnabled::NoCollision);
+			itemCheck->SetActorEnableCollision(true);
+			GripProcedural->SetSimulatePhysics(false);
+
+			// item->SetActorRelativeLocation(MeshRight->GetComponentLocation() + MeshRight->GetForwardVector() * 700, true);
+			itemCheck->SetActorRelativeLocation(MeshRight->GetComponentLocation(), true);
+			itemCheck->SetActorRelativeRotation(FRotator(0, -90, 90));
+
+			GripProcedural->SetWorldLocation(MotionRight->GetComponentLocation());
+		}
+
 
 		IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
 	}
@@ -318,6 +346,8 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 
 	AActor* interactedActor = hitInfo.GetActor();
 
+	auto* tempActor = hitInfo.GetComponent();
+
 	UInteractComponent* compCheck = Cast<UInteractComponent>(hitInfo.GetComponent());
 	if (compCheck != nullptr)
 	{
@@ -330,6 +360,8 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 		// Cast<AItem>(interactedActor)->baseMesh->SetCustomDepthStencilValue();
 		auto item = Cast<IInteractAbleInterface>(interactedActor);
 
+		auto proceduralMeshCheck = Cast<UProceduralMeshComponent>(tempActor);
+
 		if (focusedActor != nullptr && interactedActor != focusedActor)
 		{
 			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
@@ -340,12 +372,19 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 			bCanGrip = false;
 		}
 
-		if (item != nullptr)
+		if (proceduralMeshCheck != nullptr)
 		{
 			focusedActor = interactedActor;
 
 			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, true);
-			//GripObject = hitInfo.GetComponent();
+
+			GripProcedural = Cast<UProceduralMeshComponent>(hitInfo.GetComponent());
+			if (GripProcedural)
+			{
+				bCanGrip = true;
+			}			
+			
+			
 			GripObject = Cast<AItem>(hitInfo.GetActor());
 			UE_LOG(LogTemp, Warning, TEXT("gripObject 캐스트 성공"));
 			if (GripObject)

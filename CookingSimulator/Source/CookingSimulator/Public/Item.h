@@ -32,6 +32,7 @@ public:
 	FString itemDescription;
 };
 
+class UProceduralMeshComponent;
 
 UCLASS()
 class COOKINGSIMULATOR_API AItem : public AActor, public IInteractAbleInterface
@@ -68,4 +69,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
 	UStaticMeshComponent* baseMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	UProceduralMeshComponent* proceduralMesh;
 };

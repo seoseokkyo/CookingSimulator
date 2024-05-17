@@ -16,6 +16,7 @@ class AActor;
 class APlayerController;
 class UInteractComponent;
 class AItem;
+class UProceduralMeshComponent;
 
 UCLASS()
 class COOKINGSIMULATOR_API ATestCharacter : public ACharacter
@@ -129,6 +130,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "VR")
 	AItem* GripObject = nullptr;
+
+
+	UProceduralMeshComponent* GripProcedural = nullptr;
 
 	bool bCanTrace = true;
 

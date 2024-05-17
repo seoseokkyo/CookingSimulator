@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "CookingSimulatorGameInstance.h"
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/StaticMeshComponent.h>
+#include "ProceduralMeshComponent.h"
 
 // Sets default values
 AItem::AItem()
@@ -45,11 +46,23 @@ void AItem::Tick(float DeltaTime)
 
 void AItem::DrawOutLine_Implementation(bool bOn)
 {
-	if (baseMesh != nullptr)
+	if (itemInfoStruct.itemType == ECookingSimulatorItemType::CookingTool)
 	{
-		baseMesh->SetRenderCustomDepth(bOn);
+		if (baseMesh != nullptr)
+		{
+			baseMesh->SetRenderCustomDepth(bOn);
 
-		baseMesh->SetCustomDepthStencilValue(bOn ? 1 : 0);
+			baseMesh->SetCustomDepthStencilValue(bOn ? 1 : 0);
+		}
+	}
+	else if (itemInfoStruct.itemType == ECookingSimulatorItemType::Ingredient)
+	{
+		if (proceduralMesh != nullptr)
+		{
+			proceduralMesh->SetRenderCustomDepth(bOn);
+			
+			proceduralMesh->SetCustomDepthStencilValue(bOn ? 1 : 0);
+		}
 	}
 }
 
