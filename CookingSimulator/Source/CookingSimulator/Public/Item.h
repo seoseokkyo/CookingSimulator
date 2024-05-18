@@ -70,6 +70,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
 	UStaticMeshComponent* baseMesh;
 
+	bool bUseProceduralMesh = true;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
 	UProceduralMeshComponent* proceduralMesh;
 };

@@ -14,6 +14,9 @@ AItem::AItem()
 
 	baseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Mesh Comp"));
 	baseMesh->SetupAttachment(RootComponent);
+
+	proceduralMesh = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("Procedural Mesh Comp"));
+	proceduralMesh->SetupAttachment(baseMesh);
 }
 
 // Called when the game starts or when spawned
@@ -32,6 +35,11 @@ void AItem::BeginPlay()
 			if (!ItemName.IsEmpty())
 			{
 				itemInfoStruct = cookingInstance->GetItemDataTable(ItemName);
+
+				if (itemInfoStruct.itemType == ECookingSimulatorItemType::CookingTool)
+				{
+					bUseProceduralMesh = false;
+				}
 			}			
 		}
 	}
@@ -57,11 +65,20 @@ void AItem::DrawOutLine_Implementation(bool bOn)
 	}
 	else if (itemInfoStruct.itemType == ECookingSimulatorItemType::Ingredient)
 	{
-		if (proceduralMesh != nullptr)
+		if (bUseProceduralMesh)
 		{
-			proceduralMesh->SetRenderCustomDepth(bOn);
-			
-			proceduralMesh->SetCustomDepthStencilValue(bOn ? 1 : 0);
+			baseMesh->SetRenderCustomDepth(bOn);
+
+			baseMesh->SetCustomDepthStencilValue(bOn ? 1 : 0);
+		}
+		else
+		{
+			if (proceduralMesh != nullptr)
+			{
+				proceduralMesh->SetRenderCustomDepth(bOn);
+
+				proceduralMesh->SetCustomDepthStencilValue(bOn ? 1 : 0);
+			}
 		}
 	}
 }
