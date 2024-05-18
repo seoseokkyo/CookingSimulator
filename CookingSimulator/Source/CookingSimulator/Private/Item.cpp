@@ -65,7 +65,7 @@ void AItem::DrawOutLine_Implementation(bool bOn)
 	}
 	else if (itemInfoStruct.itemType == ECookingSimulatorItemType::Ingredient)
 	{
-		if (bUseProceduralMesh)
+		if (false == bUseProceduralMesh)
 		{
 			baseMesh->SetRenderCustomDepth(bOn);
 

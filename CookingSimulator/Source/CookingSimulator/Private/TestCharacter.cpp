@@ -326,9 +326,11 @@ void ATestCharacter::OnIAUnGripR(const FInputActionValue& value)
 
 	if (GripProcedural != nullptr)
 	{
-		GripProcedural->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+		//GripProcedural->GetOwner()->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		//GripProcedural->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 		GripProcedural->SetSimulatePhysics(true);
-		GripProcedural->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		//GripProcedural->GetOwner()->SetActorEnableCollision(true);
+		//GripProcedural->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	}
 
 	if (redDotDecal_inst != nullptr)
@@ -392,14 +394,17 @@ void ATestCharacter::GripItem(AItem* item)
 				MeshRight->SetVisibility(false);
 				// 잡은 아이템을 위치시킴
 				item->AttachToComponent(MotionRight, FAttachmentTransformRules::KeepWorldTransform);
-				// item->SetActorEnableCollision(ECollisionEnabled::NoCollision);
-				item->SetActorEnableCollision(true);
+				item->SetActorEnableCollision(ECollisionEnabled::NoCollision);
+				//item->SetActorEnableCollision(true);
+
+				item->baseMesh->SetSimulatePhysics(false);
 				GripProcedural->SetSimulatePhysics(false);
 
 				// item->SetActorRelativeLocation(MeshRight->GetComponentLocation() + MeshRight->GetForwardVector() * 700, true);
 				item->SetActorRelativeLocation(MeshRight->GetComponentLocation(), true);
 				item->SetActorRelativeRotation(FRotator(0, -90, 90));
 
+				item->SetActorLocation(MotionRight->GetComponentLocation());
 				GripProcedural->SetWorldLocation(MotionRight->GetComponentLocation());
 			}
 		}
