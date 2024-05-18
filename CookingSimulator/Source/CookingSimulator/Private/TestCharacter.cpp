@@ -209,9 +209,23 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 		if (bCanGrip)
 		{
 			// 해당 아이템을 쥔다
-			GripItem(GripObject);
-			params.AddIgnoredActor(GripObject);
-			params.AddIgnoredActor(this);
+
+			if (GripProcedural != nullptr)
+			{
+				GripItem(Cast<AItem>(GripProcedural->GetOwner()));
+
+				params.AddIgnoredComponent(GripProcedural);
+				params.AddIgnoredActor(this);
+			}
+			else if (GripObject != nullptr)
+			{
+				GripItem(GripObject);
+
+				params.AddIgnoredActor(GripObject);
+				params.AddIgnoredActor(this);
+			}
+			
+
 			// 그립되는 이 위치에서 무시할 액터 체크해야함 주의..
 		}
 
@@ -274,22 +288,21 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 				CheckHitTraceForLaserPointer(grabLoc, dropLoc);
 			}
 
-			// 칼 등 조리 도구를 잡고있다면
-			if (GripObject->GetActorNameOrLabel().Contains(TEXT("BP_SliceKnife")))
-			{
-				FTimerHandle timerHandle;
-				// 히트되고 0.2초 뒤에 동작되도록 딜레이 넣기
-				GetWorld()->GetTimerManager().SetTimer(timerHandle, [&]() {
-					// 자를 지점에 점선 표시
-					CheckHitTraceForDottedLine(grabLoc, dropLoc);
-					bSlice = true;
-					}, 1.f, false);
-			}
+			bSlice = true;
+
+			//// 칼 등 조리 도구를 잡고있다면
+			//if (GripObject->GetActorNameOrLabel().Contains(TEXT("BP_SliceKnife")))
+			//{
+			//	FTimerHandle timerHandle;
+			//	// 히트되고 0.2초 뒤에 동작되도록 딜레이 넣기
+			//	GetWorld()->GetTimerManager().SetTimer(timerHandle, [&]() {
+			//		// 자를 지점에 점선 표시
+			//		CheckHitTraceForDottedLine(grabLoc, dropLoc);
+			//		bSlice = true;
+			//		}, 1.f, false);
+			//}
 		}
-
 	}
-
-
 }
 
 void ATestCharacter::OnIAUnGripR(const FInputActionValue& value)
@@ -303,14 +316,20 @@ void ATestCharacter::OnIAUnGripR(const FInputActionValue& value)
 	params.ClearIgnoredActors();
 	MeshRight->SetVisibility(true);
 	//GripObject->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-	GripObject->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-	GripObject->baseMesh->SetSimulatePhysics(true);
-	GripObject->SetActorEnableCollision(true);
 
-	GripProcedural->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-	GripProcedural->SetSimulatePhysics(true);
-	GripProcedural->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	if (GripObject != nullptr)
+	{
+		GripObject->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		GripObject->baseMesh->SetSimulatePhysics(true);
+		GripObject->SetActorEnableCollision(true);
+	}
 
+	if (GripProcedural != nullptr)
+	{
+		GripProcedural->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+		GripProcedural->SetSimulatePhysics(true);
+		GripProcedural->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	}
 
 	if (redDotDecal_inst != nullptr)
 	{
@@ -337,20 +356,18 @@ void ATestCharacter::OnIAUnGripL(const FInputActionValue& value)
 void ATestCharacter::GripItem(AItem* item)
 {
 	// UE_LOG(LogTemp, Warning, TEXT("hhhhhhhhhhhhhh"));
-	auto itemCheck = Cast<AItem>(GripProcedural->GetOwner());
 
-	if (itemCheck != nullptr || item != nullptr)
+	if (item != nullptr)
 	{
-		auto dumbwaiter = Cast<ADumbwaiter>(itemCheck);
+		auto dumbwaiter = Cast<ADumbwaiter>(item);
 		if (dumbwaiter != nullptr)
 		{
 			return;
 		}
 
 		// 잡은 오브젝트가 칼 등 조리도구인 경우
-		// if (item->itemInfoStruct.itemType == ECookingSimulatorItemType::CookingTool)
+		if (item->itemInfoStruct.itemType == ECookingSimulatorItemType::CookingTool)
 		{
-
 			// 기존 손 메시를 없애고
 			MeshRight->SetVisibility(false);
 			// 잡은 아이템을 위치시킴
@@ -363,25 +380,28 @@ void ATestCharacter::GripItem(AItem* item)
 			item->SetActorRelativeLocation(MeshRight->GetComponentLocation(), true);
 			item->SetActorRelativeRotation(FRotator(0, -90, 90));
 
-			item->baseMesh->SetWorldLocation(MotionRight->GetComponentLocation());
-		}
-
-		// 잡은 오브젝트가 토마토 등 요리재료인 경우
-		if (itemCheck->itemInfoStruct.itemType == ECookingSimulatorItemType::Ingredient)
+			MotionRight->GetComponentLocation();
+			
+			item->baseMesh->SetWorldLocation(MeshRight->GetComponentLocation() + MeshRight->GetRightVector() * 100);
+		}		
+		else if (item->itemInfoStruct.itemType == ECookingSimulatorItemType::Ingredient) // 잡은 오브젝트가 토마토 등 요리재료인 경우
 		{
-			// 기존 손 메시를 없애고
-			MeshRight->SetVisibility(false);
-			// 잡은 아이템을 위치시킴
-			itemCheck->AttachToComponent(MotionRight, FAttachmentTransformRules::KeepWorldTransform);
-			// item->SetActorEnableCollision(ECollisionEnabled::NoCollision);
-			itemCheck->SetActorEnableCollision(true);
-			GripProcedural->SetSimulatePhysics(false);
+			if (GripProcedural != nullptr)
+			{
+				// 기존 손 메시를 없애고
+				MeshRight->SetVisibility(false);
+				// 잡은 아이템을 위치시킴
+				item->AttachToComponent(MotionRight, FAttachmentTransformRules::KeepWorldTransform);
+				// item->SetActorEnableCollision(ECollisionEnabled::NoCollision);
+				item->SetActorEnableCollision(true);
+				GripProcedural->SetSimulatePhysics(false);
 
-			// item->SetActorRelativeLocation(MeshRight->GetComponentLocation() + MeshRight->GetForwardVector() * 700, true);
-			itemCheck->SetActorRelativeLocation(MeshRight->GetComponentLocation(), true);
-			itemCheck->SetActorRelativeRotation(FRotator(0, -90, 90));
+				// item->SetActorRelativeLocation(MeshRight->GetComponentLocation() + MeshRight->GetForwardVector() * 700, true);
+				item->SetActorRelativeLocation(MeshRight->GetComponentLocation(), true);
+				item->SetActorRelativeRotation(FRotator(0, -90, 90));
 
-			GripProcedural->SetWorldLocation(MotionRight->GetComponentLocation());
+				GripProcedural->SetWorldLocation(MotionRight->GetComponentLocation());
+			}
 		}
 
 		IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
@@ -427,27 +447,27 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 			bCanGrip = false;
 		}
 
-		if (proceduralMeshCheck != nullptr)
+		if (proceduralMeshCheck != nullptr || item != nullptr)
 		{
 			focusedActor = interactedActor;
 
 			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, true);
 
 			GripProcedural = Cast<UProceduralMeshComponent>(hitInfo.GetComponent());
-			if (GripProcedural)
+			GripObject = Cast<AItem>(hitInfo.GetActor());
+
+			if (GripProcedural != nullptr)
 			{
 				bCanGrip = true;
 			}
-
-
-			GripObject = Cast<AItem>(hitInfo.GetActor());
-			UE_LOG(LogTemp, Warning, TEXT("gripObject 캐스트 성공"));
-			if (GripObject)
-			{
-				bCanGrip = true;
+			else if (GripObject != nullptr)
+			{				
+				if (GripObject)
+				{
+					bCanGrip = true;
+				}
 			}
 		}
-
 	}
 	else
 	{
