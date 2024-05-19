@@ -13,11 +13,12 @@ ATablet::ATablet()
 	rootComp = CreateDefaultSubobject<USceneComponent>(TEXT("Root Component"));
 	SetRootComponent(rootComp);
 
-	menuWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Menu Widget Componemnt"));
-	menuWidgetComp->SetupAttachment(RootComponent);
-
 	tabletMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Tablet Meh Component"));
 	tabletMeshComp->SetupAttachment(RootComponent);
+	
+	menuWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Menu Widget Componemnt"));
+	menuWidgetComp->SetupAttachment(tabletMeshComp);
+
 }
 
 void ATablet::BeginPlay()
