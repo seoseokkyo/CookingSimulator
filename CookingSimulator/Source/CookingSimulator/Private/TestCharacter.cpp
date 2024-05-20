@@ -28,6 +28,9 @@
 #include "Dumbwaiter.h"
 #include "Ketchup.h"
 #include "KetchupPouch.h"
+#include "MustardPouch.h"
+#include "SaltBottle.h"
+#include "BlackPepperBottle.h"
 #include "ProceduralMeshComponent.h"
 #include "ItemWidget.h"
 #include "Components/CanvasPanel.h"
@@ -273,6 +276,24 @@ void ATestCharacter::OnIARightButtonPressB(const FInputActionValue& value)
 	{
 		ketchupCheck->DrawStart();
 	}
+
+	auto mustardCheck = Cast<AMustardPouch>(GripObject);
+	if (mustardCheck != nullptr)
+	{
+		mustardCheck->DrawStart();
+	}
+
+	auto saltCheck = Cast<ASaltBottle>(GripObject);
+	if (saltCheck != nullptr)
+	{
+		saltCheck->DrawStart();
+	}
+
+	auto blackPepperCheck = Cast<ABlackPepperBottle>(GripObject);
+	if (blackPepperCheck != nullptr)
+	{
+		blackPepperCheck->DrawStart();
+	}
 }
 
 void ATestCharacter::OnIARightButtonReleaseB(const FInputActionValue& value)
@@ -281,6 +302,24 @@ void ATestCharacter::OnIARightButtonReleaseB(const FInputActionValue& value)
 	if (ketchupCheck != nullptr)
 	{
 		ketchupCheck->DrawStop();
+	}
+
+	auto mustardCheck = Cast<AMustardPouch>(GripObject);
+	if (mustardCheck != nullptr)
+	{
+		mustardCheck->DrawStop();
+	}
+
+	auto saltCheck = Cast<ASaltBottle>(GripObject);
+	if (saltCheck != nullptr)
+	{
+		saltCheck->DrawStop();
+	}
+
+	auto blackPepperCheck = Cast<ABlackPepperBottle>(GripObject);
+	if (blackPepperCheck != nullptr)
+	{
+		blackPepperCheck->DrawStop();
 	}
 }
 
@@ -544,7 +583,11 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 
 		if (focusedActor != nullptr && interactedActor != focusedActor)
 		{
-			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
+			if (Cast<IInteractAbleInterface>(focusedActor))
+			{
+				IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
+			}
+			
 			focusedActor = nullptr;
 			targetComp = nullptr;
 
