@@ -325,6 +325,7 @@ void ACookingSimulatorGameModeBase::CompareDeliveryFood(FCookingSimulatorRecipeI
 	for (auto resultComment : resultComments)
 	{
 		UKismetSystemLibrary::PrintString(GetWorld(), resultComment, true, true, FLinearColor::Red, 10.0f);
+		
 	}
 	
 	bCooking = false;

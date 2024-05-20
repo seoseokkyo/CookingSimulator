@@ -130,7 +130,7 @@ void UMainUI::NewOrder()
 // 연어스테이크 레시피 가이드
 void UMainUI::SalmonGuide()
 {
-	Guide01->SetVisibility(ESlateVisibility::Visible);
+	/*Guide01->SetVisibility(ESlateVisibility::Visible);
 
 	if (true == bGuide01_Success)
 	{
@@ -241,13 +241,36 @@ void UMainUI::SalmonGuide()
 	{
 		HideWidget();
 		SetOriginImage();
-	}
+	}*/
+
+	Guide01->SetVisibility(ESlateVisibility::Visible);
+	Guide02->SetVisibility(ESlateVisibility::Visible);
+	Guide03->SetVisibility(ESlateVisibility::Visible);
+	Guide04->SetVisibility(ESlateVisibility::Visible);
+	Guide05->SetVisibility(ESlateVisibility::Visible);
+	Guide06->SetVisibility(ESlateVisibility::Visible);
+	Guide07->SetVisibility(ESlateVisibility::Visible);
+	Guide08->SetVisibility(ESlateVisibility::Visible);
+	Guide09->SetVisibility(ESlateVisibility::Visible);
+	Guide10->SetVisibility(ESlateVisibility::Visible);
+	Guide11->SetVisibility(ESlateVisibility::Visible);
+	Guide12->SetVisibility(ESlateVisibility::Visible);
+	Guide13->SetVisibility(ESlateVisibility::Visible);
+	Guide14->SetVisibility(ESlateVisibility::Visible);
+	Guide15->SetVisibility(ESlateVisibility::Visible);
+	Guide16->SetVisibility(ESlateVisibility::Visible);
+	Guide17->SetVisibility(ESlateVisibility::Visible);
+	Guide18->SetVisibility(ESlateVisibility::Visible);
+	Guide19->SetVisibility(ESlateVisibility::Visible);
+	Guide20->SetVisibility(ESlateVisibility::Visible);
+	Guide21->SetVisibility(ESlateVisibility::Visible);
+	Guide22->SetVisibility(ESlateVisibility::Visible);
 }
 
 // 햄버거 레시피 가이드
 void UMainUI::HamburgerGuide()
 {
-	HamGuide01->SetVisibility(ESlateVisibility::Visible);
+	/*HamGuide01->SetVisibility(ESlateVisibility::Visible);
 	HamGuide02->SetVisibility(ESlateVisibility::Visible);
 	HamGuide03->SetVisibility(ESlateVisibility::Visible);
 
@@ -318,7 +341,22 @@ void UMainUI::HamburgerGuide()
 	{
 		HideWidget();
 		SetOriginImage();
-	}
+	}*/
+
+	HamGuide01->SetVisibility(ESlateVisibility::Visible);
+	HamGuide02->SetVisibility(ESlateVisibility::Visible);
+	HamGuide03->SetVisibility(ESlateVisibility::Visible);
+	HamGuide04->SetVisibility(ESlateVisibility::Visible);
+	HamGuide05->SetVisibility(ESlateVisibility::Visible);
+	HamGuide06->SetVisibility(ESlateVisibility::Visible);
+	HamGuide07->SetVisibility(ESlateVisibility::Visible);
+	HamGuide08->SetVisibility(ESlateVisibility::Visible);
+	HamGuide09->SetVisibility(ESlateVisibility::Visible);
+	HamGuide10->SetVisibility(ESlateVisibility::Visible);
+	HamGuide11->SetVisibility(ESlateVisibility::Visible);
+	HamGuide12->SetVisibility(ESlateVisibility::Visible);
+	HamGuide13->SetVisibility(ESlateVisibility::Visible);
+	HamGuide14->SetVisibility(ESlateVisibility::Visible);
 }
 
 
