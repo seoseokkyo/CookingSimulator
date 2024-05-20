@@ -17,7 +17,7 @@ ABigPot::ABigPot()
 {
 	waterMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WaterMesh"));
 	waterMesh->SetupAttachment(baseMesh);
-	waterMesh->SetRelativeScale3D(FVector(1, 1, 0));
+	waterMesh->SetRelativeScale3D(FVector(1, 1, 0.7));
 
 	toolType = ECookingToolType::Others;
 	
@@ -72,7 +72,7 @@ void ABigPot::FillWater(bool bFill)
 
 void ABigPot::BeginPlay()
 {
-	waterMesh->SetRelativeScale3D(FVector(1, 1, 0));
+	waterMesh->SetRelativeScale3D(FVector(1, 1, 0.7));
 }
 
 void ABigPot::Tick(float DeltaTime)

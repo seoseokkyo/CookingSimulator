@@ -82,5 +82,11 @@
 		"itemType": "Ingredient",
 		"itemImagePath": "Content/CookingSimulator/Textures/SunflowerOil.png",
 		"itemDescription": "This is SunflowerOil"
+	},
+	{
+		"Name": "Plate",
+		"itemType": "CookingTool",
+		"itemImagePath": "Content/CookingSimulator/Textures/Plate.png",
+		"itemDescription": "This is Plate"
 	}
 ]

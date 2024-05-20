@@ -105,6 +105,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "VR")
 	UInputAction* IA_ShowTablet;
 
+	UPROPERTY(EditDefaultsOnly, Category = "VR")
+	UInputAction* IA_Plating;
+
 	AActor* focusedActor = nullptr;
 	APlayerController* pc = nullptr;
 
@@ -115,6 +118,7 @@ public:
 	void OnIATrigger(const FInputActionValue& value);
 	void OnIARightButtonPressB(const FInputActionValue& value);
 	void OnIARightButtonReleaseB(const FInputActionValue& value);
+	void OnIAPlating(const FInputActionValue& value);
 
 	void ShowTablet(const FInputActionValue& value);
 
@@ -160,7 +164,7 @@ public:
 
 	void CheckHitTraceForDottedLine(const FVector& startPos, FVector& endPos);
 
-	UPROPERTY(EditAnywhere, Category = "VR")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VR")
 	AItem* GripObject = nullptr;
 
 
@@ -175,4 +179,8 @@ public:
 	FHitPointDelegate hitPointDelegate;
 
 	FVector hitPoint;
+
+	bool bHoldingIngredientNow=false;
+
+	void UnGripNow();
 };

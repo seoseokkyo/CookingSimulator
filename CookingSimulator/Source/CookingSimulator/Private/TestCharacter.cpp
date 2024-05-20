@@ -86,12 +86,12 @@ ATestCharacter::ATestCharacter()
 	{
 		MeshLeft->SetSkeletalMesh(TempMeshLeft.Object);
 		MeshLeft->SetWorldLocationAndRotation(FVector(-3.0f, -3.5f, 4.5f), FRotator(-25.0f, -180.0f, 90.0f));
-	}	
+	}
 
 	// 아이템 위젯 컴포넌트를 생성한다
 	itemWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Item Widget Component"));
 	itemWidgetComp->SetupAttachment(RootComponent);
-	itemWidgetComp->SetWorldRotation(FRotator(180,0,0));
+	itemWidgetComp->SetWorldRotation(FRotator(180, 0, 0));
 	itemWidgetComp->SetWorldScale3D(FVector(0.3f));
 }
 
@@ -114,7 +114,7 @@ void ATestCharacter::BeginPlay()
 
 		const USkeletalMeshSocket* tabletSocket = MeshLeft->GetSocketByName("TabletSocket");
 
-		
+
 		if (spawnTablet && tabletSocket)
 		{
 			tabletSocket->AttachActor(spawnTablet, MeshLeft);
@@ -127,9 +127,9 @@ void ATestCharacter::BeginPlay()
 		}
 
 		spawnTablet->SetActorHiddenInGame(true);
-	}	
-	
-	
+	}
+
+
 	//pc = GetController<APlayerController>();
 	pc = Cast<APlayerController>(GetController());
 
@@ -182,6 +182,7 @@ void ATestCharacter::Tick(float DeltaTime)
 	FVector start = MeshRight->GetComponentLocation();
 	FVector end = start + MeshRight->GetRightVector() * 100000;
 
+	//UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("bCanTrace State : %s(%d)"), bCanTrace ? L"TRUE" : L"FALSE", DeltaTime));
 
 	// 부딪친 대상이 상호작용 가능한 액터라면 외각선 렌더링을 한다
 	// RenderCustomDepth 사용
@@ -218,6 +219,8 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		input->BindAction(IA_RightButtonB, ETriggerEvent::Completed, this, &ATestCharacter::OnIARightButtonReleaseB);
 
 		input->BindAction(IA_ShowTablet, ETriggerEvent::Started, this, &ATestCharacter::ShowTablet);
+
+		input->BindAction(IA_Plating, ETriggerEvent::Started, this, &ATestCharacter::OnIAPlating);
 	}
 
 	// 나중에 문제 해결되면 삭제 예정
@@ -249,7 +252,7 @@ void ATestCharacter::OnIATrigger(const FInputActionValue& value)
 
 // 태블릿 띄우고 숨기는 함수
 void ATestCharacter::ShowTablet(const FInputActionValue& value)
-{		
+{
 	// bshow 가 false라면 태블릿을 띄우고 bshow를 true로 바꾼다
 	if (false == bshow)
 	{
@@ -284,6 +287,41 @@ void ATestCharacter::OnIARightButtonReleaseB(const FInputActionValue& value)
 	}
 }
 
+void ATestCharacter::OnIAPlating(const FInputActionValue& value)
+{
+	if (GripProcedural != nullptr)
+	{
+		FVector start = GripProcedural->GetComponentLocation();
+		FVector end = start + GetActorUpVector() * -500;
+
+		DrawDebugLine(GetWorld(), start, end, FColor::Red, false, 0, 0, 0.5f);
+
+		FHitResult hitInfo;
+		bool bHit = HitTest(start, end, hitInfo);
+
+		bool bHandIsOnPlate = false;
+
+		if (bHit)
+		{
+			if (hitInfo.GetActor()->GetActorNameOrLabel().Contains(TEXT("plate")))
+			{
+				bHandIsOnPlate = true;
+				UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("plate")));
+
+
+				// 손에 식재료를 잡고 있을 때 && 그릇이라는 아이템에 포커스가 들어가 있을 때
+				if (bHoldingIngredientNow && bHandIsOnPlate)
+				{
+					GripProcedural->GetOwner()->AttachToActor(hitInfo.GetActor(), FAttachmentTransformRules::SnapToTargetIncludingScale);
+					UnGripNow();
+				}
+
+			}
+		}
+	}
+
+}
+
 void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 {
 	bCanTrace = false;
@@ -295,31 +333,35 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 
 	bool bHit = HitTest(startPos, endPos, hitInfo);
 
+	if (bCanGrip)
+	{
+		// 해당 아이템을 쥔다
+
+		if (GripProcedural != nullptr)
+		{
+			GripItem(Cast<AItem>(GripProcedural->GetOwner()));
+
+			params.AddIgnoredComponent(GripProcedural);
+			params.AddIgnoredActor(this);
+
+			bHoldingIngredientNow = true;
+		}
+		else if (GripObject != nullptr)
+		{
+			GripItem(GripObject);
+
+			params.AddIgnoredActor(GripObject);
+			params.AddIgnoredActor(this);
+		}
+
+
+		// 그립되는 이 위치에서 무시할 액터 체크해야함 주의..
+	}
+
 	// 만약 검출된것이 있다면
 	if (bHit)
 	{
-		if (bCanGrip)
-		{
-			// 해당 아이템을 쥔다
 
-			if (GripProcedural != nullptr)
-			{
-				GripItem(Cast<AItem>(GripProcedural->GetOwner()));
-
-				params.AddIgnoredComponent(GripProcedural);
-				params.AddIgnoredActor(this);
-			}
-			else if (GripObject != nullptr)
-			{
-				GripItem(GripObject);
-
-				params.AddIgnoredActor(GripObject);
-				params.AddIgnoredActor(this);
-			}
-			
-
-			// 그립되는 이 위치에서 무시할 액터 체크해야함 주의..
-		}
 
 
 		//if (bHit)
@@ -399,51 +441,55 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 
 void ATestCharacter::OnIAUnGripR(const FInputActionValue& value)
 {
-	bCanTrace = true;
-	bSlice = false;
+	UnGripNow();
 
-	if (GripObject == nullptr && GripProcedural == nullptr)
-		return;
+	//bCanTrace = true;
+	//bSlice = false;
 
-	params.ClearIgnoredActors();
-	MeshRight->SetVisibility(true);
-	//GripObject->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	//if (GripObject == nullptr && GripProcedural == nullptr)
+	//	return;
 
-	if (GripObject != nullptr)
-	{
-		GripObject->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-		GripObject->baseMesh->SetSimulatePhysics(true);
-		GripObject->SetActorEnableCollision(true);
-	}
+	//params.ClearIgnoredActors();
+	//MeshRight->SetVisibility(true);
+	////GripObject->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 
-	if (GripProcedural != nullptr)
-	{
-		//GripProcedural->GetOwner()->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-		//GripProcedural->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-		GripProcedural->SetSimulatePhysics(true);
-		//GripProcedural->GetOwner()->SetActorEnableCollision(true);
-		//GripProcedural->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	}
+	//if (GripObject != nullptr)
+	//{
+	//	GripObject->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	//	GripObject->baseMesh->SetSimulatePhysics(true);
+	//	GripObject->SetActorEnableCollision(true);
+	//}
 
-	if (redDotDecal_inst != nullptr)
-	{
-		redDotDecal_inst->SetShowDecal(false);
-	}
-	if (lineDecal_inst != nullptr)
-	{
-		lineDecal_inst->SetShowDecal(false);
-	}
+	//if (GripProcedural != nullptr)
+	//{
+	//	//GripProcedural->GetOwner()->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	//	//GripProcedural->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	//	GripProcedural->SetSimulatePhysics(true);
+	//	//GripProcedural->GetOwner()->SetActorEnableCollision(true);
+	//	//GripProcedural->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	//}
 
-	auto ketchupCheck = Cast<AKetchupPouch>(GripObject);
+	//if (redDotDecal_inst != nullptr)
+	//{
+	//	redDotDecal_inst->SetShowDecal(false);
+	//}
+	//if (lineDecal_inst != nullptr)
+	//{
+	//	lineDecal_inst->SetShowDecal(false);
+	//}
 
-	if (ketchupCheck != nullptr)
-	{
-		ketchupCheck->DrawStop();
-		ketchupCheck->ReleaseTargetPoint();
-	}
+	//auto ketchupCheck = Cast<AKetchupPouch>(GripObject);
 
-	GripObject = nullptr;
-	GripProcedural = nullptr;
+	//if (ketchupCheck != nullptr)
+	//{
+	//	ketchupCheck->DrawStop();
+	//	ketchupCheck->ReleaseTargetPoint();
+	//}
+
+	//GripObject = nullptr;
+	//GripProcedural = nullptr;
+
+	//bHoldingIngredientNow = false;
 
 }
 
@@ -483,9 +529,9 @@ void ATestCharacter::GripItem(AItem* item)
 			item->SetActorRelativeRotation(FRotator(0, -90, 90));
 
 			MotionRight->GetComponentLocation();
-			
+
 			item->baseMesh->SetWorldLocation(MeshRight->GetComponentLocation() + MeshRight->GetRightVector() * 100);
-		}		
+		}
 		else if (item->itemInfoStruct.itemType == ECookingSimulatorItemType::Ingredient) // 잡은 오브젝트가 토마토 등 요리재료인 경우
 		{
 			if (GripProcedural != nullptr)
@@ -529,6 +575,8 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 
 	UInteractComponent* compCheck = Cast<UInteractComponent>(hitInfo.GetComponent());
 
+	params.AddIgnoredComponent(itemWidgetComp);
+
 	if (compCheck != nullptr)
 	{
 		targetComp = compCheck;
@@ -536,9 +584,18 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 
 	if (bHit)
 	{
+
+		FString strTemp;
+		hitInfo.GetActor()->GetName(strTemp);
+		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("%s"), *strTemp));
+
+		hitInfo.GetComponent()->GetName(strTemp);
+		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("%s"), *strTemp));
+
+
 		// 부딪힌 액터의 Render CustomDepthPass를 true로 변경한다
 		// Cast<AItem>(interactedActor)->baseMesh->SetCustomDepthStencilValue();
-		auto item = Cast<IInteractAbleInterface>(interactedActor);
+		auto item = Cast<AItem>(interactedActor);
 
 		auto proceduralMeshCheck = Cast<UProceduralMeshComponent>(interactedComp);
 
@@ -552,7 +609,7 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 			bCanGrip = false;
 
 			hitPoint = FVector::ZeroVector;
-			
+
 			itemUI->SetVisibility(ESlateVisibility::Hidden);
 		}
 
@@ -563,6 +620,7 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 			hitPoint = hitInfo.ImpactPoint;
 
 			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, true);
+			//IInteractAbleInterface::Execute_DrawOutLine(proceduralMeshCheck->GetOwner(), true);
 
 			GripProcedural = Cast<UProceduralMeshComponent>(hitInfo.GetComponent());
 			GripObject = Cast<AItem>(hitInfo.GetActor());
@@ -572,18 +630,16 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 				bCanGrip = true;
 			}
 			else if (GripObject != nullptr)
-			{				
+			{
 				if (GripObject)
 				{
 					bCanGrip = true;
 				}
 			}
-			
-			
+
+
 			// 이미지 가져오는 부분 확실하지 않아서 점검 필요
 			ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
-
-			auto itemCheck = CastChecked<AItem>(interactedActor);
 
 			// itemWidget을 빌보드 처리한다
 			auto* fpc = GetWorld()->GetFirstPlayerController();
@@ -593,15 +649,15 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 				itemWidgetComp->SetWorldRotation(UKismetMathLibrary::MakeRotFromX(dir.GetSafeNormal()));
 
 				//itemWidgetComp->SetWorldLocation(fpc->PlayerCameraManager->GetCameraLocation() + fpc->PlayerCameraManager->GetActorForwardVector() * 500);
-				itemWidgetComp ->SetWorldLocation(focusedActor->GetActorLocation() + focusedActor->GetActorUpVector() * 100);
+				itemWidgetComp->SetWorldLocation(focusedActor->GetActorLocation() + focusedActor->GetActorUpVector() * 100);
 			}
 
-			if (itemCheck != nullptr)
+			if (item != nullptr)
 			{
 				//UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("rr")));
-				FString itemName_ = itemCheck->ItemName;
+				FString itemName_ = item->ItemName;
 				if (itemName_.Compare(TEXT("Name")) != 0)
-				itemUI->SetVisibility(ESlateVisibility::Visible);
+					itemUI->SetVisibility(ESlateVisibility::Visible);
 				{
 					FText itemNameText = FText::FromString(itemName_);
 					itemUI->itemName->SetText(itemNameText);
@@ -624,7 +680,7 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 
 			hitPoint = FVector::ZeroVector;
 		}
-		
+
 
 		// 다시 아이템 UI 숨기기
 		itemUI->SetVisibility(ESlateVisibility::Hidden);
@@ -682,6 +738,60 @@ void ATestCharacter::CheckHitTraceForDottedLine(const FVector& startPos, FVector
 			lineDecal_inst->SetShowDecal(false);
 		}
 	}
+}
+
+void ATestCharacter::UnGripNow()
+{
+	bCanTrace = true;
+	bSlice = false;
+	bCanGrip = false;
+
+	params.ClearIgnoredActors();
+
+	if (GripObject == nullptr && GripProcedural == nullptr)
+		return;
+
+
+	MeshRight->SetVisibility(true);
+	//GripObject->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+
+	if (GripObject != nullptr)
+	{
+		GripObject->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		GripObject->baseMesh->SetSimulatePhysics(true);
+		GripObject->SetActorEnableCollision(true);
+	}
+
+	if (GripProcedural != nullptr)
+	{
+		//GripProcedural->GetOwner()->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		//GripProcedural->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+		GripProcedural->SetSimulatePhysics(true);
+		//GripProcedural->GetOwner()->SetActorEnableCollision(true);
+		//GripProcedural->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	}
+
+	if (redDotDecal_inst != nullptr)
+	{
+		redDotDecal_inst->SetShowDecal(false);
+	}
+	if (lineDecal_inst != nullptr)
+	{
+		lineDecal_inst->SetShowDecal(false);
+	}
+
+	auto ketchupCheck = Cast<AKetchupPouch>(GripObject);
+
+	if (ketchupCheck != nullptr)
+	{
+		ketchupCheck->DrawStop();
+		ketchupCheck->ReleaseTargetPoint();
+	}
+
+	GripObject = nullptr;
+	GripProcedural = nullptr;
+
+	bHoldingIngredientNow = false;
 }
 
 void ATestCharacter::DrawLine(FVector start, FVector end)
