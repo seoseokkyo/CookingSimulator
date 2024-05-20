@@ -21,6 +21,8 @@ AKetchupPouch::AKetchupPouch()
 	//cableComp->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName(TEXT("NeedleTop")));
 
 	toolType = ECookingToolType::SaucePouch;
+
+	ItemName = TEXT("KetchupPouch");
 }
 
 // Called when the game starts or when spawned
@@ -69,6 +71,8 @@ void AKetchupPouch::Tick(float DeltaTime)
 
 			FCollisionQueryParams params;
 			params.AddIgnoredActor(this);
+			params.AddIgnoredActor(this->GetOwner());
+			params.AddIgnoredActor(GetWorld()->GetFirstPlayerController()->GetPawn());
 
 			FHitResult hitResult;
 			FVector start = GetActorLocation();
@@ -98,7 +102,7 @@ void AKetchupPouch::OnAddNewPosition(FVector newPos, FHitResult& hitResult)
 			return;
 		}
 
-		FName splineName(FString::Printf(TEXT("MySpline%03d"), splinePositions.Num()/2));
+		FName splineName(FString::Printf(TEXT("MySpline%03d"), splinePositions.Num()));
 
 		//TArray<AActor*> childs;
 		//hitResult.GetActor()->GetAllChildActors(childs);
@@ -145,7 +149,10 @@ void AKetchupPouch::OnAddNewPosition(FVector newPos, FHitResult& hitResult)
 				UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("P : %p, L : %d"), mesh, splineMeshs.Num()));
 			}
 
-			if (newKetchup->splineMesh != nullptr)
+			newKetchup->baseMesh->SetMaterial(0, splineMaterial);
+			newKetchup->splineComp->SetMaterial(0, splineMaterial);
+
+			if (newKetchup->splineComp != nullptr)
 			{
 				newKetchup->splineComp->SetStaticMesh(newKetchup->splineMesh);
 

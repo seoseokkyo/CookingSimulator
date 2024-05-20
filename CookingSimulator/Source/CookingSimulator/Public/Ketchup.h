@@ -32,10 +32,7 @@ public:
 	USplineMeshComponent* splineComp;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
-	UStaticMesh* splineMesh;
-		
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
-	UMaterialInterface* splineMaterial;
+	UStaticMesh* splineMesh;		
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

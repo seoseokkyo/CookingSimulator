@@ -49,6 +49,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
 	AKetchup* ketchupActor;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
+	UMaterialInterface* splineMaterial;
+
 	float delayTime = 0.0f;
 
 	void DrawStart() { bStart = true; };

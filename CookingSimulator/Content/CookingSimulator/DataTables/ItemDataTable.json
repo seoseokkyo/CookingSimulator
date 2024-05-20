@@ -82,5 +82,11 @@
 		"itemType": "Ingredient",
 		"itemImagePath": "Content/CookingSimulator/Textures/SunflowerOil.png",
 		"itemDescription": "This is SunflowerOil"
-	}
+	},
+	{
+		"Name": "KetchupPouch",
+		"itemType": "CookingTool",
+		"itemImagePath": "Content/CookingSimulator/Textures/KetchupPouch.png",
+		"itemDescription": "This is KetchupPouch"
+	}	
 ]
