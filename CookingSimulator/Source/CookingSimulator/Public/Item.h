@@ -62,7 +62,7 @@ private:
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
-	FString ItemName;
+	FString ItemName = TEXT("Name");
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
 	FCookingSimulatorItemInfo itemInfoStruct;
@@ -74,4 +74,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
 	UProceduralMeshComponent* proceduralMesh;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	FRotator gripRotation;
 };

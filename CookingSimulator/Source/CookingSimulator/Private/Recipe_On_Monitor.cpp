@@ -7,6 +7,9 @@
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/ScrollBox.h>
 #include "RecipeOnMonitorListWidget.h"
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/TextBlock.h>
+#include "Components/CanvasPanel.h"
+
+
 
 void URecipe_On_Monitor::ShowRecipeOnMonitor()
 {
@@ -17,6 +20,8 @@ void URecipe_On_Monitor::ShowRecipeOnMonitor()
 		foodImage = UCookingSimulatorFunctionLibrary::GetRecipeImage(GetWorld(),rcpInfo.recipeType);
 		currentFood->SetBrushFromSoftTexture(foodImage);
 		
+		ingridientBox->ClearChildren();
+
 		for (int32 i = 0; i < rcpInfo.ingredientInfoArray.Num() - 1; i++)
 		{
 		// MonitorListWidget을 반복해서 CreateWidget한다
@@ -37,21 +42,38 @@ void URecipe_On_Monitor::ShowRecipeOnMonitor()
 		
 				// MonitorListWidget을 스크롤 박스에 할당한다.
 				ingridientBox->AddChild(listTemp);			
+				
+				
 			}
 			
 		}
+
 
 		// 현재 레시피 타입이 연어일 때
 		if (rcpInfo.recipeType == ECookingSimulatorRecipeType::SalmonSteakAndBoiledPotato)
 		{
 			// 연어 구이 이미지를 recipeScroll에 띄운다
-			//recipeScroll->SetBrushFromTexture();
+			SalmonRecipeScrollBox->SetVisibility(ESlateVisibility::Visible);
+			HamburgerRecipeScrollBox->SetVisibility(ESlateVisibility::Hidden);
+			SalmonText->SetVisibility(ESlateVisibility::Visible);
+			HamText->SetVisibility(ESlateVisibility::Hidden);
 		}
 		// 레시피 타입이 연어가 아니라면
 		else
 		{
 			// 햄버거 이미지를 recipeScroll에 띄운다
+			SalmonRecipeScrollBox->SetVisibility(ESlateVisibility::Hidden);
+			HamburgerRecipeScrollBox->SetVisibility(ESlateVisibility::Visible);
+			HamText->SetVisibility(ESlateVisibility::Visible);
+			SalmonText->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
+	
 
 }
+
+void URecipe_On_Monitor::NativeConstruct()
+{
+	
+}
+

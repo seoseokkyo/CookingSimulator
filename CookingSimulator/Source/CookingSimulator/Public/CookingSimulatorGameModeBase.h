@@ -75,8 +75,13 @@ public:
 
 	UPROPERTY()
 	int32 seconds;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	TSubclassOf<class UMenuWidget> menu_BP;
 		
 	float cookingTimer = 300;
+	
+	UMenuWidget* menuUI;
 
 	UFUNCTION(BlueprintCallable)
 	bool SetCurrentRecipe(ECookingSimulatorRecipeType eType);

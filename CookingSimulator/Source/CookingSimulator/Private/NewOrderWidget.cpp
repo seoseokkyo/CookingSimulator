@@ -8,6 +8,7 @@
 #include "CookingSimulatorGameModeBase.h"
 #include "CookingSimulatorFunctionLibrary.h"
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h>
+#include "Components/CanvasPanel.h"
 
 
 
@@ -29,7 +30,7 @@ void UNewOrderWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 
 	if (gm != nullptr)
 	{
-		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("UNewOrderWidget::NativeTick %d : %d"), (int)(gm->cookingTimer) / 60, (int)(gm->cookingTimer) % 60));
+		//UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("UNewOrderWidget::NativeTick %d : %d"), (int)(gm->cookingTimer) / 60, (int)(gm->cookingTimer) % 60));
 
 		FString minString = FString::FromInt((int)(gm->cookingTimer) / 60);
 		FText min = FText::FromString(minString);

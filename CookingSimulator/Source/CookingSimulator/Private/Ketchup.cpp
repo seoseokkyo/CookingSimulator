@@ -2,6 +2,7 @@
 
 
 #include "Ketchup.h"
+#include <../../../../../../../Source/Runtime/Engine/Classes/Components/SplineMeshComponent.h>
 
 // Sets default values
 AKetchup::AKetchup()
@@ -9,6 +10,10 @@ AKetchup::AKetchup()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	//baseMesh->SetMobility(EComponentMobility::Static);
+
+	splineComp = CreateDefaultSubobject<USplineMeshComponent>(TEXT("SplineComponent"));
+	splineComp->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned

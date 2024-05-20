@@ -8,6 +8,7 @@
 #include <Kismet/KismetSystemLibrary.h>
 #include "InteractComponent.h"
 #include "CookingSimulatorGameModeBase.h"
+#include <../../../../../../../Source/Runtime/Engine/Classes/Components/PrimitiveComponent.h>
 
 // Sets default values
 ADumbwaiter::ADumbwaiter()
@@ -50,6 +51,10 @@ ADumbwaiter::ADumbwaiter()
 	buttonBottom->SetStaticMesh(ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("/Script/Engine.StaticMesh'/Game/CookingSimulator/Blueprints/CookingTools/Mesh/Switch/ButtonBottom.ButtonBottom'")).Object);
 	buttonBottom->SetRelativeLocation(FVector((55.5f, 28.1f, -29.6f)));
 	buttonBottom->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
+
+	toolType = ECookingToolType::Others;
+	
+	ItemName = TEXT("Dumbwaiter");
 }
 
 // Called when the game starts or when spawned
@@ -239,7 +244,11 @@ void ADumbwaiter::FoodDelivery()
 	TArray<AActor*> resultCheck;
 	resultCheck.Reset();
 
+	TArray<UPrimitiveComponent*> resultCompCheck;
+	resultCompCheck.Reset();
+
 	boxComp->GetOverlappingActors(resultCheck);
+	boxComp->GetOverlappingComponents(resultCompCheck);
 
 	ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
 
@@ -254,6 +263,27 @@ void ADumbwaiter::FoodDelivery()
 			if (ingredientCheck != nullptr)
 			{
 				resultRcp.ingredientInfoArray.Add(ingredientCheck->GetIngredientInfo());
+			}
+		}
+
+		TArray<AActor*> childs;
+		GetAllChildActors(childs);
+
+		for (auto child : childs)
+		{
+			FString strName;
+			child->GetName(strName);
+
+			if (strName.Compare("Ketchup") == 0)
+			{
+				auto check = Cast<AIngredient>(child);
+
+				if (check != nullptr)
+				{
+					resultRcp.ingredientInfoArray.Add(check->GetIngredientInfo());
+				}				
+
+				break;
 			}
 		}
 

@@ -9,6 +9,7 @@ AKitchenKnife::AKitchenKnife()
 	knifeMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KnifeMesh"));
 	knifeMesh->SetupAttachment(RootComponent);
 
+	toolType = ECookingToolType::Knife;
 }
 
 // Called when the game starts or when spawned

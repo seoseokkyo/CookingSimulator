@@ -18,6 +18,10 @@ ABigPot::ABigPot()
 	waterMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WaterMesh"));
 	waterMesh->SetupAttachment(baseMesh);
 	waterMesh->SetRelativeScale3D(FVector(1, 1, 0));
+
+	toolType = ECookingToolType::Others;
+	
+	ItemName = TEXT("BigPot");
 }
 
 bool ABigPot::AddIngredient(AIngredient* Ingredient)

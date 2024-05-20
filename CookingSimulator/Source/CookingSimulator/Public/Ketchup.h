@@ -9,6 +9,10 @@
 /**
  * 
  */
+
+ class UStaticMesh;
+ class USplineMeshComponent;
+
 UCLASS()
 class COOKINGSIMULATOR_API AKetchup : public AIngredient
 {
@@ -23,6 +27,16 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
+	USplineMeshComponent* splineComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
+	UStaticMesh* splineMesh;
+		
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
+	UMaterialInterface* splineMaterial;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

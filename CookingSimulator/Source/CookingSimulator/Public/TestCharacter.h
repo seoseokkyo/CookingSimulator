@@ -17,6 +17,7 @@ class APlayerController;
 class UInteractComponent;
 class AItem;
 class UProceduralMeshComponent;
+DECLARE_DYNAMIC_DELEGATE_OneParam(FHitPointDelegate, FVector, hitPoint);
 
 UCLASS()
 class COOKINGSIMULATOR_API ATestCharacter : public ACharacter
@@ -37,6 +38,27 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UPROPERTY(EditAnywhere, Category = "MySettigns")
+	class UWidgetComponent* itemWidgetComp;
+	
+	UPROPERTY(EditAnywhere, Category = "MySettings")
+	TSubclassOf<class UItemWidget> itemUI_BP;
+
+	UPROPERTY()
+	UItemWidget* itemUI = nullptr;
+
+	UPROPERTY(EditAnywhere, Category = "MySettings")
+	class UTexture2D* foodImage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "MySettings")
+	TSubclassOf<class ATablet> tablet_BP;
+
+	UPROPERTY()
+	class AActor* spawnTablet;
+
+	UPROPERTY(EditDefaultsOnly, Category = "MySettings")
+	bool bshow = false;
 
 // private:
 	// VR Camera Component를 생성하고 루트에 붙이고 싶다.
@@ -77,6 +99,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "VR")
 	UInputAction* IA_Trigger;
 
+	UPROPERTY(EditDefaultsOnly, Category = "VR")
+	UInputAction* IA_RightButtonB;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "VR")
+	UInputAction* IA_ShowTablet;
+
 	AActor* focusedActor = nullptr;
 	APlayerController* pc = nullptr;
 
@@ -85,6 +113,10 @@ public:
 	void OnIAMove(const FInputActionValue& value);
 	void OnIATurn(const FInputActionValue& value);
 	void OnIATrigger(const FInputActionValue& value);
+	void OnIARightButtonPressB(const FInputActionValue& value);
+	void OnIARightButtonReleaseB(const FInputActionValue& value);
+
+	void ShowTablet(const FInputActionValue& value);
 
 	void DrawLine(FVector startPos, FVector endPos);
 
@@ -139,4 +171,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bSlice = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VR")
+	FHitPointDelegate hitPointDelegate;
+
+	FVector hitPoint;
 };

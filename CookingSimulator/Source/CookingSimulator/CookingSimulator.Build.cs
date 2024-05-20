@@ -8,7 +8,7 @@ public class CookingSimulator : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "HeadMountedDisplay", "ProceduralMeshComponent" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "HeadMountedDisplay", "ProceduralMeshComponent", "UMG", "CableComponent" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
