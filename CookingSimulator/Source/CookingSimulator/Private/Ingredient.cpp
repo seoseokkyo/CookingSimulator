@@ -21,4 +21,6 @@ void AIngredient::InitIngredientInfo()
 	{
 		IngredientInfo.ingredientInfo = gi->GetItemDataTable(IngredientInfo.ingredientName);
 	}
+
+	bUseProceduralMesh = true;
 }

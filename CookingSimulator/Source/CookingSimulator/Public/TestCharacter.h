@@ -167,7 +167,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VR")
 	AItem* GripObject = nullptr;
 
-
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VR")
 	UProceduralMeshComponent* GripProcedural = nullptr;
 
 	bool bCanTrace = true;

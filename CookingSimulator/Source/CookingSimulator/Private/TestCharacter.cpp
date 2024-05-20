@@ -292,9 +292,11 @@ void ATestCharacter::OnIAPlating(const FInputActionValue& value)
 	if (GripProcedural != nullptr)
 	{
 		FVector start = GripProcedural->GetComponentLocation();
-		FVector end = start + GetActorUpVector() * -500;
+		FVector end = start + FVector(0, 0, 1) * -500;
 
 		DrawDebugLine(GetWorld(), start, end, FColor::Red, false, 0, 0, 0.5f);
+
+		// params.ClearIgnoredActors();
 
 		FHitResult hitInfo;
 		bool bHit = HitTest(start, end, hitInfo);
@@ -303,7 +305,8 @@ void ATestCharacter::OnIAPlating(const FInputActionValue& value)
 
 		if (bHit)
 		{
-			if (hitInfo.GetActor()->GetActorNameOrLabel().Contains(TEXT("plate")))
+			auto ingredientCheck = Cast<AIngredient>(hitInfo.GetActor());
+			if (hitInfo.GetActor()->GetActorNameOrLabel().Contains(TEXT("plate")) || ingredientCheck != nullptr)
 			{
 				bHandIsOnPlate = true;
 				UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("plate")));
@@ -312,7 +315,19 @@ void ATestCharacter::OnIAPlating(const FInputActionValue& value)
 				// 손에 식재료를 잡고 있을 때 && 그릇이라는 아이템에 포커스가 들어가 있을 때
 				if (bHoldingIngredientNow && bHandIsOnPlate)
 				{
-					GripProcedural->GetOwner()->AttachToActor(hitInfo.GetActor(), FAttachmentTransformRules::SnapToTargetIncludingScale);
+					GripProcedural->GetOwner()->AttachToActor(hitInfo.GetActor(), FAttachmentTransformRules::SnapToTargetIncludingScale); 					
+					GripProcedural->SetWorldLocation(hitInfo.GetActor()->GetActorLocation(), true);
+					GripProcedural->SetSimulatePhysics(false);
+					GripProcedural->SetRelativeRotation(FRotator(0));
+
+					FString strName;
+					hitInfo.GetActor()->GetName(strName);
+
+					UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Plate On %s"), *strName));
+
+					GripObject = nullptr;
+					GripProcedural = nullptr;
+
 					UnGripNow();
 				}
 
@@ -331,6 +346,8 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 
 	FHitResult hitInfo;	// 부딪힌 대상
 
+	params.AddIgnoredActor(this);
+
 	bool bHit = HitTest(startPos, endPos, hitInfo);
 
 	if (bCanGrip)
@@ -342,7 +359,6 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 			GripItem(Cast<AItem>(GripProcedural->GetOwner()));
 
 			params.AddIgnoredComponent(GripProcedural);
-			params.AddIgnoredActor(this);
 
 			bHoldingIngredientNow = true;
 		}
@@ -351,7 +367,6 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 			GripItem(GripObject);
 
 			params.AddIgnoredActor(GripObject);
-			params.AddIgnoredActor(this);
 		}
 
 
@@ -413,12 +428,27 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 		{
 			FVector grabLoc = GripObject->GetActorLocation();
 			FVector dropLoc = grabLoc + FVector(0, 0, -1) * 100000;
+
+
+			auto toolCheck =Cast<ACookingTool>(GripObject);
+
 			// 레이저 포인트 잘 작동하는지 확인용 선 그리기
 			// DrawLine(grabLoc, dropLoc);
 			// 케찹 소금 올리브유 등 소스를 잡고있다면 
-			if (!GripObject->GetActorNameOrLabel().Contains(TEXT("BP_SliceKnife")))
+			if(toolCheck != nullptr)
 			{
-				// 떨어지는 지점에 레이저 포인트 표시
+				if (toolCheck->toolType != ECookingToolType::Knife)
+				{
+					// 떨어지는 지점에 레이저 포인트 표시
+					CheckHitTraceForLaserPointer(grabLoc, dropLoc);
+				}
+				else if (toolCheck->toolType == ECookingToolType::Knife)
+				{
+					CheckHitTraceForDottedLine(grabLoc, dropLoc);
+				}
+			}
+			else
+			{
 				CheckHitTraceForLaserPointer(grabLoc, dropLoc);
 			}
 
@@ -442,6 +472,9 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 void ATestCharacter::OnIAUnGripR(const FInputActionValue& value)
 {
 	UnGripNow();
+
+	GripObject = nullptr;
+	GripProcedural = nullptr; 
 
 	//bCanTrace = true;
 	//bSlice = false;
@@ -788,8 +821,8 @@ void ATestCharacter::UnGripNow()
 		ketchupCheck->ReleaseTargetPoint();
 	}
 
-	GripObject = nullptr;
-	GripProcedural = nullptr;
+	/*GripObject = nullptr;
+	GripProcedural = nullptr;*/
 
 	bHoldingIngredientNow = false;
 }

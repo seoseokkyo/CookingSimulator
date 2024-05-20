@@ -9,6 +9,7 @@ AKitchenKnife::AKitchenKnife()
 	knifeMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KnifeMesh"));
 	knifeMesh->SetupAttachment(RootComponent);
 
+	ItemName = TEXT("FrenchKnife");
 	toolType = ECookingToolType::Knife;
 }
 
