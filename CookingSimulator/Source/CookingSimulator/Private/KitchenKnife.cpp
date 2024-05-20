@@ -10,6 +10,8 @@ AKitchenKnife::AKitchenKnife()
 	knifeMesh->SetupAttachment(RootComponent);
 
 	toolType = ECookingToolType::Knife;
+
+	ItemName = TEXT("FrenchKnife");
 }
 
 // Called when the game starts or when spawned

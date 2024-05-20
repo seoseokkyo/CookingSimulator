@@ -24,4 +24,8 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "MySettings", meta = (BindWidget))
 	class UCanvasPanel* itemCanvas;
+
+private:
+
+	virtual void NativeConstruct() override;
 };

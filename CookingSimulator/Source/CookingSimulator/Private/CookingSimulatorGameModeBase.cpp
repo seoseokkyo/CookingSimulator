@@ -8,17 +8,13 @@
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/TextBlock.h>
 #include "MenuWidget.h"
 #include "ResultWidget.h"
+#include "TestCharacter.h"
+#include "Tablet.h"
+#include <../../../../../../../Source/Runtime/UMG/Public/Components/WidgetComponent.h>
 
 void ACookingSimulatorGameModeBase::StartPlay()
 {
 	Super::StartPlay();
-
-	if (menu_BP != nullptr)
-	{
-		menuUI = CreateWidget<UMenuWidget>(GetWorld(), menu_BP);
-		menuUI->InitSubUI();
-	}
-		
 
 
 	auto gameInstance = CastChecked<UCookingSimulatorGameInstance>(GetGameInstance());
@@ -124,9 +120,15 @@ void ACookingSimulatorGameModeBase::StartPlay()
 			recipes.Add(recipeDetail);
 		}
 	}
+	if (menu_BP != nullptr)
+		{
+			menuUI = CreateWidget<UMenuWidget>(GetWorld(), menu_BP);
+			//menuUI->InitSubUI();
+		}
+		
 
 	//SetCurrentRecipe(ECookingSimulatorRecipeType::Hamburger);
-	SetCurrentRecipe(ECookingSimulatorRecipeType::SalmonSteakAndBoiledPotato);
+	//SetCurrentRecipe(ECookingSimulatorRecipeType::SalmonSteakAndBoiledPotato);
 }
 
 void ACookingSimulatorGameModeBase::Tick(float DeltaSeconds)
@@ -143,6 +145,16 @@ void ACookingSimulatorGameModeBase::Tick(float DeltaSeconds)
 			bCooking = false;
 
 			UE_LOG(LogTemp, Warning, TEXT("Cook Time Over"));
+		}
+	}
+	else
+	{
+		RecipeChangeTimer += DeltaSeconds;
+
+		if (RecipeChangeTimer > 10)
+		{
+			RecipeChangeTimer = 0;
+			SetCurrentRecipe((ECookingSimulatorRecipeType)FMath::RandRange(0, 1));
 		}
 	}
 	
@@ -166,8 +178,17 @@ bool ACookingSimulatorGameModeBase::SetCurrentRecipe(ECookingSimulatorRecipeType
 
 			bCooking = true;
 
+			// 새로운 주문이 들어왔을 때 태블릿을 들고 있지 않다면 강제로 들게 한다
+			ATestCharacter* player = Cast<ATestCharacter>(GetWorld()->GetFirstPlayerController());
+			if (player != nullptr)
+			{
+				player->bshow = false;
+			}
+
+			//menuUI->NewOrder();
 			menuUI->bNewOrder = true;
 			
+						
 			return true;
 		}
 	}
@@ -305,6 +326,8 @@ void ACookingSimulatorGameModeBase::CompareDeliveryFood(FCookingSimulatorRecipeI
 	{
 		UKismetSystemLibrary::PrintString(GetWorld(), resultComment, true, true, FLinearColor::Red, 10.0f);
 	}
+	
+	bCooking = false;
 
 	menuUI->resultUI->SetResult(resultComments, cookResult.rankPoint);
 

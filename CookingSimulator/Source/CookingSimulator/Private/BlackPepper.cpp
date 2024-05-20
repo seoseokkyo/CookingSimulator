@@ -10,8 +10,10 @@ ABlackPepper::ABlackPepper()
 	PrimaryActorTick.bCanEverTick = true;
 
 	bUseProceduralMesh = false;
-}
 
+	ItemName = TEXT("BlackPepper");
+}
+ 
 // Called when the game starts or when spawned
 void ABlackPepper::BeginPlay()
 {

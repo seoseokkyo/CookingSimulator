@@ -39,6 +39,7 @@
 #include "Tablet.h"
 #include <../../../../../../../Source/Runtime/Engine/Classes/Engine/StaticMeshSocket.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Engine/SkeletalMeshSocket.h>
+#include <../../../../../../../Source/Runtime/UMG/Public/Components/WidgetInteractionComponent.h>
 
 
 // Sets default values
@@ -87,6 +88,12 @@ ATestCharacter::ATestCharacter()
 		MeshLeft->SetSkeletalMesh(TempMeshLeft.Object);
 		MeshLeft->SetWorldLocationAndRotation(FVector(-3.0f, -3.5f, 4.5f), FRotator(-25.0f, -180.0f, 90.0f));
 	}	
+
+	// 위젯 인터렉션 컴포넌트를 생성하고
+	rightInteractionComp = CreateDefaultSubobject<UWidgetInteractionComponent>(TEXT("Right WidgetInteraction Component"));
+
+	// 오른손에 붙힌다
+	rightInteractionComp->SetupAttachment(MotionRight);
 
 	// 아이템 위젯 컴포넌트를 생성한다
 	itemWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Item Widget Component"));
@@ -161,11 +168,25 @@ void ATestCharacter::BeginPlay()
 		//lineDecal_inst->SetActorScale3D(FVector(5));
 	}
 
-	ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
-	if (gm != nullptr)
-	{
-		gm->SetCurrentRecipe(ECookingSimulatorRecipeType::Hamburger);
-	}
+	//ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
+	//if (gm != nullptr)
+	//{
+	//	bool bCheck = false;
+
+	//	//{			
+	//	//	bCheck = ;
+
+	//	//	if(bCheck)
+	//	//		break;
+	//	//};
+
+	//	FTimerHandle timerHand;
+	//	GetWorldTimerManager().SetTimer(timerHand, [&]() {
+
+
+
+	//	}, 15.0f, false);
+	//}
 
 	params.AddIgnoredActor(this);
 
@@ -192,7 +213,15 @@ void ATestCharacter::Tick(float DeltaTime)
 
 		CheckHitTraceForOutline(start, end);
 	}
+	
 
+	if (false == bshow)
+	{
+		spawnTablet->SetActorHiddenInGame(false);
+		spawnTablet->SetActorEnableCollision(true);
+		bshow = true;
+		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Fuckin New")));
+	}
 
 }
 
@@ -254,6 +283,7 @@ void ATestCharacter::ShowTablet(const FInputActionValue& value)
 	if (false == bshow)
 	{
 		spawnTablet->SetActorHiddenInGame(false);
+		spawnTablet->SetActorEnableCollision(true);
 		bshow = true;
 		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("sr")));
 	}
@@ -262,6 +292,7 @@ void ATestCharacter::ShowTablet(const FInputActionValue& value)
 	{
 		spawnTablet->SetActorHiddenInGame(true);
 		bshow = false;
+		spawnTablet->SetActorEnableCollision(false);
 		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("none")));
 	}
 }

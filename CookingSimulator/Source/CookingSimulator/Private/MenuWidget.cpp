@@ -24,6 +24,13 @@ void UMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	//NewOrder();
 	
 	//ShowResult();
+
+	if (true == bNewOrder)
+	{
+		NewOrder();
+
+		bNewOrder = false;
+	}
 }
 
 void UMenuWidget::OpenGuide()
@@ -31,7 +38,12 @@ void UMenuWidget::OpenGuide()
 	mainUI->GuideCanvas->SetVisibility(ESlateVisibility::Visible);
 	mainUI->NewOrder();
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("xx")));
+	
+	// 다른 UI들을 지우고 Add Child 한다
+	resultUI->RemoveFromParent();
+	newOrderUI->RemoveFromParent();
 	recipeUI->RemoveFromParent();
+	
 	menuViewBox->AddChild(mainUI);
 	//recipeUI->RecipeCanvas->SetVisibility(ESlateVisibility::Hidden);
 	//newOrderUI->NewOrderCanvas->SetVisibility(ESlateVisibility::Hidden);
@@ -39,45 +51,71 @@ void UMenuWidget::OpenGuide()
 
 void UMenuWidget::OpenRecipe()
 {
-	recipeUI->RecipeCanvas->SetVisibility(ESlateVisibility::Visible);
-	recipeUI->ShowRecipeOnMonitor();
+
+	
+	// 다른 UI들을 지우고 Add Child 한다
+	resultUI->RemoveFromParent();
+	newOrderUI->RemoveFromParent();
 	mainUI->RemoveFromParent();
+	
 	menuViewBox->AddChild(recipeUI);
 	//mainUI->GuideCanvas->SetVisibility(ESlateVisibility::Hidden);
 	//newOrderUI->NewOrderCanvas->SetVisibility(ESlateVisibility::Hidden);
+	recipeUI->RecipeCanvas->SetVisibility(ESlateVisibility::Visible);
+	recipeUI->ShowRecipeOnMonitor();
 }
 
 void UMenuWidget::NewOrder()
 {
-	if (true == bNewOrder)
-	{
-		bNewOrder = false;
 
-		// 새로운 주문이 들어왔을 때 알려준다
-		newOrderUI->NewOrderCanvas->SetVisibility(ESlateVisibility::Visible);
 
-		// 나머지 UI들을 숨긴다
-		recipeUI->RecipeCanvas->SetVisibility(ESlateVisibility::Hidden);
-		mainUI->GuideCanvas->SetVisibility(ESlateVisibility::Hidden);
-		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("o")));
-	}
+	// 나머지 UI들을 숨긴다
+	recipeUI->RemoveFromParent();
+	mainUI->RemoveFromParent();
+
+	resultUI->RemoveFromParent();
+		
+	// 새로운 주문이 들어왔을 때 알려준다
+	menuViewBox->AddChild(newOrderUI);
+	newOrderUI->NewOrderCanvas->SetVisibility(ESlateVisibility::Visible);
+	newOrderUI->NewOrder();
+	
+	//newOrderUI->SetVisibility(ESlateVisibility::Visible);
+
 }
 
 void UMenuWidget::ShowResult()
 {
 	if (true == bShowResult)
 	{
+		//다른 UI들을 숨긴다
+		recipeUI->RemoveFromParent();
+		mainUI->RemoveFromParent();
+		newOrderUI->RemoveFromParent();
+		
 		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("bShowResult : TRUE")));
 
 		resultUI->ShowResult();
 
 		bShowResult = false;
 		resultUI->ResultCanvas->SetVisibility(ESlateVisibility::Visible);
+
+		
 	}
 }
 
 void UMenuWidget::InitSubUI()
 {
+	if (newOrder_BP != nullptr)
+	{
+		newOrderUI = CreateWidget<UNewOrderWidget>(GetWorld(), newOrder_BP);
+
+
+		// menuViewBox에 AddChild한다
+		menuViewBox->AddChild(newOrderUI);
+		newOrderUI->HideWidget();
+		//newOrderUI->NewOrderCanvas->SetVisibility(ESlateVisibility::Hidden);
+	}
 
 	if (mainUI_BP != nullptr)
 	{
@@ -108,21 +146,23 @@ void UMenuWidget::InitSubUI()
 
 	}
 
-	if (newOrder_BP != nullptr)
-	{
-		newOrderUI = CreateWidget<UNewOrderWidget>(GetWorld(), newOrder_BP);
-		// 임시로 뷰포트에 띄움
-		newOrderUI->AddToViewport();
-		newOrderUI->NewOrderCanvas->SetVisibility(ESlateVisibility::Hidden);
-	}
 
 	if (result_BP != nullptr)
 	{
 		resultUI = CreateWidget<UResultWidget>(GetWorld(), result_BP);
-		resultUI->AddToViewport();
+		// menuViewBox에 AddChild한다
+		menuViewBox->AddChild(resultUI);
 		resultUI->ResultCanvas->SetVisibility(ESlateVisibility::Hidden);
 	}
 	GuideButton->OnReleased.AddDynamic(this, &UMenuWidget::OpenGuide);
 	RecipeButton->OnReleased.AddDynamic(this, &UMenuWidget::OpenRecipe);
+}
+
+void UMenuWidget::UpdateOrderUI(ESlateVisibility temp)
+{
+	if (temp == ESlateVisibility::Visible)
+	{
+
+	}	
 }
 

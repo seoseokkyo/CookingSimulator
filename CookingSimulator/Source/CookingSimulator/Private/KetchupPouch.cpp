@@ -21,6 +21,8 @@ AKetchupPouch::AKetchupPouch()
 	//cableComp->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName(TEXT("NeedleTop")));
 
 	toolType = ECookingToolType::SaucePouch;
+
+	ItemName = TEXT("KetchupPouch");
 }
 
 // Called when the game starts or when spawned
