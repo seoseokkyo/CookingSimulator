@@ -15,6 +15,9 @@ class UInputAction;
 class AActor;
 class APlayerController;
 class UInteractComponent;
+class AItem;
+class UProceduralMeshComponent;
+DECLARE_DYNAMIC_DELEGATE_OneParam(FHitPointDelegate, FVector, hitPoint);
 
 UCLASS()
 class COOKINGSIMULATOR_API ATestCharacter : public ACharacter
@@ -55,19 +58,18 @@ public:
 	class AActor* spawnTablet;
 
 	UPROPERTY(EditDefaultsOnly, Category = "MySettings")
-	bool bshow = false;
+	bool bshow = true;
 
-	
-private:
+// private:
 	// VR Camera Component를 생성하고 루트에 붙이고 싶다.
 	UPROPERTY(EditDefaultsOnly)
 	UCameraComponent* VRCamera;
 
 	// 모션 컨트롤러 왼손, 오른손을 생성하고 루트에 붙이고 싶다.
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UMotionControllerComponent* MotionLeft;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UMotionControllerComponent* MotionRight;
 	
 	// 왼손과 오른손의 스켈레탈 매쉬컴포넌트를 만들고
@@ -84,6 +86,10 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* GripItemRight;
 
+	// 오른손에 위젯 인터렉션 컴포넌트 추가(위젯 클릭하기 위함)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	class UWidgetInteractionComponent* rightInteractionComp;
+
 	
 	UPROPERTY(EditDefaultsOnly, Category = "VR")
 	UInputMappingContext* IMC_Player;
@@ -98,8 +104,11 @@ private:
 	UInputAction* IA_Trigger;
 
 	UPROPERTY(EditDefaultsOnly, Category = "VR")
-	UInputAction* IA_ShowTablet;
+	UInputAction* IA_RightButtonB;
 	
+	UPROPERTY(EditDefaultsOnly, Category = "VR")
+	UInputAction* IA_ShowTablet;
+
 	AActor* focusedActor = nullptr;
 	APlayerController* pc = nullptr;
 
@@ -108,6 +117,9 @@ private:
 	void OnIAMove(const FInputActionValue& value);
 	void OnIATurn(const FInputActionValue& value);
 	void OnIATrigger(const FInputActionValue& value);
+	void OnIARightButtonPressB(const FInputActionValue& value);
+	void OnIARightButtonReleaseB(const FInputActionValue& value);
+
 	void ShowTablet(const FInputActionValue& value);
 
 	void DrawLine(FVector startPos, FVector endPos);
@@ -118,8 +130,7 @@ private:
 
 	void CheckHitTraceForLaserPointer(const FVector& startPos, FVector& endPos);
 
-	
-
+	FCollisionQueryParams params;
 
 public:
 	UPROPERTY(EditAnywhere)
@@ -144,7 +155,7 @@ public:
 	void OnIAGripL(const FInputActionValue& value);
 	void OnIAUnGripL(const FInputActionValue& value);
 
-	void GripItem(UPrimitiveComponent* item);
+	void GripItem(AItem* item);
 
 	bool bCanGrip = false;
 
@@ -154,7 +165,18 @@ public:
 	void CheckHitTraceForDottedLine(const FVector& startPos, FVector& endPos);
 
 	UPROPERTY(EditAnywhere, Category = "VR")
-	class UPrimitiveComponent* GripObject;
+	AItem* GripObject = nullptr;
 
 
+	UProceduralMeshComponent* GripProcedural = nullptr;
+
+	bool bCanTrace = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bSlice = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VR")
+	FHitPointDelegate hitPointDelegate;
+
+	FVector hitPoint;
 };

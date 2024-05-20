@@ -9,9 +9,21 @@
 /**
  * 
  */
+
+ 
+UENUM(BlueprintType)
+enum class ECookingToolType : uint8
+{
+	Knife,
+	SaucePouch,
+	Others
+};
+
 UCLASS()
 class COOKINGSIMULATOR_API ACookingTool : public AItem
 {
 	GENERATED_BODY()
 	
+public:
+	ECookingToolType toolType;
 };

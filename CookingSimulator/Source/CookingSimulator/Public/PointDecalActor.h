@@ -15,9 +15,6 @@ class COOKINGSIMULATOR_API APointDecalActor : public ADecalActor
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditAnywhere)
-	// 데칼 크기 설정
-	FVector decalSizeSet = FVector(10, 10, 5);
 
 	void SetShowDecal(bool visible);
 

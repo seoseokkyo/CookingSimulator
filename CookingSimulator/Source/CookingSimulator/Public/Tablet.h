@@ -28,4 +28,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "VR")
 	class USceneComponent* rootComp;
+
+	UPROPERTY(EditAnywhere, Category="VR")
+	TSubclassOf<class UMenuWidget> menuUI_BP;
+	
+	UPROPERTY()
+	UMenuWidget* menuUI;
 };

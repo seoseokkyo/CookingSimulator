@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "InteractAbleInterface.h"
+#include "CookingTool.h"
 #include "KitchenDial.generated.h"
 
 class UStaticMeshComponent;
 
 UCLASS()
-class COOKINGSIMULATOR_API AKitchenDial : public AActor, public IInteractAbleInterface
+class COOKINGSIMULATOR_API AKitchenDial : public ACookingTool
 {
 	GENERATED_BODY()
 	

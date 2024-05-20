@@ -5,6 +5,7 @@
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/WidgetComponent.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/StaticMeshComponent.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/SceneComponent.h>
+#include "MenuWidget.h"
 
 ATablet::ATablet()
 {
@@ -13,18 +14,20 @@ ATablet::ATablet()
 	rootComp = CreateDefaultSubobject<USceneComponent>(TEXT("Root Component"));
 	SetRootComponent(rootComp);
 
+	// 태블릿 메시 생성
 	tabletMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Tablet Meh Component"));
 	tabletMeshComp->SetupAttachment(RootComponent);
 	
+	// 위젯 컴포넌트 생성
 	menuWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Menu Widget Componemnt"));
-	menuWidgetComp->SetupAttachment(tabletMeshComp);
+	menuWidgetComp->SetupAttachment(RootComponent);
 
 }
 
 void ATablet::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	menuWidgetComp->SetWidgetClass(menuUI_BP);
 }
 
 void ATablet::Tick(float DeltaTime)

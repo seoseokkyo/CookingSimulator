@@ -60,6 +60,7 @@ private:
 	bool bCooking;
 
 protected:
+
 	virtual void StartPlay() override;
 
 	virtual void Tick(float DeltaSeconds) override;
@@ -78,9 +79,11 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="MySettings")
 	TSubclassOf<class UMenuWidget> menu_BP;
-		
+			
 	float cookingTimer = 300;
 	
+	float RecipeChangeTimer = 0.0f;
+
 	UMenuWidget* menuUI;
 
 	UFUNCTION(BlueprintCallable)

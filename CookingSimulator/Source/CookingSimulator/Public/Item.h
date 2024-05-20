@@ -32,6 +32,7 @@ public:
 	FString itemDescription;
 };
 
+class UProceduralMeshComponent;
 
 UCLASS()
 class COOKINGSIMULATOR_API AItem : public AActor, public IInteractAbleInterface
@@ -56,6 +57,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+private:
+
+
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
 	FString ItemName = TEXT("Name");
 
@@ -65,9 +70,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
 	UStaticMeshComponent* baseMesh;
 
-private:
+	bool bUseProceduralMesh = true;
 
-
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	UProceduralMeshComponent* proceduralMesh;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	FRotator gripRotation;
 };

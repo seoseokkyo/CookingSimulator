@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "CookingSimulatorGameInstance.h"
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/StaticMeshComponent.h>
+#include "ProceduralMeshComponent.h"
 
 // Sets default values
 AItem::AItem()
@@ -13,6 +14,9 @@ AItem::AItem()
 
 	baseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Mesh Comp"));
 	baseMesh->SetupAttachment(RootComponent);
+
+	proceduralMesh = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("Procedural Mesh Comp"));
+	proceduralMesh->SetupAttachment(baseMesh);
 }
 
 // Called when the game starts or when spawned
@@ -31,6 +35,11 @@ void AItem::BeginPlay()
 			if (ItemName.Compare(TEXT("Name")) != 0)
 			{
 				itemInfoStruct = cookingInstance->GetItemDataTable(ItemName);
+
+				if (itemInfoStruct.itemType == ECookingSimulatorItemType::CookingTool)
+				{
+					bUseProceduralMesh = false;
+				}
 			}			
 		}
 	}
@@ -45,11 +54,32 @@ void AItem::Tick(float DeltaTime)
 
 void AItem::DrawOutLine_Implementation(bool bOn)
 {
-	if (baseMesh != nullptr)
+	if (itemInfoStruct.itemType == ECookingSimulatorItemType::CookingTool)
 	{
-		baseMesh->SetRenderCustomDepth(bOn);
+		if (baseMesh != nullptr)
+		{
+			baseMesh->SetRenderCustomDepth(bOn);
 
-		baseMesh->SetCustomDepthStencilValue(bOn ? 1 : 0);
+			baseMesh->SetCustomDepthStencilValue(bOn ? 1 : 0);
+		}
+	}
+	else if (itemInfoStruct.itemType == ECookingSimulatorItemType::Ingredient)
+	{
+		if (false == bUseProceduralMesh)
+		{
+			baseMesh->SetRenderCustomDepth(bOn);
+
+			baseMesh->SetCustomDepthStencilValue(bOn ? 1 : 0);
+		}
+		else
+		{
+			if (proceduralMesh != nullptr)
+			{
+				proceduralMesh->SetRenderCustomDepth(bOn);
+
+				proceduralMesh->SetCustomDepthStencilValue(bOn ? 1 : 0);
+			}
+		}
 	}
 }
 

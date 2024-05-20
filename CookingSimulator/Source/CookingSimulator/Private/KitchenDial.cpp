@@ -20,6 +20,8 @@ AKitchenDial::AKitchenDial()
 	dialMesh->SetStaticMesh(ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("/Script/Engine.StaticMesh'/Game/CookingSimulator/Blueprints/CookingTools/Mesh/KitchenTimer/Kitchen_timer_Dial.Kitchen_timer_Dial'")).Object);
 	dialMesh->SetupAttachment(bodyMesh);
 	dialMesh->SetRelativeLocation(FVector(0, 1, 0));
+
+	toolType = ECookingToolType::Others;
 }
 
 // Called when the game starts or when spawned
