@@ -9,6 +9,7 @@
 #include "InteractComponent.h"
 #include "CookingSimulatorGameModeBase.h"
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/PrimitiveComponent.h>
+#include "Plate.h"
 
 // Sets default values
 ADumbwaiter::ADumbwaiter()
@@ -53,7 +54,7 @@ ADumbwaiter::ADumbwaiter()
 	buttonBottom->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 
 	toolType = ECookingToolType::Others;
-	
+
 	ItemName = TEXT("Dumbwaiter");
 }
 
@@ -169,7 +170,7 @@ void ADumbwaiter::UpButtonTouch()
 
 	leftDoorOpenTimeline.PlayFromStart();
 	rightDoorOpenTimeline.PlayFromStart();
-		
+
 	bLeftDoorMove = true;
 	bRightDoorMove = true;
 	bUpButtonMove = true;
@@ -185,7 +186,7 @@ void ADumbwaiter::BottomButtonTouch()
 
 	leftDoorOpenTimeline.ReverseFromEnd();
 	rightDoorOpenTimeline.ReverseFromEnd();
-		
+
 	bLeftDoorMove = true;
 	bRightDoorMove = true;
 	bBottomButtonMove = true;
@@ -252,6 +253,32 @@ void ADumbwaiter::FoodDelivery()
 
 	ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
 
+	for (AActor* result : resultCheck)
+	{
+		auto check = Cast<APlate>(result);
+
+		if (check != nullptr)
+		{
+			TArray<AActor*> allChilds;
+			check->GetAllChildActors(allChilds);
+						
+			for (auto temp : allChilds)
+			{
+				temp->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+
+				resultCheck.Add(temp);
+			}
+
+			check->GetAttachedActors(allChilds);
+			for (auto temp : allChilds)
+			{
+				temp->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+
+				resultCheck.Add(temp);
+			}
+		}
+	}
+
 	if (gm != nullptr)
 	{
 		FCookingSimulatorRecipeInfo resultRcp = gm->GetCurrentRecipe();
@@ -281,7 +308,7 @@ void ADumbwaiter::FoodDelivery()
 				if (check != nullptr)
 				{
 					resultRcp.ingredientInfoArray.Add(check->GetIngredientInfo());
-				}				
+				}
 
 				break;
 			}

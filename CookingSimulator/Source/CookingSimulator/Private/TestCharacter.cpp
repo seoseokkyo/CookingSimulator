@@ -42,6 +42,7 @@
 #include "Tablet.h"
 #include <../../../../../../../Source/Runtime/Engine/Classes/Engine/StaticMeshSocket.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Engine/SkeletalMeshSocket.h>
+#include "Plate.h"
 
 
 // Sets default values
@@ -338,6 +339,10 @@ void ATestCharacter::OnIAPlating(const FInputActionValue& value)
 		// params.ClearIgnoredActors();
 
 		FHitResult hitInfo;
+
+		params.ClearIgnoredActors();
+		params.ClearIgnoredComponents();
+
 		bool bHit = HitTest(start, end, hitInfo);
 
 		bool bHandIsOnPlate = false;
@@ -354,15 +359,18 @@ void ATestCharacter::OnIAPlating(const FInputActionValue& value)
 				// 손에 식재료를 잡고 있을 때 && 그릇이라는 아이템에 포커스가 들어가 있을 때
 				if (bHoldingIngredientNow && bHandIsOnPlate)
 				{
-					GripProcedural->GetOwner()->AttachToActor(hitInfo.GetActor(), FAttachmentTransformRules::SnapToTargetIncludingScale); 					
-					GripProcedural->SetWorldLocation(hitInfo.GetActor()->GetActorLocation(), true);
-					GripProcedural->SetSimulatePhysics(false);
-					GripProcedural->SetRelativeRotation(FRotator(0));
+					auto plateCheck = Cast<APlate>(hitInfo.GetActor());
 
-					FString strName;
-					hitInfo.GetActor()->GetName(strName);
+					if (plateCheck != nullptr)
+					{
+						plateCheck->plateActor(GripProcedural->GetOwner());
 
-					UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Plate On %s"), *strName));
+						FString strName;
+						hitInfo.GetActor()->GetName(strName);
+
+						UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Plate On %s"), *strName));
+
+					}
 
 					GripObject = nullptr;
 					GripProcedural = nullptr;
@@ -385,30 +393,50 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 
 	FHitResult hitInfo;	// 부딪힌 대상
 
+	params.ClearIgnoredActors();
 	params.AddIgnoredActor(this);
 
 	bool bHit = HitTest(startPos, endPos, hitInfo);
 
 	if (bCanGrip)
 	{
+		auto itemCheck = Cast<AItem>(GripObject);
+
 		// 해당 아이템을 쥔다
-		if (GripObject != nullptr)
+		if (itemCheck != nullptr)
 		{
-			GripItem(GripObject);
+			if (itemCheck->itemInfoStruct.itemType == ECookingSimulatorItemType::CookingTool)
+			{
+				if (GripObject != nullptr)
+				{
+					GripItem(GripObject);
 
-			params.AddIgnoredActor(GripObject);
+					params.AddIgnoredActor(GripObject);
+				}				
+			}
+			else if (itemCheck->itemInfoStruct.itemType == ECookingSimulatorItemType::Ingredient)
+			{
+				if (GripProcedural != nullptr)
+				{
+					GripItem(Cast<AItem>(GripProcedural->GetOwner()));
+
+					params.AddIgnoredComponent(GripProcedural);
+
+					bHoldingIngredientNow = true;
+				}
+			}
 		}
-		else if (GripProcedural != nullptr)
+		else
 		{
-			GripItem(Cast<AItem>(GripProcedural->GetOwner()));
+			if (GripProcedural != nullptr)
+			{
+				GripItem(Cast<AItem>(GripProcedural->GetOwner()));
 
-			params.AddIgnoredComponent(GripProcedural);
+				params.AddIgnoredComponent(GripProcedural);
 
-			bHoldingIngredientNow = true;
+				bHoldingIngredientNow = true;
+			}
 		}
-		
-
-
 		// 그립되는 이 위치에서 무시할 액터 체크해야함 주의..
 	}
 

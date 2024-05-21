@@ -2,6 +2,8 @@
 
 
 #include "Plate.h"
+#include "Ingredient.h"
+#include <../../../../../../../Plugins/Runtime/ProceduralMeshComponent/Source/ProceduralMeshComponent/Public/ProceduralMeshComponent.h>
 
 // Sets default values
 APlate::APlate()
@@ -26,5 +28,27 @@ void APlate::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void APlate::plateActor(AActor* actor)
+{
+	actor->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
+
+	auto ingredientCheck = Cast<AIngredient>(actor);
+
+	if (ingredientCheck != nullptr)
+	{
+		if (platedActors.Num() > 0)
+		{
+			ingredientCheck->proceduralMesh->SetWorldLocation(platedActors[platedActors.Num() - 1]->GetActorLocation() + FVector(0, 0, 3), true);
+		}
+		else
+		{
+			ingredientCheck->proceduralMesh->SetWorldLocation(GetActorLocation() + FVector(0, 0, 3), true);
+		}
+
+		ingredientCheck->proceduralMesh->SetSimulatePhysics(false);
+		ingredientCheck->proceduralMesh->SetRelativeRotation(FRotator(0));
+	}
 }
 
