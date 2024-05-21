@@ -8,6 +8,7 @@
 #include <Materials/MaterialInterface.h>
 #include <BlackPepper.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h>
+#include <../../../../../../../Source/Runtime/Engine/Classes/Components/AudioComponent.h>
 
 // Sets default values
 ABlackPepperBottle::ABlackPepperBottle()
@@ -18,6 +19,9 @@ ABlackPepperBottle::ABlackPepperBottle()
 	toolType = ECookingToolType::SaucePouch;
 
 	ItemName = TEXT("BlackPepperBottle");
+
+	soundComp_BlackPepper = CreateDefaultSubobject<UAudioComponent>(TEXT("Sound Comp"));
+	soundComp_BlackPepper->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -61,6 +65,12 @@ void ABlackPepperBottle::Tick(float DeltaTime)
 
 		if (delayTime > 0.5)
 		{
+			if (soundComp_BlackPepper != nullptr)
+			{
+				soundComp_BlackPepper->Stop();
+				soundComp_BlackPepper->Play();
+			}
+
 			delayTime = 0.0f;
 
 			FCollisionQueryParams params;

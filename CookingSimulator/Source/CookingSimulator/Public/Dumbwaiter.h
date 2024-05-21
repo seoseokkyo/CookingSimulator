@@ -76,6 +76,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="MySettings")
 	UCurveFloat* curveBottomButtonPush;
 
+	UPROPERTY(VisibleAnywhere, Category="MySettings|Components")
+	class UAudioComponent* soundComp_Fanfare;
+
 	bool bLeftDoorMove = false;
 	bool bRightDoorMove = false;
 

@@ -8,6 +8,7 @@
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/TextBlock.h>
 #include "MenuWidget.h"
 #include "ResultWidget.h"
+#include <../../../../../../../Source/Runtime/Engine/Classes/Components/AudioComponent.h>
 
 void ACookingSimulatorGameModeBase::StartPlay()
 {
@@ -19,7 +20,10 @@ void ACookingSimulatorGameModeBase::StartPlay()
 		menuUI->InitSubUI();
 	}
 		
-
+	if (soundComp_TimeOut != nullptr)
+	{
+		soundComp_TimeOut->Stop();
+	}
 
 	auto gameInstance = CastChecked<UCookingSimulatorGameInstance>(GetGameInstance());
 
@@ -141,6 +145,12 @@ void ACookingSimulatorGameModeBase::Tick(float DeltaSeconds)
 		{
 			cookingTimer = 0;
 			bCooking = false;
+
+				
+			if (soundComp_TimeOut != nullptr)
+			{
+				soundComp_TimeOut->Play();
+			}			
 
 			UE_LOG(LogTemp, Warning, TEXT("Cook Time Over"));
 		}

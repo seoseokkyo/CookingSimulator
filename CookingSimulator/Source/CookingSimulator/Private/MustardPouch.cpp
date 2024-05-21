@@ -8,6 +8,7 @@
 #include <Materials/MaterialInterface.h>
 #include <Mustard.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h>
+#include <../../../../../../../Source/Runtime/Engine/Classes/Components/AudioComponent.h>
 
 
 // Sets default values
@@ -19,6 +20,9 @@ AMustardPouch::AMustardPouch()
 	toolType = ECookingToolType::SaucePouch;
 
 	ItemName = TEXT("MustardPouch");
+
+	soundComp_Mustard = CreateDefaultSubobject<UAudioComponent>(TEXT("Sound Comp"));
+	soundComp_Mustard->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -58,6 +62,12 @@ void AMustardPouch::Tick(float DeltaTime)
 
 		if (delayTime > 0.1)
 		{
+			if (soundComp_Mustard != nullptr)
+			{
+				soundComp_Mustard->Stop();
+				soundComp_Mustard->Play();
+			}
+
 			delayTime = 0.0f;
 
 			FCollisionQueryParams params;

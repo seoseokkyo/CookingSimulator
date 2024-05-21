@@ -51,6 +51,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
 	UMaterialInterface* splineMaterial;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
+	class UAudioComponent* soundComp_Ketchup;
 
 	float delayTime = 0.0f;
 

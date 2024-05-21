@@ -10,6 +10,7 @@
 #include "CookingSimulatorGameModeBase.h"
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/PrimitiveComponent.h>
 #include "Plate.h"
+#include <../../../../../../../Source/Runtime/Engine/Classes/Components/AudioComponent.h>
 
 // Sets default values
 ADumbwaiter::ADumbwaiter()
@@ -56,6 +57,9 @@ ADumbwaiter::ADumbwaiter()
 	toolType = ECookingToolType::Others;
 
 	ItemName = TEXT("Dumbwaiter");
+
+	soundComp_Fanfare = CreateDefaultSubobject<UAudioComponent>(TEXT("Sound Comp"));
+	soundComp_Fanfare->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -315,6 +319,12 @@ void ADumbwaiter::FoodDelivery()
 		}
 
 		gm->CompareDeliveryFood(resultRcp);
+	}
+
+	if (soundComp_Fanfare != nullptr)
+	{
+		soundComp_Fanfare->Stop();
+		soundComp_Fanfare->Play();
 	}
 }
 

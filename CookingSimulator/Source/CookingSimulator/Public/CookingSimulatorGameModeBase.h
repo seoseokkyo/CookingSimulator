@@ -79,6 +79,9 @@ public:
 	UPROPERTY(EditAnywhere, Category="MySettings")
 	TSubclassOf<class UMenuWidget> menu_BP;
 		
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MySettings|Components")
+	class UAudioComponent* soundComp_TimeOut;
+
 	float cookingTimer = 300;
 	
 	UMenuWidget* menuUI;
@@ -100,4 +103,5 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void CookingCountTime();
+
 };

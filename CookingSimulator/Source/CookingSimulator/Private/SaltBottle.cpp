@@ -8,6 +8,7 @@
 #include <Materials/MaterialInterface.h>
 #include <Salt.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h>
+#include <../../../../../../../Source/Runtime/Engine/Classes/Components/AudioComponent.h>
 
 // Sets default values
 ASaltBottle::ASaltBottle()
@@ -18,12 +19,17 @@ ASaltBottle::ASaltBottle()
 	toolType = ECookingToolType::SaucePouch;
 
 	ItemName = TEXT("SaltBottle");
+
+	soundComp_Salt = CreateDefaultSubobject<UAudioComponent>(TEXT("Sound Comp"));
+	soundComp_Salt->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
 void ASaltBottle::BeginPlay()
 {
 	Super::BeginPlay();
+
+	soundComp_Salt->Stop();
 
 	splinePositions.Reset();
 
@@ -61,6 +67,12 @@ void ASaltBottle::Tick(float DeltaTime)
 
 		if (delayTime > 0.5)
 		{
+			if (soundComp_Salt != nullptr)
+			{
+				soundComp_Salt->Stop();
+				soundComp_Salt->Play();
+			}
+
 			delayTime = 0.0f;
 
 			FCollisionQueryParams params;

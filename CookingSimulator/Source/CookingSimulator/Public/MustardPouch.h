@@ -52,6 +52,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
 	UMaterialInterface* splineMaterial;
 
+	UPROPERTY(VisibleAnywhere, Category="MySettings|Components")
+	class UAudioComponent* soundComp_Mustard;
+
 	float delayTime = 0.0f;
 
 	void DrawStart() { bStart = true; };

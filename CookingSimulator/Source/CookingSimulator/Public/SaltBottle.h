@@ -42,6 +42,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
 	TSubclassOf<ASalt> saltActor_BP;
 
+	UPROPERTY(VisibleAnywhere, Category="MySettings|Components")
+	class UAudioComponent* soundComp_Salt;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
 	ASalt* saltActor;
 

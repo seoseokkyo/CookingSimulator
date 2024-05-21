@@ -10,6 +10,7 @@ ABlackPepper::ABlackPepper()
 	PrimaryActorTick.bCanEverTick = true;
 
 	bUseProceduralMesh = false;
+
 }
 
 // Called when the game starts or when spawned

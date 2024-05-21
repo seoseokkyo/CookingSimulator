@@ -186,4 +186,8 @@ public:
 	bool bHoldingIngredientNow=false;
 
 	void UnGripNow();
+
+
+	UPROPERTY(VisibleAnywhere, Category="MySettings|Components")
+	class UAudioComponent* soundComp_Tap;
 };

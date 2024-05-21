@@ -8,6 +8,7 @@
 #include <Materials/MaterialInterface.h>
 #include <Ketchup.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h>
+#include <../../../../../../../Source/Runtime/Engine/Classes/Components/AudioComponent.h>
 
 // Sets default values
 AKetchupPouch::AKetchupPouch()
@@ -18,12 +19,17 @@ AKetchupPouch::AKetchupPouch()
 	toolType = ECookingToolType::SaucePouch;
 
 	ItemName = TEXT("KetchupPouch");
+
+	soundComp_Ketchup = CreateDefaultSubobject<UAudioComponent>(TEXT("Sound Comp"));
+	soundComp_Ketchup->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
 void AKetchupPouch::BeginPlay()
 {
 	Super::BeginPlay();
+
+	soundComp_Ketchup->Stop();
 
 	splinePositions.Reset();
 	splineMeshs.Reset();
@@ -62,6 +68,12 @@ void AKetchupPouch::Tick(float DeltaTime)
 
 		if (delayTime > 0.1)
 		{
+			if (soundComp_Ketchup != nullptr)
+			{
+				soundComp_Ketchup->Stop();
+				soundComp_Ketchup->Play();
+			}
+
 			delayTime = 0.0f;
 
 			FCollisionQueryParams params;

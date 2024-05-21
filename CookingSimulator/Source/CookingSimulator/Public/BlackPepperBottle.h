@@ -47,6 +47,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
 	ABlackPepper* blackPepperActor;
 
+	UPROPERTY(VisibleAnywhere, Category="MySettings|Components")
+	class UAudioComponent* soundComp_BlackPepper;
+
 	float delayTime = 0.0f;
 
 	void DrawStart() { bStart = true; };
