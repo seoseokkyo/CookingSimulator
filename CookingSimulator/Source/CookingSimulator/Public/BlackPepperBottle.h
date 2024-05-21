@@ -5,22 +5,22 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "CookingTool.h"
-#include "KetchupPouch.generated.h"
+#include "BlackPepperBottle.generated.h"
 
 class UStaticMesh;
 class USplineMeshComponent;
 class UMaterialInterface;
 class UCableComponent;
-class AKetchup;
+class ABlackPepper;
 
 UCLASS()
-class COOKINGSIMULATOR_API AKetchupPouch : public ACookingTool
+class COOKINGSIMULATOR_API ABlackPepperBottle : public ACookingTool
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AKetchupPouch();
+	ABlackPepperBottle();
 
 protected:
 	// Called when the game starts or when spawned
@@ -32,25 +32,20 @@ protected:
 
 	bool bTargetOn;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
 	//UCableComponent* cableComp;
 
-
 	TArray<FVector> splinePositions;
-	TArray<const USplineMeshComponent*> splineMeshs;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
-	TSubclassOf<AKetchup> ketchupActor_BP;
+	TSubclassOf<ABlackPepper> blackPepperActor_BP;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
-	AKetchup* ketchupActor;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
-	UMaterialInterface* splineMaterial;
+	ABlackPepper* blackPepperActor;
 
 	float delayTime = 0.0f;
 

@@ -1,27 +1,28 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "KetchupPouch.h"
+#include "MustardPouch.h"
 #include "TestCharacter.h"
 #include <Components/SplineMeshComponent.h>
 #include <Kismet/KismetSystemLibrary.h>
 #include <Materials/MaterialInterface.h>
-#include <Ketchup.h>
+#include <Mustard.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h>
 
+
 // Sets default values
-AKetchupPouch::AKetchupPouch()
+AMustardPouch::AMustardPouch()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	toolType = ECookingToolType::SaucePouch;
 
-	ItemName = TEXT("KetchupPouch");
+	ItemName = TEXT("MustardPouch");
 }
 
 // Called when the game starts or when spawned
-void AKetchupPouch::BeginPlay()
+void AMustardPouch::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -35,26 +36,21 @@ void AKetchupPouch::BeginPlay()
 	}
 
 
-	if (ketchupActor_BP != nullptr)
+	if (mustardActor_BP != nullptr)
 	{
 		FActorSpawnParameters param;
 		param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 		//ketchupActor = CreateDefaultSubobject<AKetchup>(TEXT("Ketchup"));
-		ketchupActor = GetWorld()->SpawnActor<AKetchup>(ketchupActor_BP, FTransform(GetActorRotation(), GetActorLocation(), GetActorScale()), param);
-		ketchupActor->SetActorLocation(GetActorLocation());
+		mustardActor = GetWorld()->SpawnActor<AMustard>(mustardActor_BP, FTransform(GetActorRotation(), GetActorLocation(), GetActorScale()), param);
+		mustardActor->SetActorLocation(GetActorLocation());
 	}
 }
 
 // Called every frame
-void AKetchupPouch::Tick(float DeltaTime)
+void AMustardPouch::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	//if (bTargetOn)
-	//{
-	//	RotationToTarget();
-	//}
 
 	if (bStart)
 	{
@@ -75,14 +71,15 @@ void AKetchupPouch::Tick(float DeltaTime)
 
 			GetWorld()->LineTraceSingleByChannel(hitResult, start, end, ECC_Visibility, params);
 
-			auto ketchupCheck = Cast<AKetchup>(hitResult.GetActor());
+			auto mustardCheck = Cast<AMustard>(hitResult.GetActor());
 
 			OnAddNewPosition(hitResult.ImpactPoint, hitResult);
 		}
 	}
 }
 
-void AKetchupPouch::OnAddNewPosition(FVector newPos, FHitResult& hitResult)
+
+void AMustardPouch::OnAddNewPosition(FVector newPos, FHitResult& hitResult)
 {
 	splinePositions.Add(newPos);
 
@@ -102,59 +99,59 @@ void AKetchupPouch::OnAddNewPosition(FVector newPos, FHitResult& hitResult)
 		FActorSpawnParameters spawnParam;
 		spawnParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-		auto newKetchup = GetWorld()->SpawnActor<AKetchup>(ketchupActor_BP, FTransform(FRotator::ZeroRotator, hitResult.ImpactPoint, FVector(1, 1, 1)), spawnParam);
+		auto newMustard = GetWorld()->SpawnActor<AMustard>(mustardActor_BP, FTransform(FRotator::ZeroRotator, hitResult.ImpactPoint, FVector(1, 1, 1)), spawnParam);
 
-		newKetchup->SetActorLocation(newPos);
-		newKetchup->AttachToActor(hitResult.GetActor(), FAttachmentTransformRules::KeepWorldTransform);
+		newMustard->SetActorLocation(newPos);
+		newMustard->AttachToActor(hitResult.GetActor(), FAttachmentTransformRules::KeepWorldTransform);
 
 		//USplineMeshComponent* SplineComp = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), splineName);
-		newKetchup->splineComp = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), splineName);
-		newKetchup->splineComp->SetMobility(EComponentMobility::Movable);
+		newMustard->splineComp = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), splineName);
+		newMustard->splineComp->SetMobility(EComponentMobility::Movable);
 
-		if (newKetchup->splineComp != nullptr)
+		if (newMustard->splineComp != nullptr)
 		{
-			splineMeshs.Add(newKetchup->splineComp);
+			splineMeshs.Add(newMustard->splineComp);
 
 			for (const auto& mesh : splineMeshs)
 			{
 				UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("P : %p, L : %d"), mesh, splineMeshs.Num()));
 			}
 
-			newKetchup->baseMesh->SetMaterial(0, splineMaterial);
-			newKetchup->splineComp->SetMaterial(0, splineMaterial);
+			newMustard->baseMesh->SetMaterial(0, splineMaterial);
+			newMustard->splineComp->SetMaterial(0, splineMaterial);
 
-			if (newKetchup->splineComp != nullptr)
+			if (newMustard->splineComp != nullptr)
 			{
-				newKetchup->splineComp->SetStaticMesh(newKetchup->splineMesh);
+				newMustard->splineComp->SetStaticMesh(newMustard->splineMesh);
 
-				UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("SplineComp : %p"), newKetchup->splineMesh));
+				UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("SplineComp : %p"), newMustard->splineMesh));
 			}
 
-			newKetchup->splineComp->RegisterComponent();
+			newMustard->splineComp->RegisterComponent();
 
-			newKetchup->splineComp->SetForwardAxis(ESplineMeshAxis::X);
+			newMustard->splineComp->SetForwardAxis(ESplineMeshAxis::X);
 
-			newKetchup->splineComp->SetStartPosition(splinePositions[posSize - 2], false);
-			newKetchup->splineComp->SetEndPosition(splinePositions[posSize - 1], true);
+			newMustard->splineComp->SetStartPosition(splinePositions[posSize - 2], false);
+			newMustard->splineComp->SetEndPosition(splinePositions[posSize - 1], true);
 
-			newKetchup->splineComp->AttachToComponent(hitResult.GetComponent(), FAttachmentTransformRules::KeepWorldTransform);
+			newMustard->splineComp->AttachToComponent(hitResult.GetComponent(), FAttachmentTransformRules::KeepWorldTransform);
 		}
 	}
 }
 
-void AKetchupPouch::SetTargetPoint(FVector _targetPoint)
+void AMustardPouch::SetTargetPoint(FVector _targetPoint)
 {
 	targetPoint = _targetPoint;
 	bTargetOn = true;
 }
 
-void AKetchupPouch::ReleaseTargetPoint()
+void AMustardPouch::ReleaseTargetPoint()
 {
 	targetPoint = FVector::ZeroVector;
 	bTargetOn = false;
 }
 
-void AKetchupPouch::RotationToTarget()
+void AMustardPouch::RotationToTarget()
 {
 	//FVector dir = targetPoint - GetActorLocation();
 	FVector target(413.0f, 71.0f, 92.0f);
@@ -167,4 +164,5 @@ void AKetchupPouch::RotationToTarget()
 
 	SetActorRotation(dir.Rotation());
 }
+
 

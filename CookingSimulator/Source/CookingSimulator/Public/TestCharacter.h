@@ -17,7 +17,9 @@ class APlayerController;
 class UInteractComponent;
 class AItem;
 class UProceduralMeshComponent;
-DECLARE_DYNAMIC_DELEGATE_OneParam(FHitPointDelegate, FVector, hitPoint);
+
+//DECLARE_DYNAMIC_DELEGATE_OneParam(FHitPointDelegate, FVector, hitPoint);
+DECLARE_DELEGATE_OneParam(FHitPointDelegate, FVector);
 
 UCLASS()
 class COOKINGSIMULATOR_API ATestCharacter : public ACharacter
@@ -176,7 +178,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bSlice = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VR")
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VR")
 	FHitPointDelegate hitPointDelegate;
 
 	FVector hitPoint;

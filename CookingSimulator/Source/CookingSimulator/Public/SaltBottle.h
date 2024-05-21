@@ -3,24 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
 #include "CookingTool.h"
-#include "KetchupPouch.generated.h"
+#include "SaltBottle.generated.h"
 
 class UStaticMesh;
 class USplineMeshComponent;
 class UMaterialInterface;
-class UCableComponent;
-class AKetchup;
+class ASalt;
 
 UCLASS()
-class COOKINGSIMULATOR_API AKetchupPouch : public ACookingTool
+class COOKINGSIMULATOR_API ASaltBottle : public ACookingTool
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AKetchupPouch();
+	ASaltBottle();
 
 protected:
 	// Called when the game starts or when spawned
@@ -32,25 +30,20 @@ protected:
 
 	bool bTargetOn;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
 	//UCableComponent* cableComp;
 
-
 	TArray<FVector> splinePositions;
-	TArray<const USplineMeshComponent*> splineMeshs;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
-	TSubclassOf<AKetchup> ketchupActor_BP;
+	TSubclassOf<ASalt> saltActor_BP;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
-	AKetchup* ketchupActor;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
-	UMaterialInterface* splineMaterial;
+	ASalt* saltActor;
 
 	float delayTime = 0.0f;
 

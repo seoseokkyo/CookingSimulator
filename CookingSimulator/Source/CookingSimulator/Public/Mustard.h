@@ -4,35 +4,32 @@
 
 #include "CoreMinimal.h"
 #include "Ingredient.h"
-#include "Ketchup.generated.h"
+#include "Mustard.generated.h"
 
-/**
- * 
- */
-
- class UStaticMesh;
- class USplineMeshComponent;
+class UStaticMesh;
+class USplineMeshComponent;
 
 UCLASS()
-class COOKINGSIMULATOR_API AKetchup : public AIngredient
+class COOKINGSIMULATOR_API AMustard : public AIngredient
 {
 	GENERATED_BODY()
-
-public:
+	
+public:	
 	// Sets default values for this actor's properties
-	AKetchup();
+	AMustard();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:
+public:	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
 	USplineMeshComponent* splineComp;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
-	UStaticMesh* splineMesh;		
+	UStaticMesh* splineMesh;
+
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

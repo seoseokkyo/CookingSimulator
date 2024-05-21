@@ -84,6 +84,36 @@
 		"itemDescription": "This is SunflowerOil"
 	},
 	{
+		"Name": "KetchupPouch",
+		"itemType": "CookingTool",
+		"itemImagePath": "Content/CookingSimulator/Textures/KetchupPouch.png",
+		"itemDescription": "This is KetchupPouch"
+	},
+	{
+		"Name": "MustardPouch",
+		"itemType": "CookingTool",
+		"itemImagePath": "Content/CookingSimulator/Textures/MustardPouch.png",
+		"itemDescription": "This is MustardPouch"
+	},
+	{
+		"Name": "SaltBottle",
+		"itemType": "CookingTool",
+		"itemImagePath": "Content/CookingSimulator/Textures/SaltBottle.png",
+		"itemDescription": "This is SaltBottle"
+	},
+	{
+		"Name": "BlackPepperBottle",
+		"itemType": "CookingTool",
+		"itemImagePath": "Content/CookingSimulator/Textures/BlackPepperBottle.png",
+		"itemDescription": "This is BlackPepperBottle"
+	},
+	{
+		"Name": "Mustard",
+		"itemType": "Ingredient",
+		"itemImagePath": "Content/CookingSimulator/Textures/Mustard.png",
+		"itemDescription": "This is Mustard"
+	},
+	{
 		"Name": "Plate",
 		"itemType": "CookingTool",
 		"itemImagePath": "Content/CookingSimulator/Textures/Plate.png",

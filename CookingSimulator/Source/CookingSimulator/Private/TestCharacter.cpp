@@ -28,6 +28,9 @@
 #include "Dumbwaiter.h"
 #include "Ketchup.h"
 #include "KetchupPouch.h"
+#include "MustardPouch.h"
+#include "SaltBottle.h"
+#include "BlackPepperBottle.h"
 #include "ProceduralMeshComponent.h"
 #include "ItemWidget.h"
 #include "Components/CanvasPanel.h"
@@ -276,6 +279,24 @@ void ATestCharacter::OnIARightButtonPressB(const FInputActionValue& value)
 	{
 		ketchupCheck->DrawStart();
 	}
+
+	auto mustardCheck = Cast<AMustardPouch>(GripObject);
+	if (mustardCheck != nullptr)
+	{
+		mustardCheck->DrawStart();
+	}
+
+	auto saltCheck = Cast<ASaltBottle>(GripObject);
+	if (saltCheck != nullptr)
+	{
+		saltCheck->DrawStart();
+	}
+
+	auto blackPepperCheck = Cast<ABlackPepperBottle>(GripObject);
+	if (blackPepperCheck != nullptr)
+	{
+		blackPepperCheck->DrawStart();
+	}
 }
 
 void ATestCharacter::OnIARightButtonReleaseB(const FInputActionValue& value)
@@ -284,6 +305,24 @@ void ATestCharacter::OnIARightButtonReleaseB(const FInputActionValue& value)
 	if (ketchupCheck != nullptr)
 	{
 		ketchupCheck->DrawStop();
+	}
+	
+	auto mustardCheck = Cast<AMustardPouch>(GripObject);
+	if (mustardCheck != nullptr)
+	{
+		mustardCheck->DrawStop();
+	}
+
+	auto saltCheck = Cast<ASaltBottle>(GripObject);
+	if (saltCheck != nullptr)
+	{
+		saltCheck->DrawStop();
+	}
+
+	auto blackPepperCheck = Cast<ABlackPepperBottle>(GripObject);
+	if (blackPepperCheck != nullptr)
+	{
+		blackPepperCheck->DrawStop();
 	}
 }
 
@@ -353,8 +392,13 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 	if (bCanGrip)
 	{
 		// 해당 아이템을 쥔다
+		if (GripObject != nullptr)
+		{
+			GripItem(GripObject);
 
-		if (GripProcedural != nullptr)
+			params.AddIgnoredActor(GripObject);
+		}
+		else if (GripProcedural != nullptr)
 		{
 			GripItem(Cast<AItem>(GripProcedural->GetOwner()));
 
@@ -362,12 +406,7 @@ void ATestCharacter::OnIAGripR(const FInputActionValue& value)
 
 			bHoldingIngredientNow = true;
 		}
-		else if (GripObject != nullptr)
-		{
-			GripItem(GripObject);
-
-			params.AddIgnoredActor(GripObject);
-		}
+		
 
 
 		// 그립되는 이 위치에서 무시할 액터 체크해야함 주의..
@@ -628,13 +667,17 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 
 		// 부딪힌 액터의 Render CustomDepthPass를 true로 변경한다
 		// Cast<AItem>(interactedActor)->baseMesh->SetCustomDepthStencilValue();
-		auto item = Cast<AItem>(interactedActor);
+		auto item = Cast<IInteractAbleInterface>(interactedActor);
 
 		auto proceduralMeshCheck = Cast<UProceduralMeshComponent>(interactedComp);
 
 		if (focusedActor != nullptr && interactedActor != focusedActor)
 		{
-			IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
+			if (Cast<IInteractAbleInterface>(focusedActor))
+			{
+				IInteractAbleInterface::Execute_DrawOutLine(focusedActor, false);
+			}
+			
 			focusedActor = nullptr;
 			targetComp = nullptr;
 
@@ -685,10 +728,11 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 				itemWidgetComp->SetWorldLocation(focusedActor->GetActorLocation() + focusedActor->GetActorUpVector() * 100);
 			}
 
-			if (item != nullptr)
+			auto itemCheck = Cast<AItem>(interactedActor);
+			if (itemCheck != nullptr)
 			{
 				//UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("rr")));
-				FString itemName_ = item->ItemName;
+				FString itemName_ = itemCheck->ItemName;
 				if (itemName_.Compare(TEXT("Name")) != 0)
 					itemUI->SetVisibility(ESlateVisibility::Visible);
 				{

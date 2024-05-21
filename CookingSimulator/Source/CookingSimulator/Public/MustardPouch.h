@@ -5,22 +5,22 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "CookingTool.h"
-#include "KetchupPouch.generated.h"
+#include "MustardPouch.generated.h"
 
 class UStaticMesh;
 class USplineMeshComponent;
 class UMaterialInterface;
 class UCableComponent;
-class AKetchup;
+class AMustard;
 
 UCLASS()
-class COOKINGSIMULATOR_API AKetchupPouch : public ACookingTool
+class COOKINGSIMULATOR_API AMustardPouch : public ACookingTool
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AKetchupPouch();
+	AMustardPouch();
 
 protected:
 	// Called when the game starts or when spawned
@@ -32,7 +32,7 @@ protected:
 
 	bool bTargetOn;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -44,10 +44,10 @@ public:
 	TArray<const USplineMeshComponent*> splineMeshs;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
-	TSubclassOf<AKetchup> ketchupActor_BP;
+	TSubclassOf<AMustard> mustardActor_BP;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
-	AKetchup* ketchupActor;
+	AMustard* mustardActor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings")
 	UMaterialInterface* splineMaterial;
