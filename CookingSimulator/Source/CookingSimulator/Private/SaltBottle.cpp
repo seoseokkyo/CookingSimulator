@@ -74,8 +74,8 @@ void ASaltBottle::Tick(float DeltaTime)
 
 			for (int i = 0; i < 6; i++)
 			{
-				int32 randX = FMath::RandRange(0, 10);
-				int32 randY = FMath::RandRange(-10, 0);
+				int32 randX = FMath::RandRange(-5, 5);
+				int32 randY = FMath::RandRange(-5, 5);
 
 				start.X += randX;
 				start.Y += randY;
