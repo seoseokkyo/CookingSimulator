@@ -31,6 +31,11 @@ void UMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 
 		bNewOrder = false;
 	}
+
+	if (true == bShowResult)
+	{
+		ShowResult();
+	}
 }
 
 void UMenuWidget::OpenGuide()
@@ -86,22 +91,23 @@ void UMenuWidget::NewOrder()
 
 void UMenuWidget::ShowResult()
 {
-	if (true == bShowResult)
-	{
+	
 		//다른 UI들을 숨긴다
 		recipeUI->RemoveFromParent();
 		mainUI->RemoveFromParent();
 		newOrderUI->RemoveFromParent();
+		resultUI->RemoveFromParent();
 		
 		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("bShowResult : TRUE")));
 
 		resultUI->ShowResult();
+		menuViewBox->AddChild(resultUI);
 
 		bShowResult = false;
 		resultUI->ResultCanvas->SetVisibility(ESlateVisibility::Visible);
 
 		
-	}
+	
 }
 
 void UMenuWidget::InitSubUI()
@@ -114,7 +120,7 @@ void UMenuWidget::InitSubUI()
 		// menuViewBox에 AddChild한다
 		menuViewBox->AddChild(newOrderUI);
 		newOrderUI->HideWidget();
-		//newOrderUI->NewOrderCanvas->SetVisibility(ESlateVisibility::Hidden);
+		newOrderUI->NewOrderCanvas->SetVisibility(ESlateVisibility::Hidden);
 	}
 
 	if (mainUI_BP != nullptr)

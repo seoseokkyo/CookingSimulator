@@ -179,11 +179,11 @@ bool ACookingSimulatorGameModeBase::SetCurrentRecipe(ECookingSimulatorRecipeType
 			bCooking = true;
 
 			// 새로운 주문이 들어왔을 때 태블릿을 들고 있지 않다면 강제로 들게 한다
-			ATestCharacter* player = Cast<ATestCharacter>(GetWorld()->GetFirstPlayerController());
+			/*ATestCharacter* player = Cast<ATestCharacter>(GetWorld()->GetFirstPlayerController());
 			if (player != nullptr)
 			{
 				player->bshow = false;
-			}
+			}*/
 
 			//menuUI->NewOrder();
 			menuUI->bNewOrder = true;
@@ -330,12 +330,12 @@ void ACookingSimulatorGameModeBase::CompareDeliveryFood(FCookingSimulatorRecipeI
 	
 	bCooking = false;
 
-	menuUI->resultUI->SetResult(resultComments, cookResult.rankPoint);
+	//menuUI->resultUI->SetResult(resultComments, cookResult.rankPoint);
 
 	// 결과창UI 출력하는 Bool 값 바꿔줌
 	menuUI->bShowResult = true;	
 
-	menuUI->ShowResult();
+	//menuUI->ShowResult();
 
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("요리 점수 : %03d"), cookResult.rankPoint), true, true, FLinearColor::Red, 10.0f);
 }

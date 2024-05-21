@@ -58,7 +58,7 @@ public:
 	class AActor* spawnTablet;
 
 	UPROPERTY(EditDefaultsOnly, Category = "MySettings")
-	bool bshow = true;
+	bool bshow = false;
 
 // private:
 	// VR Camera Component를 생성하고 루트에 붙이고 싶다.

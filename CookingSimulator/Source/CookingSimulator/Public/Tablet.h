@@ -20,7 +20,7 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditDefaultsOnly, Category = "VR")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite,  Category = "VR")
 	class UWidgetComponent* menuWidgetComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "VR")

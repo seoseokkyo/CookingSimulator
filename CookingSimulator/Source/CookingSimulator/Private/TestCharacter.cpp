@@ -215,13 +215,13 @@ void ATestCharacter::Tick(float DeltaTime)
 	}
 	
 
-	if (false == bshow)
+	/*if (false == bshow)
 	{
 		spawnTablet->SetActorHiddenInGame(false);
 		spawnTablet->SetActorEnableCollision(true);
 		bshow = true;
 		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Fuckin New")));
-	}
+	}*/
 
 }
 

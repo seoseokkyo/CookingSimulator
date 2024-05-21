@@ -35,8 +35,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "MySettings", meta = (BindWidget))
 	class UScrollBox* ResultCommentBox;
 
-	UPROPERTY(EditDefaultsOnly, Category = "MySettings", meta = (BindWidget))
-	class UEditableTextBox* ResultCommentTextBox;
 
 	float getScore = 0;
 		
