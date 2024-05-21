@@ -24,12 +24,6 @@ public:
 	class UImage* CookedFood;
 
 	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
-	class UProgressBar* TasteBar;
-
-	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
-	class UProgressBar* SpendTimeBar;
-
-	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
 	class UProgressBar* ScoreBar;
 
 	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
@@ -37,6 +31,10 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "MySettings", meta=(BindWidget))
 	class UCanvasPanel* ResultCanvas;
+
+	UPROPERTY(EditDefaultsOnly, Category = "MySettings", meta = (BindWidget))
+	class UScrollBox* ResultCommentBox;
+
 
 	float getScore = 0;
 		

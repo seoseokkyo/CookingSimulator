@@ -88,6 +88,10 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* GripItemRight;
 
+	// 오른손에 위젯 인터렉션 컴포넌트 추가(위젯 클릭하기 위함)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	class UWidgetInteractionComponent* rightInteractionComp;
+
 	
 	UPROPERTY(EditDefaultsOnly, Category = "VR")
 	UInputMappingContext* IMC_Player;

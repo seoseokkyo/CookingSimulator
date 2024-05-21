@@ -84,6 +84,8 @@ public:
 
 	float cookingTimer = 300;
 	
+	float RecipeChangeTimer = 0.0f;
+
 	UMenuWidget* menuUI;
 
 	UFUNCTION(BlueprintCallable)

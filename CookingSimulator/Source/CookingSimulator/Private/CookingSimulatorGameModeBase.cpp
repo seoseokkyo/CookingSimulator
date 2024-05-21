@@ -9,6 +9,9 @@
 #include "MenuWidget.h"
 #include "ResultWidget.h"
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/AudioComponent.h>
+#include "TestCharacter.h"
+#include "Tablet.h"
+#include <../../../../../../../Source/Runtime/UMG/Public/Components/WidgetComponent.h>
 
 void ACookingSimulatorGameModeBase::StartPlay()
 {
@@ -17,7 +20,7 @@ void ACookingSimulatorGameModeBase::StartPlay()
 	if (menu_BP != nullptr)
 	{
 		menuUI = CreateWidget<UMenuWidget>(GetWorld(), menu_BP);
-		menuUI->InitSubUI();
+	//	menuUI->InitSubUI();
 	}
 		
 	if (soundComp_TimeOut != nullptr)
@@ -130,7 +133,7 @@ void ACookingSimulatorGameModeBase::StartPlay()
 	}
 
 	//SetCurrentRecipe(ECookingSimulatorRecipeType::Hamburger);
-	SetCurrentRecipe(ECookingSimulatorRecipeType::SalmonSteakAndBoiledPotato);
+	//SetCurrentRecipe(ECookingSimulatorRecipeType::SalmonSteakAndBoiledPotato);
 }
 
 void ACookingSimulatorGameModeBase::Tick(float DeltaSeconds)
@@ -146,13 +149,17 @@ void ACookingSimulatorGameModeBase::Tick(float DeltaSeconds)
 			cookingTimer = 0;
 			bCooking = false;
 
-				
-			if (soundComp_TimeOut != nullptr)
-			{
-				soundComp_TimeOut->Play();
-			}			
-
 			UE_LOG(LogTemp, Warning, TEXT("Cook Time Over"));
+		}
+	}
+	else
+	{
+		RecipeChangeTimer += DeltaSeconds;
+
+		if (RecipeChangeTimer > 10)
+		{
+			RecipeChangeTimer = 0;
+			SetCurrentRecipe((ECookingSimulatorRecipeType)FMath::RandRange(0, 1));
 		}
 	}
 	
@@ -315,13 +322,15 @@ void ACookingSimulatorGameModeBase::CompareDeliveryFood(FCookingSimulatorRecipeI
 	{
 		UKismetSystemLibrary::PrintString(GetWorld(), resultComment, true, true, FLinearColor::Red, 10.0f);
 	}
+	
+	bCooking = false;
 
-	menuUI->resultUI->SetResult(resultComments, cookResult.rankPoint);
+	//menuUI->resultUI->SetResult(resultComments, cookResult.rankPoint);
 
 	// 결과창UI 출력하는 Bool 값 바꿔줌
 	menuUI->bShowResult = true;	
 
-	menuUI->ShowResult();
+	//menuUI->ShowResult();
 
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("요리 점수 : %03d"), cookResult.rankPoint), true, true, FLinearColor::Red, 10.0f);
 }

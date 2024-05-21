@@ -8,6 +8,8 @@
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/Image.h>
 #include "Components/CanvasPanel.h"
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/ProgressBar.h>
+#include "Components/ScrollBox.h"
+#include "Components/EditableTextBox.h"
 
 void UResultWidget::NativeConstruct()
 {

@@ -16,7 +16,7 @@ void UNewOrderWidget::NativeConstruct()
 {
 	UpdateCanTick();
 	
-	//HideWidget();
+
 	
 }
 
@@ -24,9 +24,21 @@ void UNewOrderWidget::NativeConstruct()
 void UNewOrderWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
-	NewOrder();	
+	
 	
 	ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
+
+	if (gm->RecipeChangeTimer == 0)
+	{
+
+		if (foodImage == nullptr)
+		{			
+			foodImage = UCookingSimulatorFunctionLibrary::GetRecipeImage(GetWorld(), gm->GetCurrentRecipe().recipeType);
+
+			OrderFoodImage->SetBrushFromSoftTexture(foodImage);
+		}
+	}
+	
 
 	if (gm != nullptr)
 	{
@@ -75,12 +87,12 @@ void UNewOrderWidget::NewOrder()
 	{
 		FCookingSimulatorRecipeInfo rcpInfo = gm->GetCurrentRecipe();
 
-		OrderTimeMinutes->SetVisibility(ESlateVisibility::Visible);
-		OrderTimeSeconds->SetVisibility(ESlateVisibility::Visible);
-		OrderText->SetVisibility(ESlateVisibility::Visible);
-		OrderWindowImage->SetVisibility(ESlateVisibility::Visible);
-		OrderFoodImage->SetVisibility(ESlateVisibility::Visible);
-		timerBar->SetVisibility(ESlateVisibility::Visible);
+ 		OrderTimeMinutes->SetVisibility(ESlateVisibility::Visible);
+ 		OrderTimeSeconds->SetVisibility(ESlateVisibility::Visible);
+ 		OrderText->SetVisibility(ESlateVisibility::Visible);
+ 		OrderWindowImage->SetVisibility(ESlateVisibility::Visible);
+ 		OrderFoodImage->SetVisibility(ESlateVisibility::Visible);
+ 		timerBar->SetVisibility(ESlateVisibility::Visible);
 
 		foodImage = UCookingSimulatorFunctionLibrary::GetRecipeImage(GetWorld(), rcpInfo.recipeType);
 
@@ -93,6 +105,6 @@ void UNewOrderWidget::NewOrder()
 		FText sec = FText::FromString(secString);
 		*/
 
-
+		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("xxxxxxxxxxxxxxxxxxxxxxx")));
 	}
 }

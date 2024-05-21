@@ -72,6 +72,8 @@ public:
 
 	void InitSubUI();
 
+	void UpdateOrderUI(ESlateVisibility temp);
+
 protected:
 	virtual void NativeConstruct() override;
 

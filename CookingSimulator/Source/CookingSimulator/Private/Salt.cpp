@@ -10,6 +10,8 @@ ASalt::ASalt()
 	PrimaryActorTick.bCanEverTick = true;
 
 	bUseProceduralMesh = false;
+
+	ItemName = TEXT("Salt");
 }
 
 // Called when the game starts or when spawned

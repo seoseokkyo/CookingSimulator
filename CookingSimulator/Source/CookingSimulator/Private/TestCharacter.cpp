@@ -42,8 +42,8 @@
 #include "Tablet.h"
 #include <../../../../../../../Source/Runtime/Engine/Classes/Engine/StaticMeshSocket.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Engine/SkeletalMeshSocket.h>
+#include <../../../../../../../Source/Runtime/UMG/Public/Components/WidgetInteractionComponent.h>
 #include "Plate.h"
-
 
 // Sets default values
 ATestCharacter::ATestCharacter()
@@ -91,6 +91,12 @@ ATestCharacter::ATestCharacter()
 		MeshLeft->SetSkeletalMesh(TempMeshLeft.Object);
 		MeshLeft->SetWorldLocationAndRotation(FVector(-3.0f, -3.5f, 4.5f), FRotator(-25.0f, -180.0f, 90.0f));
 	}
+
+	// 위젯 인터렉션 컴포넌트를 생성하고
+	rightInteractionComp = CreateDefaultSubobject<UWidgetInteractionComponent>(TEXT("Right WidgetInteraction Component"));
+
+	// 오른손에 붙힌다
+	rightInteractionComp->SetupAttachment(MotionRight);
 
 	// 아이템 위젯 컴포넌트를 생성한다
 	itemWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Item Widget Component"));
@@ -165,11 +171,25 @@ void ATestCharacter::BeginPlay()
 		//lineDecal_inst->SetActorScale3D(FVector(5));
 	}
 
-	ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
-	if (gm != nullptr)
-	{
-		gm->SetCurrentRecipe(ECookingSimulatorRecipeType::Hamburger);
-	}
+	//ACookingSimulatorGameModeBase* gm = GetWorld()->GetAuthGameMode<ACookingSimulatorGameModeBase>();
+	//if (gm != nullptr)
+	//{
+	//	bool bCheck = false;
+
+	//	//{			
+	//	//	bCheck = ;
+
+	//	//	if(bCheck)
+	//	//		break;
+	//	//};
+
+	//	FTimerHandle timerHand;
+	//	GetWorldTimerManager().SetTimer(timerHand, [&]() {
+
+
+
+	//	}, 15.0f, false);
+	//}
 
 	params.AddIgnoredActor(this);
 
@@ -687,10 +707,10 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 
 		FString strTemp;
 		hitInfo.GetActor()->GetName(strTemp);
-		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("%s"), *strTemp));
+		//UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("%s"), *strTemp));
 
 		hitInfo.GetComponent()->GetName(strTemp);
-		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("%s"), *strTemp));
+		//UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("%s"), *strTemp));
 
 
 		// 부딪힌 액터의 Render CustomDepthPass를 true로 변경한다
@@ -768,7 +788,7 @@ void ATestCharacter::CheckHitTraceForOutline(const FVector& startPos, FVector& e
 					itemUI->itemName->SetText(itemNameText);
 					foodImage = UCookingSimulatorFunctionLibrary::GetImageByItemName(GetWorld(), itemName_);
 					itemUI->itemImage->SetBrushFromSoftTexture(foodImage);
-					UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("rr")));
+					//UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("rr")));
 				}
 			}
 		}
