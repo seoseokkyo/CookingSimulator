@@ -10,6 +10,8 @@ ABurgerBunDown::ABurgerBunDown()
 	PrimaryActorTick.bCanEverTick = true;
 
 	bUseProceduralMesh = true;
+
+	ItemName = TEXT("BurgerBunDown");
 }
 
 // Called when the game starts or when spawned

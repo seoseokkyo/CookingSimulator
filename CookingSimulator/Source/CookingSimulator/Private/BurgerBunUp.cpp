@@ -10,6 +10,8 @@ ABurgerBunUp::ABurgerBunUp()
 	PrimaryActorTick.bCanEverTick = true;
 
 	bUseProceduralMesh = true;
+
+	ItemName = TEXT("BurgerBunUp");
 }
 
 // Called when the game starts or when spawned

@@ -14,6 +14,8 @@ AKetchup::AKetchup()
 
 	splineComp = CreateDefaultSubobject<USplineMeshComponent>(TEXT("SplineComponent"));
 	splineComp->SetupAttachment(RootComponent);
+
+	ItemName = TEXT("Ketchup");
 }
 
 // Called when the game starts or when spawned

@@ -12,6 +12,8 @@ AMustard::AMustard()
 
 	splineComp = CreateDefaultSubobject<USplineMeshComponent>(TEXT("SplineComponent"));
 	splineComp->SetupAttachment(RootComponent);
+
+	ItemName = TEXT("Mustard");
 }
 
 // Called when the game starts or when spawned

@@ -10,6 +10,8 @@ ACheddarCheese::ACheddarCheese()
 	PrimaryActorTick.bCanEverTick = true;
 
 	bUseProceduralMesh = true;
+
+	ItemName = TEXT("CheddarCheese");
 }
 
 // Called when the game starts or when spawned
