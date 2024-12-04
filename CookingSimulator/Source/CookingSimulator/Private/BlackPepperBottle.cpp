@@ -54,11 +54,6 @@ void ABlackPepperBottle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//if (bTargetOn)
-	//{
-	//	RotationToTarget();
-	//}
-
 	if (bStart)
 	{
 		delayTime += DeltaTime;
