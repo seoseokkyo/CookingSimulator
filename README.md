@@ -125,22 +125,22 @@
 </table>
 
 ### 2-6. KitchenTimer
-<table>
+<table style="width: 100%; border-spacing: 10px;">
   <tr>
-    <td style="width: 100%; vertical-align: top;"> 
-	  <img src="./images/common/KitchenTimerTick.jpg" alt="KitchenTimerTick" style="width: 100%;">
-	  <img src="./images/common/KitchenTimerSetTimer.jpg" alt="KitchenTimerSetTimer" style="width: 100%;">
+    <td colspan="2" style="text-align: center;">
+      <img src="./images/common/KitchenTimerTick.jpg" alt="KitchenTimerTick" style="width: 45%; margin-right: 5%;">
+      <img src="./images/common/KitchenTimerSetTimer.jpg" alt="KitchenTimerSetTimer" style="width: 45%;">
     </td>
   </tr>
   <tr>
-	<td style="width: 30%; vertical-align: top; text-align: left;">
-		<img src="./images/common/KitchenTimer.jpg" alt="KitchenTimer" style="width: 20%;">
-	</td>
-    <td style="width: 70%; vertical-align: top; text-align: left;">
+    <td style="width: 20%; text-align: center; vertical-align: top;">
+      <img src="./images/common/KitchenTimer.jpg" alt="KitchenTimer" style="width: 100%;">
+    </td>
+    <td style="width: 80%; vertical-align: top;">
       <ul>
         <li>분단위 또는 시간단위로 변경하여 사용 가능한 타이머</li>
-		<li>남은 시간을 붉은 화살표로 확인가능</li>
-		<li>붉은 화살표가 0을 가르키게 되면 알람소리 발생</li>
+        <li>남은 시간을 붉은 화살표로 확인 가능</li>
+        <li>붉은 화살표가 0을 가르키게 되면 알람 소리 발생</li>
       </ul>
     </td>
   </tr>
