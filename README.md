@@ -127,7 +127,7 @@
 ### 2-6. KitchenTimer
 <table>
   <tr>
-    <td style="width: 30%; vertical-align: top;"> 
+    <td style="width: 100%; vertical-align: top;"> 
 	  <img src="./images/common/KitchenTimerTick.jpg" alt="KitchenTimerTick" style="width: 100%;">
 	  <img src="./images/common/KitchenTimerSetTimer.jpg" alt="KitchenTimerSetTimer" style="width: 100%;">
     </td>
