@@ -98,6 +98,8 @@
       <img src="./images/common/RecipeSettingEx_1.jpg" alt="RecipeSettingEx_1" style="width: 100%;">
 	  <img src="./images/common/RecipeSettingEx_2.jpg" alt="RecipeSettingEx_2" style="width: 100%;">
     </td>
+  </tr>
+  <tr>
     <td style="width: 70%; vertical-align: top; text-align: left;">
       <ul>
         <li>레퍼런스 레시피를 세팅하는 예시</li>
@@ -125,13 +127,15 @@
 ### 2-6. KitchenTimer
 <table>
   <tr>
-    <td style="width: 30%; vertical-align: top;">
-      <img src="./images/common/KitchenTimer.jpg" alt="KitchenTimer" style="width: 100%;">
+    <td style="width: 30%; vertical-align: top;"> 
 	  <img src="./images/common/KitchenTimerTick.jpg" alt="KitchenTimerTick" style="width: 100%;">
 	  <img src="./images/common/KitchenTimerSetTimer.jpg" alt="KitchenTimerSetTimer" style="width: 100%;">
     </td>
+  </tr>
+  <tr>
     <td style="width: 70%; vertical-align: top; text-align: left;">
       <ul>
+	    <img src="./images/common/KitchenTimer.jpg" alt="KitchenTimer" style="width: 100%;">
         <li>분단위 또는 시간단위로 변경하여 사용 가능한 타이머</li>
 		<li>남은 시간을 붉은 화살표로 확인가능</li>
 		<li>붉은 화살표가 0을 가르키게 되면 알람소리 발생</li>
@@ -182,6 +186,8 @@
 	  <img src="./images/common/CompareDeliveryFood_4.jpg" alt="CompareDeliveryFood_4" style="width: 100%;">
 	  <img src="./images/common/CompareDeliveryFood_5.jpg" alt="CompareDeliveryFood_5" style="width: 100%;">
     </td>
+  </tr>
+  <tr>
     <td style="width: 70%; vertical-align: top; text-align: left;">
       <ul>
         <li>게임모드에 설정된 타겟 레시피와 완성된 요리를 비교</li>
@@ -201,6 +207,8 @@
     <td style="width: 30%; vertical-align: top;">
       <img src="./images/common/Git.jpg" alt="Git" style="width: 100%;">
     </td>
+  </tr>
+  <tr>
     <td style="width: 70%; vertical-align: top; text-align: left;">
       <ul>
         <li>선호하는 깃 관리방식인 Release(master/main)/Work(최신)/Worker1/Worker2....방식으로 관리</li>
