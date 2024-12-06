@@ -133,9 +133,11 @@
     </td>
   </tr>
   <tr>
+	<td style="width: 30%; vertical-align: top; text-align: left;">
+		<img src="./images/common/KitchenTimer.jpg" alt="KitchenTimer" style="width: 20%;">
+	</td>
     <td style="width: 70%; vertical-align: top; text-align: left;">
       <ul>
-	    <img src="./images/common/KitchenTimer.jpg" alt="KitchenTimer" style="width: 20%;">
         <li>분단위 또는 시간단위로 변경하여 사용 가능한 타이머</li>
 		<li>남은 시간을 붉은 화살표로 확인가능</li>
 		<li>붉은 화살표가 0을 가르키게 되면 알람소리 발생</li>
