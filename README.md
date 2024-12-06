@@ -128,13 +128,13 @@
 <table style="width: 100%; border-spacing: 10px;">
   <tr>
     <td colspan="2" style="text-align: center;">
-      <img src="./images/common/KitchenTimerTick.jpg" alt="KitchenTimerTick" style="width: 45%; margin-right: 5%;">
-      <img src="./images/common/KitchenTimerSetTimer.jpg" alt="KitchenTimerSetTimer" style="width: 45%;">
+	  <img src="./images/common/KitchenTimerTick.jpg" alt="KitchenTimerTick" style="width: 100%;">
+	  <img src="./images/common/KitchenTimerSetTimer.jpg" alt="KitchenTimerSetTimer" style="width: 100%;">
     </td>
   </tr>
   <tr>
     <td style="width: 20%; text-align: center; vertical-align: top;">
-      <img src="./images/common/KitchenTimer.jpg" alt="KitchenTimer" style="width: 100%;">
+      <img src="./images/common/KitchenTimer.jpg" alt="KitchenTimer" style="width: 20%;">
     </td>
     <td style="width: 80%; vertical-align: top;">
       <ul>
