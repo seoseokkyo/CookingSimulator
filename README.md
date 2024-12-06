@@ -134,7 +134,7 @@
   </tr>
   <tr>
     <td style="width: 20%; text-align: center; vertical-align: top;">
-      <img src="./images/common/KitchenTimer.jpg" alt="KitchenTimer" style="width: 20%;">
+      <img src="./images/common/KitchenTimer.jpg" alt="KitchenTimer" style="width: 40%;">
     </td>
     <td style="width: 80%; vertical-align: top;">
       <ul>
